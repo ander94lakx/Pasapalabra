@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListaDefiniciones>
+	<Definicion>
+		<Letra>A</Letra>
+		<Enunciado>Tienda de comestibles</Enunciado>
+		<Respuestas>
+		<Respuesta>Abacería</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>A</Letra>
+		<Enunciado>Calzado rústico, sandalias</Enunciado>
+		<Respuestas>
+		<Respuesta>Albarca</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>B</Letra>
+		<Enunciado>Persona de carácter desenvuelto y simpático</Enunciado>
+		<Respuestas>
+		<Respuesta>Barbián</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>B</Letra>
+		<Enunciado>Piel de carnero</Enunciado>
+		<Respuestas>
+		<Respuesta>Badana</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>B</Letra>
+		<Enunciado>Conjunto de hielos formados por la congelación del agua del mar en las zonas polares</Enunciado>
+		<Respuestas>
+		<Respuesta>Banquisa</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>C</Letra>
+		<Enunciado>Buey manso que se utiliza para facilitar el manejo del ganado bravío</Enunciado>
+		<Respuestas>
+		<Respuesta>Cabestro</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>C</Letra>
+		<Enunciado>Cayado</Enunciado>
+		<Respuestas>
+		<Respuesta>Cachaba</Respuesta>
+		</Respuestas>
+	</Definicion><Definicion>
+		<Letra>D</Letra>
+		<Enunciado>Regalos, presentes</Enunciado>
+		<Respuestas>
+		<Respuesta>Dádivas</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>D</Letra>
+		<Enunciado>Modelo, ejemplo</Enunciado>
+		<Respuestas>
+		<Respuesta>Dechado</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>E</Letra>
+		<Enunciado>Relativo al marfil</Enunciado>
+		<Respuestas>
+		<Respuesta>Ebúrneo</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>E</Letra>
+		<Enunciado>Escudo, arma defensiva</Enunciado>
+		<Respuestas>
+		<Respuesta>Égida</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>F</Letra>
+		<Enunciado>Persona de plena confianza de otra y desempeña así sus funciones</Enunciado>
+		<Respuestas>
+		<Respuesta>Factótum</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>F</Letra>
+		<Enunciado>Provisto de hoces o con forma de hoz</Enunciado>
+		<Respuestas>
+		<Respuesta>Falcado</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>G</Letra>
+		<Enunciado>Lenguaje oscuro por la impropiedad de la frase o por la confusión de las ideas</Enunciado>
+		<Respuestas>
+		<Respuesta>Galimatías</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>G</Letra>
+		<Enunciado>Mozo de labranza</Enunciado>
+		<Respuestas>
+		<Respuesta>Gañán</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>H</Letra>
+		<Enunciado>Desastre con muchas víctimas, Sacrifico</Enunciado>
+		<Respuestas>
+		<Respuesta>Hecatombe</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>H</Letra>
+		<Enunciado>Grecia e islas del mar Egeo</Enunciado>
+		<Respuestas>
+		<Respuesta>Hélade</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>I</Letra>
+		<Enunciado>Mamífero rumiante que vive en las montañas españolas</Enunciado>
+		<Respuestas>
+		<Respuesta>Íbex</Respuesta>
+		<Respuesta>Íbice</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>I</Letra>
+		<Enunciado>Lo mismo o el mismo</Enunciado>
+		<Respuestas>
+		<Respuesta>Ídem</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>J</Letra>
+		<Enunciado>Adorno de las caballerías</Enunciado>
+		<Respuestas>
+		<Respuesta>Jaez</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>J</Letra>
+		<Enunciado>Habla especial y enrevesada</Enunciado>
+		<Respuestas>
+		<Respuesta>Jerigonza</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>K</Letra>
+		<Enunciado>Comida que es aceptable según la Torah</Enunciado>
+		<Respuestas>
+		<Respuesta>Kosher</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>K</Letra>
+		<Enunciado>Arte marcial de origen Japones, basado en golpes secos realizados con el borde de la mano, los codos o los pies</Enunciado>
+		<Respuestas>
+		<Respuesta>Karate</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>L</Letra>
+		<Enunciado>Estandarte</Enunciado>
+		<Respuestas>
+		<Respuesta>Lábaro</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>L</Letra>
+		<Enunciado>Relativo a un lago</Enunciado>
+		<Respuestas>
+		<Respuesta>Lacustre</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>M</Letra>
+		<Enunciado>Mentira, embuste</Enunciado>
+		<Respuestas>
+		<Respuesta>Macana</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>M</Letra>
+		<Enunciado>Daño ligero que presenta la fruta</Enunciado>
+		<Respuestas>
+		<Respuesta>Maca</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>N</Letra>
+		<Enunciado>Abuso de poder favoreciendo a parientes o amigos</Enunciado>
+		<Respuestas>
+		<Respuesta>Nepotismo</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>N</Letra>
+		<Enunciado>Insignificante</Enunciado>
+		<Respuestas>
+		<Respuesta>Nimio</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>O</Letra>
+		<Enunciado>Viejo, Caduco, Pasado de moda, Inútil por vejez</Enunciado>
+		<Respuestas>
+		<Respuesta>Obsoleto</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>O</Letra>
+		<Enunciado>Masturbación</Enunciado>
+		<Respuestas>
+		<Respuesta>Onanismo</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>P</Letra>
+		<Enunciado>Jolgorio ruidoso y desordenado</Enunciado>
+		<Respuestas>
+		<Respuesta>Pachanga</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>P</Letra>
+		<Enunciado>Persona práctica</Enunciado>
+		<Respuestas>
+		<Respuesta>Pragmático</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Q</Letra>
+		<Enunciado>Que implica anarquía o está caracterizado por ella</Enunciado>
+		<Respuestas>
+		<Respuesta>Anárquico</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Q</Letra>
+		<Enunciado>Producto obtenido de la destilación de maderas resinosas, carbones, petróleo, pizarras y otros materiales vegetales y minerales.</Enunciado>
+		<Respuestas>
+		<Respuesta>Alquitrán</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>R</Letra>
+		<Enunciado>Segmento lineal que une el centro del círculo con la circunferencia</Enunciado>
+		<Respuestas>
+		<Respuesta>Radio</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>R</Letra>
+		<Enunciado>Conjunto de uvas sostenidas en un mismo tallo que pende del sarmiento</Enunciado>
+		<Respuestas>
+		<Respuesta>Racimo</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>S</Letra>
+		<Enunciado>Parte interior de un templo en el que se preservan las cosas sagradas</Enunciado>
+		<Respuestas>
+		<Respuesta>Sagrario</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>S</Letra>
+		<Enunciado>Exceder una persona u cosa a otra en la cualidad de la que se trata</Enunciado>
+		<Respuestas>
+		<Respuesta>Sobrepujar</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>T</Letra>
+		<Enunciado>Estigma, defecto</Enunciado>
+		<Respuestas>
+		<Respuesta>Tara</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>T</Letra>
+		<Enunciado>Lúgubre</Enunciado>
+		<Respuestas>
+		<Respuesta>Tétrico</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>U</Letra>
+		<Enunciado>Situar o instalar en determinado espacio o lugar</Enunciado>
+		<Respuestas>
+		<Respuesta>Ubicar</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>U</Letra>
+		<Enunciado>Aplicar a algo aceite u otra materia pingüe, extendiéndola superficialmente</Enunciado>
+		<Respuestas>
+		<Respuesta>Ungir</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>V</Letra>
+		<Enunciado>Tratado breve que contiene las nociones elementales de una ciencia u arte</Enunciado>
+		<Respuestas>
+		<Respuesta>Vademécum</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>V</Letra>
+		<Enunciado>Vapor que despiden los cuerpos en determinadas condiciones</Enunciado>
+		<Respuestas>
+		<Respuesta>Vaho</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>W</Letra>
+		<Enunciado>Vivienda rústica exenta de una única planta</Enunciado>
+		<Respuestas>
+		<Respuesta>Bungalow</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>W</Letra>
+		<Enunciado>Fruto de ésta planta, de piel marron y carne verde comestible</Enunciado>
+		<Respuestas>
+		<Respuesta>Kiwi</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>X</Letra>
+		<Enunciado>Deporte que consiste en la lucha de dos púgiles, con las manos enfundadas en guantes especiales y de conformidad con ciertas reglas</Enunciado>
+		<Respuestas>
+		<Respuesta>Boxeo</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>X</Letra>
+		<Enunciado>Puntual, fiel y cabal</Enunciado>
+		<Respuestas>
+		<Respuesta>Exacto</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Y</Letra>
+		<Enunciado>Abstenerse total o parcialmente de comer o beber</Enunciado>
+		<Respuestas>
+		<Respuesta>Ayunar</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Y</Letra>
+		<Enunciado>Macho vacuno castrado</Enunciado>
+		<Respuestas>
+		<Respuesta>Buey</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Z</Letra>
+		<Enunciado>alzado que no pasa del tobillo, con la parte inferior de suela y lo demás de piel, fieltro, paño u otro tejido, más o menos escotado por el empeine</Enunciado>
+		<Respuestas>
+		<Respuesta>Zapato</Respuesta>
+		</Respuestas>
+	</Definicion>
+	<Definicion>
+		<Letra>Z</Letra>
+		<Enunciado>Muchacho que ha llegado a la adolescencia</Enunciado>
+		<Respuestas>
+		<Respuesta>Zagal</Respuesta>
+		</Respuestas>
+	</Definicion>
+</ListaDefiniciones>
