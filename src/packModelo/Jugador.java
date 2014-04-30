@@ -87,7 +87,7 @@ public class Jugador extends Observable {
 		return def;
 	}
 
-	public boolean gestionarRespuesta(String respuesta) {
+	public void gestionarRespuesta(String respuesta) {
 		// TODO Hecho? gestionar la respuesta recibida
 		pausarReloj();
 		getRosco().obtenerDefinicionRosco(posicionRosco).comprobarRespuesta(
@@ -98,8 +98,7 @@ public class Jugador extends Observable {
 		if (getRosco().obtenerDefinicionRosco(posicionRosco)
 				.getEstadoRespuesta() == Estado.FALLIDA)
 			incrementarFallos();
-		return false;
-	} // FIXME Modificar este metodo para que funcione!!
+	}
 
 	public boolean haTerminado() {
 		return rosco.estaCompletado() || tiempoRestante == 0;
