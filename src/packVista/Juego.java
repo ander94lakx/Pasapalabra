@@ -467,6 +467,7 @@ public class Juego extends JFrame implements Observer {
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
 	public void accionResponder() {
 		Pasapalabra.setRespuestaRecibida(getCampoRespuesta().getText());
+		notify();
 	}
 
 	public JPanel getPanelBotones() {
