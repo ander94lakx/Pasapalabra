@@ -1,21 +1,17 @@
 package packVista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class OtraPartida extends JDialog {
 

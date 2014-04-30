@@ -5,10 +5,9 @@ import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.Toolkit;
 
-import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-
+import javax.swing.JDialog;
 import javax.swing.JTextPane;
 
 
