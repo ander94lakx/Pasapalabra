@@ -2,8 +2,6 @@ package packModelo;
 
 import java.util.Observable;
 
-import javafx.collections.SetChangeListener;
-
 public class Pasapalabra extends Observable{
 
 	// Singletons donde se almacenan informacion persistente
