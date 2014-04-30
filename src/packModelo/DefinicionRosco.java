@@ -25,6 +25,12 @@ public class DefinicionRosco extends Definicion {
         return estadoRespuesta;
     }
     
+   /**
+    * Comprueba si la respuesta que se le pasa como parametro y actualiza
+    * el estado de la Definicion
+    * @param pRespuesta
+    * @return si la respuesta es correcta o no
+    */
     public boolean comprobarRespuesta(String pRespuesta){
         // TODO Hecho? Comprobar si la respuesta el la correcta
     	boolean estaLaRespuesta = false;
