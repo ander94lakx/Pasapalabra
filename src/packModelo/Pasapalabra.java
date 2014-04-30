@@ -1,17 +1,18 @@
 package packModelo;
 
 import java.util.Observable;
+import packVista.Juego;
 
 public class Pasapalabra extends Observable{
 
 	// Singletons donde se almacenan informacion persistente
-	static Ranking ranking = Ranking.getRanking();
-	static CatalogoDefiniciones catalogo = CatalogoDefiniciones
+	private static Ranking ranking = Ranking.getRanking();
+	private static CatalogoDefiniciones catalogo = CatalogoDefiniciones
 			.getCatalogoDefiniciones();
 
 	// Gestion de jugadores
-	public static Jugador listaJugadores[] = new Jugador[2];
-	static int siguienteJugador = -2; 
+	private static Jugador listaJugadores[] = new Jugador[2];
+	private static int siguienteJugador = -2; 
 			// Indica al jugador al que le tocaria jugar el siguiente turno
 			// Siempre es el que no esta jugando en ese momento
 			// Modos posibles: 0 -> el Siguiente jugador teorico es el Jug 1
@@ -19,7 +20,7 @@ public class Pasapalabra extends Observable{
 			// Modos posibles: -1 -> el Siguiente jugador teorico es el Jug 2 (Todavia no ha jugado el Jug 2)
 			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
 
-	static boolean modo2Jugadores;
+	private static boolean modo2Jugadores;
 	// FIXME Arreglar la gestion de la respuesta
 	private static String respuestaRecibida;
 
@@ -50,8 +51,7 @@ public class Pasapalabra extends Observable{
 	 *            Recibe los nombres de los Jugadores o del jugador
 	 */
 	public static void main(String[] args) {
-		CatalogoDefiniciones catalogo = CatalogoDefiniciones
-				.getCatalogoDefiniciones();
+		
 		catalogo.loadData();
 
 		ranking.cargarPuntuaciones();
@@ -68,7 +68,8 @@ public class Pasapalabra extends Observable{
 
 	/**
 	 * Este metodo se encarga de inicializar la parte del juego que no utiliza
-	 * archivos, diferenciando entre los modos 1J y 2J
+	 * archivos, diferenciando entre los modos 1J y 2J, y de conectarlos con la
+	 * parte grafica
 	 * 
 	 * @param jug1
 	 *            Nombre del primer jugador obtenido del main
@@ -88,6 +89,7 @@ public class Pasapalabra extends Observable{
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
+		Juego.main(null);
 		inicializarPartida();
 	}
 
@@ -203,5 +205,11 @@ public class Pasapalabra extends Observable{
 	
 	public static boolean modoDosJugadores(){
 		return modo2Jugadores;
+	}
+	
+	public static Jugador getJugador(int i){
+		if(i == 1 || i == 0)
+			return listaJugadores[i];
+		else return null;
 	}
 }
