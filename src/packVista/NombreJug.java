@@ -135,7 +135,7 @@ public class NombreJug extends JDialog {
 	}
 	
 	public void accionJugar(){
-		Juego.main(null);
+		//Juego.main(null);
 		Pasapalabra.main(new String[] {getTextField().getText()});
 		setVisible(false);
 	}

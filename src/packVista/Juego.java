@@ -40,7 +40,7 @@ import java.awt.event.ActionEvent;
 public class Juego extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -7237743091044603390L;
-
+	
 	private JPanel contentPane;
 	private JPanel panelInferior;
 	private JPanel panelRosco;
@@ -80,12 +80,11 @@ public class Juego extends JFrame implements Observer {
 	public Juego() {
 		initialize();
 		if (Pasapalabra.modoDosJugadores()) {
-			Pasapalabra.listaJugadores[0].addObserver(this);
-			Pasapalabra.listaJugadores[1].addObserver(this);
+			Pasapalabra.getJugador(0).addObserver(this);
+			Pasapalabra.getJugador(1).addObserver(this);
 		} else {
-			Pasapalabra.listaJugadores[0].addObserver(this);
+			Pasapalabra.getJugador(0).addObserver(this);
 		}
-
 	}
 
 	private void initialize() {
@@ -445,29 +444,35 @@ public class Juego extends JFrame implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Hecho? Mejorar este codigo utilzando los parametros recibidos
-		getLblJugador().setText(((Jugador) arg0).getNombre());
-		getAciertos().setText(
-				(String) Integer.toString(((Jugador) arg0).getAciertos()));
-		getFallos().setText(
-				(String) Integer.toString(((Jugador) arg0).getFallos()));
-		getTiempoRestante()
-				.setText(
-						(String) Integer.toString(((Jugador) arg0)
-								.getTiempoRestante()));
-		getCampoRespuesta().setText(
-				((Jugador) arg0)
-						.getRosco()
-						.obtenerDefinicionRosco(
-								Pasapalabra.getSiguienteJugador()
-										.getPosicionRosco()).getEnunciado());
-		getLblLetra().setText(((Jugador) arg0).getPosicionRosco().name());
+		if(arg0 instanceof Jugador) {
+			getLblJugador().setText(((Jugador) arg0).getNombre());
+			getAciertos().setText(
+					(String) Integer.toString(((Jugador) arg0).getAciertos()));
+			getFallos().setText(
+					(String) Integer.toString(((Jugador) arg0).getFallos()));
+			getTiempoRestante()
+					.setText(
+							(String) Integer.toString(((Jugador) arg0)
+									.getTiempoRestante()));
+			getCampoRespuesta().setText(
+					((Jugador) arg0)
+							.getRosco()
+							.obtenerDefinicionRosco(
+									Pasapalabra.getSiguienteJugador()
+											.getPosicionRosco()).getEnunciado());
+			getLblLetra().setText(((Jugador) arg0).getPosicionRosco().name());
+		}
+		else if(arg0 instanceof Pasapalabra) {
+			getPregunta().setText(((Pasapalabra) arg0).getDefinicionActual().getEnunciado());
+			getLblLetra().setText(((Pasapalabra) arg0).getDefinicionActual().getLetra().name());
+		}
 
 	}
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
 	public void accionResponder() {
 		Pasapalabra.setRespuestaRecibida(getCampoRespuesta().getText());
-		notify();
+		notifyAll();
 	}
 
 	public JPanel getPanelBotones() {
