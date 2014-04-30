@@ -1,6 +1,10 @@
 package packModelo;
 
-public class Pasapalabra {
+import java.util.Observable;
+
+import javafx.collections.SetChangeListener;
+
+public class Pasapalabra extends Observable{
 
 	// Singletons donde se almacenan informacion persistente
 	static Ranking ranking = Ranking.getRanking();
@@ -19,7 +23,26 @@ public class Pasapalabra {
 
 	static boolean modo2Jugadores;
 	// FIXME Arreglar la gestion de la respuesta
-	public static String respuestaRecibida;
+	private static String respuestaRecibida;
+
+	public static String getRespuestaRecibida() {
+		return respuestaRecibida;
+	}
+
+	public static void setRespuestaRecibida(String respuestaRecibida) {
+		Pasapalabra.respuestaRecibida = respuestaRecibida;
+	}
+	
+	private DefinicionRosco definicionActual;
+	
+	public DefinicionRosco getDefinicionActual() {
+		return definicionActual;
+	}
+	public void setDefinicionActual(DefinicionRosco definicionActual) {
+		this.definicionActual = definicionActual;
+		setChanged();
+		notifyObservers();
+	}
 
 	/**
 	 * El metodo main gestiona la carga del XML y la carga inicial de las
@@ -89,11 +112,13 @@ public class Pasapalabra {
 					|| !listaJugadores[1].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
-				DefinicionRosco def = jugador.realizarPregunta();
+				////////////Pasapalabra.setDefinicionActual(jugador.realizarPregunta());
+				//Esperar hasta que la GUI notifique que puede seguir
+				try {
+					Thread.currentThread().wait();
+				} catch (InterruptedException e) { e.printStackTrace(); }
 				// gestionar respuesta
-				while (respuestaRecibida == null) {}
 				jugador.gestionarRespuesta(respuestaRecibida);
-				respuestaRecibida = null;
 			}
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
@@ -103,10 +128,12 @@ public class Pasapalabra {
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
 				DefinicionRosco def = jugador.realizarPregunta();
+				//Esperar hasta que la GUI notifique que puede seguir
+				try {
+					Thread.currentThread().wait();
+				} catch (InterruptedException e) { e.printStackTrace(); }
 				// gestionar respuesta
-				while (respuestaRecibida == null) {}
 				jugador.gestionarRespuesta(respuestaRecibida);
-				respuestaRecibida = null;
 			}
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
