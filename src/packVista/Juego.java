@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 
 import packModelo.Pasapalabra;
+import packModelo.Jugador;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -81,8 +82,7 @@ public class Juego extends JFrame implements Observer {
 		if (Pasapalabra.modoDosJugadores()) {
 			Pasapalabra.listaJugadores[0].addObserver(this);
 			Pasapalabra.listaJugadores[1].addObserver(this);
-		}
-		else {
+		} else {
 			Pasapalabra.listaJugadores[0].addObserver(this);
 		}
 
@@ -444,26 +444,23 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// IDEA Mejorar este codigo utilzando los parametros recibidos
-		getLblJugador().setText(Pasapalabra.getSiguienteJugador().getNombre());
+		// TODO Hecho? Mejorar este codigo utilzando los parametros recibidos
+		getLblJugador().setText(((Jugador) arg0).getNombre());
 		getAciertos().setText(
-				(String) Integer.toString(Pasapalabra.getSiguienteJugador()
-						.getAciertos()));
+				(String) Integer.toString(((Jugador) arg0).getAciertos()));
 		getFallos().setText(
-				(String) Integer.toString(Pasapalabra.getSiguienteJugador()
-						.getFallos()));
-		getTiempoRestante().setText(
-				(String) Integer.toString(Pasapalabra.getSiguienteJugador()
-						.getTiempoRestante()));
+				(String) Integer.toString(((Jugador) arg0).getFallos()));
+		getTiempoRestante()
+				.setText(
+						(String) Integer.toString(((Jugador) arg0)
+								.getTiempoRestante()));
 		getCampoRespuesta().setText(
-				Pasapalabra
-						.getSiguienteJugador()
+				((Jugador) arg0)
 						.getRosco()
 						.obtenerDefinicionRosco(
 								Pasapalabra.getSiguienteJugador()
 										.getPosicionRosco()).getEnunciado());
-		getLblLetra().setText(
-				Pasapalabra.getSiguienteJugador().getPosicionRosco().name());
+		getLblLetra().setText(((Jugador) arg0).getPosicionRosco().name());
 
 	}
 
