@@ -31,13 +31,13 @@ public class Pasapalabra extends Observable{
 		Pasapalabra.respuestaRecibida = respuestaRecibida;
 	}
 	
-	private DefinicionRosco definicionActual;
+	private static DefinicionRosco definicionActual;
 	
-	public DefinicionRosco getDefinicionActual() {
+	public static DefinicionRosco getDefinicionActual() {
 		return definicionActual;
 	}
-	public void setDefinicionActual(DefinicionRosco definicionActual) {
-		this.definicionActual = definicionActual;
+	public void setDefinicionActual(DefinicionRosco pDefinicionActual) {
+		definicionActual = pDefinicionActual;
 		setChanged();
 		notifyObservers();
 	}
@@ -110,7 +110,7 @@ public class Pasapalabra extends Observable{
 					|| !listaJugadores[1].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
-				////////////Pasapalabra.setDefinicionActual(jugador.realizarPregunta());
+				definicionActual = jugador.realizarPregunta();
 				//Esperar hasta que la GUI notifique que puede seguir
 				try {
 					Thread.currentThread().wait();
@@ -125,7 +125,7 @@ public class Pasapalabra extends Observable{
 			while (!listaJugadores[0].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
-				DefinicionRosco def = jugador.realizarPregunta();
+				definicionActual = jugador.realizarPregunta();
 				//Esperar hasta que la GUI notifique que puede seguir
 				try {
 					Thread.currentThread().wait();
