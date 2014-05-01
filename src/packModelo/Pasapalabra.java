@@ -89,7 +89,12 @@ public class Pasapalabra extends Observable{
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
-		Juego.main(null);
+		Thread gui = new Thread(){
+			public void run(){
+				Juego.main(null);
+			}
+		};
+		gui.run();
 		inicializarPartida();
 	}
 
@@ -212,4 +217,4 @@ public class Pasapalabra extends Observable{
 			return listaJugadores[i];
 		else return null;
 	}
-}
+} // FIXME NO TENGO NI PUTA IDEA DE COMO INICIAR LA GUI!
