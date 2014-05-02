@@ -9,7 +9,7 @@ El juego está programado en Java y utiliza la API de Swing para la GUI. Impleme
 
 -----------
 
-Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren azken praktika da.
+Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren azken praktika da, Ander Granado Masid eta Julen Aristimuño Arana egindakoa.
 
 Aplikazio hau "Pasapalabra" telebista saioa imitazen duen bideo-joko bat da.
 
