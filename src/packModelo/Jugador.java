@@ -10,6 +10,7 @@ public class Jugador extends Observable {
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;
+	private int turnosPasados;
 	private String nombre;
 	private Rosco rosco;
 	private Letra posicionRosco;
@@ -21,6 +22,7 @@ public class Jugador extends Observable {
 		aciertos = 0;
 		fallos = 0;
 		tiempoRestante = TIEMPO_INICIAL;
+		turnosPasados = 0;
 		rosco = new Rosco();
 		posicionRosco = Letra.A;
 	}
@@ -81,8 +83,8 @@ public class Jugador extends Observable {
 				break;
 			else
 				pasarSiguienteLetra();
-		} while (def == null
-				|| def.getEstadoRespuesta() == Estado.SIN_CONTESTAR);
+		} while (def == null || def.getEstadoRespuesta() == Estado.SIN_CONTESTAR);
+		turnosPasados++;
 		reanudarReloj();
 		return def;
 	}
@@ -240,8 +242,10 @@ public class Jugador extends Observable {
 			letraAnterior = Letra.Z;
 		else
 			letraAnterior = letras[posicionRosco.ordinal() - 1];
-		return getRosco().obtenerDefinicionRosco(letraAnterior)
-				.getEstadoRespuesta() == Estado.CORRECTA;
+		if(turnosPasados <= 1 && letraAnterior == Letra.Z)
+			return true;
+		else	
+		 return getRosco().obtenerDefinicionRosco(letraAnterior).getEstadoRespuesta() == Estado.CORRECTA;
 	}
 	
 //	public boolean haEmpezado(){
