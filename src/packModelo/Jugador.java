@@ -133,6 +133,7 @@ public class Jugador extends Observable {
 	}
 
 	public void decrementarTiempo() {
+		if(tiempoRestante > 0)
 		tiempoRestante--;
 		setChanged();
 		notifyObservers();

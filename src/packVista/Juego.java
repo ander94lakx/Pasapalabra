@@ -445,7 +445,7 @@ public class Juego extends JFrame implements Observer {
 					.setText(
 							(String) Integer.toString(((Jugador) arg0)
 									.getTiempoRestante()));
-			getCampoRespuesta().setText(
+			getPregunta().setText(
 					((Jugador) arg0)
 							.getRosco()
 							.obtenerDefinicionRosco(
