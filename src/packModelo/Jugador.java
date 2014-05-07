@@ -10,7 +10,6 @@ public class Jugador extends Observable {
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;
-	private int turnosPasados;
 	private String nombre;
 	private Rosco rosco;
 	private Letra posicionRosco;
@@ -22,7 +21,6 @@ public class Jugador extends Observable {
 		aciertos = 0;
 		fallos = 0;
 		tiempoRestante = TIEMPO_INICIAL;
-		turnosPasados = 0;
 		rosco = new Rosco();
 		posicionRosco = Letra.A;
 	}
@@ -74,23 +72,21 @@ public class Jugador extends Observable {
 	}
 
 	public DefinicionRosco realizarPregunta() {
-		// TODO Hecho? realizar la siguiente pregunta
+		// TODO Realizar la siguiente pregunta
 		DefinicionRosco def;
 		do {
 			def = rosco.obtenerDefinicionRosco(posicionRosco);
-			pasarSiguienteLetra();
-			if (def.getEstadoRespuesta() != Estado.SIN_CONTESTAR)
+			if (def.getEstadoRespuesta() == Estado.SIN_CONTESTAR)
 				break;
 			else
 				pasarSiguienteLetra();
-		} while (def == null || def.getEstadoRespuesta() == Estado.SIN_CONTESTAR);
-		turnosPasados++;
+		} while (def == null || def.getEstadoRespuesta() != Estado.SIN_CONTESTAR);
 		reanudarReloj();
 		return def;
 	}
 
 	public void gestionarRespuesta(String respuesta) {
-		// TODO Hecho? gestionar la respuesta recibida
+		// TODO Gestionar la respuesta recibida
 		pausarReloj();
 		getRosco().obtenerDefinicionRosco(posicionRosco).comprobarRespuesta(
 				respuesta);
@@ -100,6 +96,7 @@ public class Jugador extends Observable {
 		if (getRosco().obtenerDefinicionRosco(posicionRosco)
 				.getEstadoRespuesta() == Estado.FALLIDA)
 			incrementarFallos();
+		pasarSiguienteLetra();
 	}
 
 	public boolean haTerminado() {
@@ -110,99 +107,11 @@ public class Jugador extends Observable {
 		return this.rosco;
 	}
 
-	// TODO Comprobar la nueva implementacion del metodo
 	private void pasarSiguienteLetra() {
-		switch (posicionRosco) {
-		case Z:
+		if(posicionRosco == Letra.Z)
 			posicionRosco = Letra.A;
-			break;
-		default:
-			Letra[] letras = Letra.values();
-			posicionRosco = letras[posicionRosco.ordinal() + 1];
-			break;
-		}
-		// switch (posicionRosco){
-		// case A:
-		// posicionRosco = Letra.B;
-		// break;
-		// case B:
-		// posicionRosco = Letra.C;
-		// break;
-		// case C:
-		// posicionRosco = Letra.D;
-		// break;
-		// case D:
-		// posicionRosco = Letra.E;
-		// break;
-		// case E:
-		// posicionRosco = Letra.F;
-		// break;
-		// case F:
-		// posicionRosco = Letra.G;
-		// break;
-		// case G:
-		// posicionRosco = Letra.H;
-		// break;
-		// case H:
-		// posicionRosco = Letra.I;
-		// break;
-		// case I:
-		// posicionRosco = Letra.J;
-		// break;
-		// case J:
-		// posicionRosco = Letra.K;
-		// break;
-		// case K:
-		// posicionRosco = Letra.L;
-		// break;
-		// case L:
-		// posicionRosco = Letra.M;
-		// break;
-		// case M:
-		// posicionRosco = Letra.N;
-		// break;
-		// case N:
-		// posicionRosco = Letra.O;
-		// break;
-		// case O:
-		// posicionRosco = Letra.P;
-		// break;
-		// case P:
-		// posicionRosco = Letra.Q;
-		// break;
-		// case Q:
-		// posicionRosco = Letra.R;
-		// break;
-		// case R:
-		// posicionRosco = Letra.S;
-		// break;
-		// case S:
-		// posicionRosco = Letra.T;
-		// break;
-		// case T:
-		// posicionRosco = Letra.U;
-		// break;
-		// case U:
-		// posicionRosco = Letra.V;
-		// break;
-		// case V:
-		// posicionRosco = Letra.W;
-		// break;
-		// case W:
-		// posicionRosco = Letra.X;
-		// break;
-		// case X:
-		// posicionRosco = Letra.Y;
-		// break;
-		// case Y:
-		// posicionRosco = Letra.Z;
-		// break;
-		// case Z:
-		// posicionRosco = Letra.A;
-		// break;
-		// default:
-		// throw new AssertionError(posicionRosco.name());
-		// }
+		else
+			posicionRosco = Letra.values()[posicionRosco.ordinal() + 1];
 		setChanged();
 		notifyObservers();
 	}
@@ -211,7 +120,6 @@ public class Jugador extends Observable {
 		return posicionRosco;
 	}
 
-	// TODO Comprobar implementacion del tiempo
 	public void reanudarReloj() {
 		timerTask = new TimerTask() {
 			@Override
@@ -242,13 +150,6 @@ public class Jugador extends Observable {
 			letraAnterior = Letra.Z;
 		else
 			letraAnterior = letras[posicionRosco.ordinal() - 1];
-		if(turnosPasados <= 1 && letraAnterior == Letra.Z)
-			return true;
-		else	
-		 return getRosco().obtenerDefinicionRosco(letraAnterior).getEstadoRespuesta() == Estado.CORRECTA;
+		return getRosco().obtenerDefinicionRosco(letraAnterior).getEstadoRespuesta() == Estado.CORRECTA;
 	}
-	
-//	public boolean haEmpezado(){
-//		return aciertos == 0 && fallos == 0;
-//	}
 }

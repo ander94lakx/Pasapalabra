@@ -9,9 +9,7 @@ public class Rosco {
 	private List<DefinicionRosco> listaDefiniciones;
 
 	public Rosco() {
-		// TODO Hecho? implementar Estr. de Datos correcta
 		listaDefiniciones = new LinkedList<DefinicionRosco>();
-		// utilizar una estructura de datos circular es mejor
 	}
 
 	public void inicializarRosco() {
@@ -40,22 +38,13 @@ public class Rosco {
 	}
 
 	public DefinicionRosco obtenerDefinicionRosco(Letra letra) {
-		/*
-		 * TODO Hecho? obtener la siguiente definicion que tiene que mostrar la
-		 * GUI
-		 */
 		return listaDefiniciones.get(letra.ordinal());
 	}
 
 	public boolean estaCompletado() {
-		// TODO Hecho? comprobar si el rosco esta completado
-		boolean faltaResponder = false;
-		for (DefinicionRosco def : listaDefiniciones) {
-			if (def.getEstadoRespuesta() == Estado.SIN_CONTESTAR) {
-				faltaResponder = true;
-				break;
-			}
-		}
-		return !faltaResponder;
+		for (DefinicionRosco def : listaDefiniciones)
+			if (def.getEstadoRespuesta() == Estado.SIN_CONTESTAR)
+				return false;
+		return true;
 	}
 }

@@ -39,7 +39,6 @@ public class CatalogoDefiniciones {
     }
     
     public ListaDefiniciones obtenerDefiniciones(Letra pLetra){
-        //TODO Hecho? Obtener todas las definiciones de una letra
         Character letra = pLetra.name().charAt(0);
         ListaDefiniciones listaDef= new ListaDefiniciones();
         List<Definicion> listaDefTemp = listaDefiniciones.get(letra);

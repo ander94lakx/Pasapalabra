@@ -21,6 +21,7 @@ public class Pasapalabra extends Observable{
 			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
 
 	private static boolean modo2Jugadores;
+	
 	// FIXME Arreglar la gestion de la respuesta
 	private static String respuestaRecibida;
 
@@ -32,6 +33,7 @@ public class Pasapalabra extends Observable{
 		Pasapalabra.respuestaRecibida = respuestaRecibida;
 	}
 	
+	// FIXME Arreglar la gestion de la definicion actual
 	private static DefinicionRosco definicionActual;
 	
 	public static DefinicionRosco getDefinicionActual() {
@@ -169,11 +171,13 @@ public class Pasapalabra extends Observable{
 				}
 				else if(listaJugadores[siguienteJugador - 1].haAcertadoLaAnterior()) 
 				{
-					return listaJugadores[siguienteJugador - 1]; // Si el que esta jugando ha acertado la anterior sigue jugando
+					return listaJugadores[siguienteJugador - 1]; 
+						// Si el que esta jugando ha acertado la anterior sigue jugando
 				}
 				else 
 				{
-					return listaJugadores[siguienteJugador--]; // Si no juega el siguiente jugador y se pone al otro jugador como siguiente
+					return listaJugadores[siguienteJugador--]; 
+						// Si no juega el siguiente jugador y se pone al otro jugador como siguiente
 				}
 			} 
 			else if (siguienteJugador == 0) // Si el siguiente en teoria es el Jug 1
@@ -184,17 +188,19 @@ public class Pasapalabra extends Observable{
 				}
 				else if(listaJugadores[siguienteJugador + 1].haAcertadoLaAnterior()) 
 				{
-					return listaJugadores[siguienteJugador + 1]; // Si el que esta jugando ha acertado la anterior sigue jugando
+					return listaJugadores[siguienteJugador + 1]; 
+						// Si el que esta jugando ha acertado la anterior sigue jugando
 				}
 				else 
 				{
-					return listaJugadores[siguienteJugador++]; // Si no juega el siguiente jugador y se pone al otro jugador como siguiente
+					return listaJugadores[siguienteJugador++]; 
+						// Si no juega el siguiente jugador y se pone al otro jugador como siguiente
 				}
 			} 
 			else if(siguienteJugador == -1) // Si es -1 es que el Jug 2 todavia no ha comenzado a jugar
 			{
-				siguienteJugador = 1; // Se pone al jug 2 como siguiente
-				return listaJugadores[0]; // Y se pone a Jug 2 como actual
+				siguienteJugador = 0; // Se pone al jug 1 como siguiente
+				return listaJugadores[1]; // Y se pone a Jug 2 como actual
 			}
 			else // Si no es ni 0 ni 1 ni -1 es que no se ha epezado a jugar (Ninguno de los 2)
 			{
@@ -203,9 +209,7 @@ public class Pasapalabra extends Observable{
 			}
 		} 
 		else 
-		{
 			return listaJugadores[0]; // Si solo juega uno el siguiente siempre va a ser el
-		}
 	}
 	
 	public static boolean modoDosJugadores(){
@@ -217,4 +221,4 @@ public class Pasapalabra extends Observable{
 			return listaJugadores[i];
 		else return null;
 	}
-} // FIXME NO TENGO NI PUTA IDEA DE COMO INICIAR LA GUI!
+}

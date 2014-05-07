@@ -435,7 +435,6 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Hecho? Mejorar este codigo utilzando los parametros recibidos
 		if(arg0 instanceof Jugador) {
 			getLblJugador().setText(((Jugador) arg0).getNombre());
 			getAciertos().setText(
