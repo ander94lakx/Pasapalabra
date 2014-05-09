@@ -1,6 +1,7 @@
 package packModelo;
 
 import java.util.Observable;
+
 import packVista.Juego;
 
 public class Pasapalabra extends Observable{
@@ -22,28 +23,18 @@ public class Pasapalabra extends Observable{
 
 	private static boolean modo2Jugadores;
 	
-	// FIXME Arreglar la gestion de la respuesta
 	private static String respuestaRecibida;
 
-	public static String getRespuestaRecibida() {
-		return respuestaRecibida;
-	}
+	public static final Object lock = new Object();
+	private static boolean sePuedeSeguir = false;
 
-	public static void setRespuestaRecibida(String respuestaRecibida) {
-		Pasapalabra.respuestaRecibida = respuestaRecibida;
-	}
-	
-	// FIXME Arreglar la gestion de la definicion actual
 	private static DefinicionRosco definicionActual;
 	
-	public static DefinicionRosco getDefinicionActual() {
-		return definicionActual;
-	}
-	public void setDefinicionActual(DefinicionRosco pDefinicionActual) {
-		definicionActual = pDefinicionActual;
-		setChanged();
-		notifyObservers();
-	}
+	private static Thread gui = new Thread(){
+		public void run(){
+			Juego.main(null);
+		}
+	};
 
 	/**
 	 * El metodo main gestiona la carga del XML y la carga inicial de las
@@ -91,11 +82,6 @@ public class Pasapalabra extends Observable{
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
-		Thread gui = new Thread(){
-			public void run(){
-				Juego.main(null);
-			}
-		};
 		gui.run();
 		inicializarPartida();
 	}
@@ -115,37 +101,55 @@ public class Pasapalabra extends Observable{
 		 * gestione la respuesta de manera correcta
 		 */
 		if (modo2Jugadores) {
-			while (!listaJugadores[0].haTerminado()
-					|| !listaJugadores[1].haTerminado()) {
+			while (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
+				// Obtener el siguiente jugador
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
 				definicionActual = jugador.realizarPregunta();
 				//Esperar hasta que la GUI notifique que puede seguir
-				try {
-					Thread.currentThread().wait();
-				} catch (InterruptedException e) { e.printStackTrace(); }
+				synchronized(lock){
+					while(!sePuedeSeguir)
+						try {
+							lock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+				}
+				sePuedeSeguir = false;
 				// gestionar respuesta
 				jugador.gestionarRespuesta(respuestaRecibida);
 			}
+			// Guardar puntuaciones
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
-			siguienteJugador = -1;
+			siguienteJugador = -2;
 		} else {
 			while (!listaJugadores[0].haTerminado()) {
+				// Obtener el siguiente jugador
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
 				definicionActual = jugador.realizarPregunta();
 				//Esperar hasta que la GUI notifique que puede seguir
-				try {
-					Thread.currentThread().wait();
-				} catch (InterruptedException e) { e.printStackTrace(); }
+				synchronized(lock){
+					while(!sePuedeSeguir)
+						try {
+							lock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+				}
+				sePuedeSeguir = false;
 				// gestionar respuesta
 				jugador.gestionarRespuesta(respuestaRecibida);
 			}
+			// Guardar puntuaciones
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
-			siguienteJugador = -1;
+			siguienteJugador = -2;
 		}
+		// Parar la GUI
+		gui.interrupt();
+		// Volcar puntuaciones en el archivo
 		ranking.guardarPuntuaciones();
 	}
 
@@ -220,5 +224,31 @@ public class Pasapalabra extends Observable{
 		if(i == 1 || i == 0)
 			return listaJugadores[i];
 		else return null;
+	}
+
+	public static String getRespuestaRecibida() {
+		return respuestaRecibida;
+	}
+	
+	public static void setRespuestaRecibida(String pRespuestaRecibida) {
+		respuestaRecibida = pRespuestaRecibida;
+	}
+	
+	public static DefinicionRosco getDefinicionActual() {
+		return definicionActual;
+	}
+
+	public void setDefinicionActual(DefinicionRosco pDefinicionActual) {
+		definicionActual = pDefinicionActual;
+		setChanged();
+		notifyObservers();
+	}
+
+	public static boolean isSePuedeSeguir() {
+		return sePuedeSeguir;
+	}
+
+	public static void setSePuedeSeguir(boolean sePuedeSeguir) {
+		Pasapalabra.sePuedeSeguir = sePuedeSeguir;
 	}
 }
