@@ -451,7 +451,16 @@ public class Juego extends JFrame implements Observer {
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
 	public void accionResponder() {
-		Pasapalabra.setRespuestaRecibida(getCampoRespuesta().getText());
+		// Cadena de caracteres original a sustituir.
+	    String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+	    // Cadena de caracteres ASCII que reemplazarán los originales.
+	    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+	    String output = getCampoRespuesta().getText();
+	    for (int i=0; i<original.length(); i++) {
+	        // Reemplazamos los caracteres especiales.
+	        output = output.replace(original.charAt(i), ascii.charAt(i));
+	    }
+		Pasapalabra.setRespuestaRecibida(output);
 		getCampoRespuesta().setText("");
 		synchronized (Pasapalabra.lock) {
 		     Pasapalabra.setSePuedeSeguir(true);

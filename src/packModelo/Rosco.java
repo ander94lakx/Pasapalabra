@@ -23,8 +23,18 @@ public class Rosco {
 			DefinicionRosco defRosco = new DefinicionRosco(def.getEnunciado(),
 					letra);
 			Iterator<String> it = def.getIteradorRespuestas();
-			while (it.hasNext())
-				defRosco.addRespuesta(it.next());
+			while (it.hasNext()) {
+				// Cadena de caracteres original a sustituir.
+			    String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+			    // Cadena de caracteres ASCII que reemplazarán los originales.
+			    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+				String respOriginal = it.next();
+				for (int i=0; i<original.length(); i++) {
+			        // Reemplazamos los caracteres especiales.
+			        respOriginal = respOriginal.replace(original.charAt(i), ascii.charAt(i));
+			    }
+				defRosco.addRespuesta(respOriginal);
+			}
 			listaDefiniciones.add(defRosco);
 		}
 	}
