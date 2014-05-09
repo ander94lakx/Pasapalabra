@@ -435,7 +435,6 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if(arg0 instanceof Jugador) {
 			getLblJugador().setText(((Jugador) arg0).getNombre());
 			getAciertos().setText(
 					(String) Integer.toString(((Jugador) arg0).getAciertos()));
@@ -445,25 +444,19 @@ public class Juego extends JFrame implements Observer {
 					.setText(
 							(String) Integer.toString(((Jugador) arg0)
 									.getTiempoRestante()));
-			getPregunta().setText(
-					((Jugador) arg0)
-							.getRosco()
-							.obtenerDefinicionRosco(
-									Pasapalabra.getSiguienteJugador()
-											.getPosicionRosco()).getEnunciado());
-			getLblLetra().setText(((Jugador) arg0).getPosicionRosco().name());
-		}
-		else if(arg0 instanceof Pasapalabra) {
-			getPregunta().setText(((Pasapalabra) arg0).getDefinicionActual().getEnunciado());
-			getLblLetra().setText(((Pasapalabra) arg0).getDefinicionActual().getLetra().name());
-		}
+		getPregunta().setText(Pasapalabra.getDefinicionActual().getEnunciado());
+		getLblLetra().setText(Pasapalabra.getDefinicionActual().getLetra().name());
 
 	}
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
 	public void accionResponder() {
 		Pasapalabra.setRespuestaRecibida(getCampoRespuesta().getText());
-		notifyAll();
+		getCampoRespuesta().setText("");
+		synchronized (Pasapalabra.lock) {
+		     Pasapalabra.setSePuedeSeguir(true);
+		     Pasapalabra.lock.notify();
+		}
 	}
 
 	public JPanel getPanelBotones() {
