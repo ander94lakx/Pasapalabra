@@ -24,12 +24,14 @@ public class Pasapalabra extends Observable{
 	private static boolean modo2Jugadores;
 	
 	private static String respuestaRecibida;
-
+	private static DefinicionRosco definicionActual;
+	
+	// Atributos para gestionar la sincronizacion entre la GIU y la logica
 	public static final Object lock = new Object();
 	private static boolean sePuedeSeguir = false;
 
-	private static DefinicionRosco definicionActual;
-	
+
+	// Hilo que inicia la GUI
 	private static Thread gui = new Thread(){
 		public void run(){
 			Juego.main(null);
