@@ -35,7 +35,7 @@ public class DefinicionRosco extends Definicion {
     	boolean estaLaRespuesta = false;
     	List<String> listaResp = getListaRespuestas();
     	for(String resp: listaResp){
-    		if(resp.equals(pRespuesta)){
+    		if(resp.equalsIgnoreCase(pRespuesta)){
     			estaLaRespuesta = true;
     			break;
     		}
