@@ -132,7 +132,13 @@ public class NombreJug extends JDialog {
 	
 	public void accionJugar(){
 		//Juego.main(null);
-		Pasapalabra.main(new String[] {getTextField().getText()});
+		Thread thread = new Thread(){
+			public void run() {
+				Pasapalabra.main(new String[] 
+						{textField.getText()});	
+			}
+		};
+		thread.run();
 		setVisible(false);
 	}
 	public JPanel getPanel_1() {
