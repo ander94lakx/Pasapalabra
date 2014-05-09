@@ -88,7 +88,7 @@ public class Ranking {
     }
 
     public void insertarPuntuacionEnRanking(Jugador pJugador) {
-    	for(int i = 0; i <= NUM_PUNTUACIONES; i++){
+    	for(int i = 0; i < NUM_PUNTUACIONES; i++){
     		Jugador jug = lPuntuaciones.get(i);
     		if(pJugador.getAciertos() > jug.getAciertos()) {
     			lPuntuaciones.add(i, pJugador);
