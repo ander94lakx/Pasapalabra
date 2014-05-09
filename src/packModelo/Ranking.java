@@ -66,6 +66,7 @@ public class Ranking {
     }
 
     public void guardarPuntuaciones() {
+    	// FIXME Corregir el metodo que comprueba las puntuaciones
 		try {
 			File archivo = new File("puntuaciones.txt");
 			FileWriter fw = new FileWriter(archivo);
@@ -88,6 +89,7 @@ public class Ranking {
     }
 
     public void insertarPuntuacionEnRanking(Jugador pJugador) {
+    	// FIXME Comprobar si funciona bien
     	for(int i = 0; i < NUM_PUNTUACIONES; i++){
     		Jugador jug = lPuntuaciones.get(i);
     		if(pJugador.getAciertos() > jug.getAciertos()) {
