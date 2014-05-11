@@ -3,6 +3,7 @@ package packModelo;
 import java.util.Observable;
 
 import packVista.Juego;
+import packVista.GameOver;
 
 public class Pasapalabra extends Observable{
 
@@ -35,6 +36,13 @@ public class Pasapalabra extends Observable{
 	private static Thread gui = new Thread(){
 		public void run(){
 			Juego.main(null);
+		}
+	};
+	
+	// Hilo que abre la pantalla de game over
+	private static Thread gameOver = new Thread(){
+		public void run(){
+			GameOver.main(null);
 		}
 	};
 
@@ -150,9 +158,12 @@ public class Pasapalabra extends Observable{
 			siguienteJugador = -2;
 		}
 		// Parar la GUI
-		gui.interrupt();
+		//gui.interrupt();
+		//gui.stop();
 		// Volcar puntuaciones en el archivo
 		ranking.guardarPuntuaciones();
+		// Abrir la pantalla de Game Over
+		gameOver.run();
 	}
 
 	/**
