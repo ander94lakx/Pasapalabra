@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class Jugador extends Observable {
 
-	private int TIEMPO_INICIAL = 120;
+	private int TIEMPO_INICIAL = 240;
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;
@@ -124,7 +124,10 @@ public class Jugador extends Observable {
 		timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				decrementarTiempo();
+				if(tiempoRestante > 0)
+					tiempoRestante--;
+				setChanged();
+				notifyObservers();
 			}
 		};
 		timer = new Timer();
