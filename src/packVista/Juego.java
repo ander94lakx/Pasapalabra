@@ -308,7 +308,7 @@ public class Juego extends JFrame implements Observer {
 			btnPasapalabra = new JButton("PASAPALABRA");
 			btnPasapalabra.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					accionResponder();
+					accionPasapalabra();
 				}
 			});
 			btnPasapalabra.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -461,6 +461,15 @@ public class Juego extends JFrame implements Observer {
 	        output = output.replace(original.charAt(i), ascii.charAt(i));
 	    }
 		Pasapalabra.setRespuestaRecibida(output);
+		getCampoRespuesta().setText("");
+		synchronized (Pasapalabra.lock) {
+		     Pasapalabra.setSePuedeSeguir(true);
+		     Pasapalabra.lock.notify();
+		}
+	}
+	// Accion que se lleva a cabo al hacer pasapalabra
+	public void accionPasapalabra() {
+		Pasapalabra.setRespuestaRecibida("");
 		getCampoRespuesta().setText("");
 		synchronized (Pasapalabra.lock) {
 		     Pasapalabra.setSePuedeSeguir(true);
