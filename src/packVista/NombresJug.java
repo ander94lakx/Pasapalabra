@@ -169,13 +169,12 @@ public class NombresJug extends JDialog {
 	
 	public void accionJugar(){
 		//Juego.main(null);
-		Thread thread = new Thread(){
+		EventQueue.invokeLater(new Thread(){
 			public void run() {
 				Pasapalabra.main(new String[] 
 						{textField.getText(), textField_1.getText()});	
 			}
-		};
-		thread.run();
+		});
 		setVisible(false);
 	}
 	public JPanel getPanel_2() {
