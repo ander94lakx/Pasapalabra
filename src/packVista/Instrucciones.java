@@ -52,7 +52,7 @@ public class Instrucciones extends JDialog {
 	private void initialize() {
 		setResizable(false);
 		setTitle("Instrucciones de juego");
-		setBounds(100, 100, 450, 299);
+		setBounds(100, 100, 450, 350);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(
 				Alignment.LEADING).addComponent(getTextPane(),
