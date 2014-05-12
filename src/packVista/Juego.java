@@ -32,7 +32,7 @@ import packModelo.Pasapalabra;
 //TODO Hacer que sea reescalable por completo tras aÒadir el campo de la letra
 public class Juego extends JFrame implements Observer {
 	private static final long serialVersionUID = -7237743091044603390L;
-	
+
 	private JPanel contentPane;
 	private JPanel panelInferior;
 	private JPanel panelRosco;
@@ -435,45 +435,50 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-			getLblJugador().setText(((Jugador) arg0).getNombre());
-			getAciertos().setText(
-					(String) Integer.toString(((Jugador) arg0).getAciertos()));
-			getFallos().setText(
-					(String) Integer.toString(((Jugador) arg0).getFallos()));
-			getTiempoRestante()
-					.setText(
-							(String) Integer.toString(((Jugador) arg0)
-									.getTiempoRestante()));
+		getLblJugador().setText(((Jugador) arg0).getNombre());
+		getAciertos().setText(
+				(String) Integer.toString(((Jugador) arg0).getAciertos()));
+		getFallos().setText(
+				(String) Integer.toString(((Jugador) arg0).getFallos()));
+		getTiempoRestante()
+				.setText(
+						(String) Integer.toString(((Jugador) arg0)
+								.getTiempoRestante()));
 		getPregunta().setText(Pasapalabra.getDefinicionActual().getEnunciado());
-		getLblLetra().setText(Pasapalabra.getDefinicionActual().getLetra().name());
+		getLblLetra().setText(
+				Pasapalabra.getDefinicionActual().getLetra().name());
 
 	}
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
 	public void accionResponder() {
 		// Cadena de caracteres original a sustituir.
-	    String original = "·‡‰ÈËÎÌÏÔÛÚˆ˙˘uÒ¡¿ƒ…»ÀÕÃœ”“÷⁄Ÿ‹—Á«";
-	    // Cadena de caracteres ASCII que reemplazar·n los originales.
-	    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
-	    String output = getCampoRespuesta().getText();
-	    for (int i=0; i<original.length(); i++) {
-	        // Reemplazamos los caracteres especiales.
-	        output = output.replace(original.charAt(i), ascii.charAt(i));
-	    }
+		String original = "·‡‰ÈËÎÌÏÔÛÚˆ˙˘uÒ¡¿ƒ…»ÀÕÃœ”“÷⁄Ÿ‹—Á«";
+		// Cadena de caracteres ASCII que reemplazar·n los originales.
+		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+		String output = getCampoRespuesta().getText();
+		if (output.equals("")) {
+			accionPasapalabra();
+			return;
+		}
+		for (int i = 0; i < original.length(); i++)
+			// Reemplazamos los caracteres especiales.
+			output = output.replace(original.charAt(i), ascii.charAt(i));
 		Pasapalabra.setRespuestaRecibida(output);
 		getCampoRespuesta().setText("");
 		synchronized (Pasapalabra.lock) {
-		     Pasapalabra.setSePuedeSeguir(true);
-		     Pasapalabra.lock.notify();
+			Pasapalabra.setSePuedeSeguir(true);
+			Pasapalabra.lock.notify();
 		}
 	}
+
 	// Accion que se lleva a cabo al hacer pasapalabra
 	public void accionPasapalabra() {
 		Pasapalabra.setRespuestaRecibida("");
 		getCampoRespuesta().setText("");
 		synchronized (Pasapalabra.lock) {
-		     Pasapalabra.setSePuedeSeguir(true);
-		     Pasapalabra.lock.notify();
+			Pasapalabra.setSePuedeSeguir(true);
+			Pasapalabra.lock.notify();
 		}
 	}
 
