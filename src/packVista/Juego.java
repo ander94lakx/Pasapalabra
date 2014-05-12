@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,9 +26,17 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.LabelUI;
 
+import packModelo.DefinicionRosco;
+import packModelo.Estado;
 import packModelo.Jugador;
+import packModelo.Letra;
 import packModelo.Pasapalabra;
+import java.awt.FlowLayout;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 
 //TODO Hacer que sea reescalable por completo tras añadir el campo de la letra
 public class Juego extends JFrame implements Observer {
@@ -49,6 +58,33 @@ public class Juego extends JFrame implements Observer {
 	private JPanel panelLetra;
 	private JLabel lblLetra;
 	private JPanel panelBotones;
+	private LinkedList<JLabel> letrasRosco;
+	private JLabel lblA;
+	private JLabel lblB;
+	private JLabel lblC;
+	private JLabel lblD;
+	private JLabel lblE;
+	private JLabel lblF;
+	private JLabel lblG;
+	private JLabel lblH;
+	private JLabel lblI;
+	private JLabel lblJ;
+	private JLabel lblK;
+	private JLabel lblL;
+	private JLabel lblM;
+	private JLabel lblN;
+	private JLabel lblO;
+	private JLabel lblP;
+	private JLabel lblQ;
+	private JLabel lblR;
+	private JLabel lblS;
+	private JLabel lblT;
+	private JLabel lblU;
+	private JLabel lblV;
+	private JLabel lblW;
+	private JLabel lblX;
+	private JLabel lblY;
+	private JLabel lblZ;
 
 	/**
 	 * Launch the application.
@@ -77,6 +113,35 @@ public class Juego extends JFrame implements Observer {
 		} else {
 			Pasapalabra.getJugador(0).addObserver(this);
 		}
+		letrasRosco = new LinkedList<JLabel>();
+		letrasRosco.add(lblA);
+		letrasRosco.add(lblB);
+		letrasRosco.add(lblC);
+		letrasRosco.add(lblD);
+		letrasRosco.add(lblE);
+		letrasRosco.add(lblF);
+		letrasRosco.add(lblG);
+		letrasRosco.add(lblH);
+		letrasRosco.add(lblI);
+		letrasRosco.add(lblJ);
+		letrasRosco.add(lblK);
+		letrasRosco.add(lblL);
+		letrasRosco.add(lblM);
+		letrasRosco.add(lblN);
+		letrasRosco.add(lblO);
+		letrasRosco.add(lblP);
+		letrasRosco.add(lblQ);
+		letrasRosco.add(lblR);
+		letrasRosco.add(lblS);
+		letrasRosco.add(lblT);
+		letrasRosco.add(lblU);
+		letrasRosco.add(lblV);
+		letrasRosco.add(lblW);
+		letrasRosco.add(lblX);
+		letrasRosco.add(lblY);
+		letrasRosco.add(lblZ);
+		for (JLabel lbl : letrasRosco)
+			lbl.setFont(new Font("Tahoma", Font.BOLD, 16));
 	}
 
 	private void initialize() {
@@ -182,8 +247,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelInferior() {
 		if (panelInferior == null) {
 			panelInferior = new JPanel();
-			panelInferior.setBorder(new MatteBorder(1, 1, 1, 1,
-					(Color) new Color(0, 0, 0)));
+			panelInferior.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			GroupLayout gl_panelInferior = new GroupLayout(panelInferior);
 			gl_panelInferior
 					.setHorizontalGroup(gl_panelInferior
@@ -273,15 +337,35 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelRosco() {
 		if (panelRosco == null) {
 			panelRosco = new JPanel();
-			panelRosco.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(
-					0, 0, 0)));
-			GroupLayout gl_panelRosco = new GroupLayout(panelRosco);
-			gl_panelRosco.setHorizontalGroup(gl_panelRosco.createParallelGroup(
-					Alignment.LEADING).addGap(0, 397, Short.MAX_VALUE));
-			gl_panelRosco.setVerticalGroup(gl_panelRosco.createParallelGroup(
-					Alignment.LEADING).addGap(0, 338, Short.MAX_VALUE));
-
-			panelRosco.setLayout(gl_panelRosco);
+			panelRosco.setBackground(Color.LIGHT_GRAY);
+			panelRosco.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			panelRosco.setLayout(new GridLayout(6, 5, 0, 0));
+			panelRosco.add(getLblA());
+			panelRosco.add(getLblB());
+			panelRosco.add(getLblC());
+			panelRosco.add(getLblD());
+			panelRosco.add(getLblE());
+			panelRosco.add(getLblF());
+			panelRosco.add(getLblG());
+			panelRosco.add(getLblH());
+			panelRosco.add(getLblI());
+			panelRosco.add(getLblJ());
+			panelRosco.add(getLblK());
+			panelRosco.add(getLblL());
+			panelRosco.add(getLblM());
+			panelRosco.add(getLblN());
+			panelRosco.add(getLblO());
+			panelRosco.add(getLblP());
+			panelRosco.add(getLblQ());
+			panelRosco.add(getLblR());
+			panelRosco.add(getLblS());
+			panelRosco.add(getLblT());
+			panelRosco.add(getLblU());
+			panelRosco.add(getLblV());
+			panelRosco.add(getLblW());
+			panelRosco.add(getLblX());
+			panelRosco.add(getLblY());
+			panelRosco.add(getLblZ());
 		}
 		return panelRosco;
 	}
@@ -332,8 +416,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelPuntuacion() {
 		if (panelPuntuacion == null) {
 			panelPuntuacion = new JPanel();
-			panelPuntuacion.setBorder(new MatteBorder(1, 1, 1, 1,
-					(Color) new Color(0, 0, 0)));
+			panelPuntuacion.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			panelPuntuacion.setLayout(new GridLayout(3, 1, 0, 0));
 			panelPuntuacion.add(getAciertos());
 			panelPuntuacion.add(getFallos());
@@ -394,8 +477,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelNombreJug() {
 		if (panelNombreJug == null) {
 			panelNombreJug = new JPanel();
-			panelNombreJug.setBorder(new MatteBorder(1, 1, 1, 1,
-					(Color) new Color(0, 0, 0)));
+			panelNombreJug.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			panelNombreJug.setLayout(new GridLayout(1, 0, 0, 0));
 			panelNombreJug.add(getLblJugador());
 		}
@@ -416,8 +498,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelLetra() {
 		if (panelLetra == null) {
 			panelLetra = new JPanel();
-			panelLetra.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(
-					0, 0, 0)));
+			panelLetra.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			panelLetra.setLayout(new GridLayout(1, 1, 0, 0));
 			panelLetra.add(getLblLetra());
 		}
@@ -435,19 +516,37 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		getLblJugador().setText(((Jugador) arg0).getNombre());
-		getAciertos().setText(
-				(String) Integer.toString(((Jugador) arg0).getAciertos()));
-		getFallos().setText(
-				(String) Integer.toString(((Jugador) arg0).getFallos()));
-		getTiempoRestante()
-				.setText(
-						(String) Integer.toString(((Jugador) arg0)
-								.getTiempoRestante()));
+		if (arg0 instanceof Jugador) {
+			getLblJugador().setText(((Jugador) arg0).getNombre());
+			getAciertos().setText(
+					(String) Integer.toString(((Jugador) arg0).getAciertos()));
+			getFallos().setText(
+					(String) Integer.toString(((Jugador) arg0).getFallos()));
+			getTiempoRestante().setText(
+					(String) Integer.toString(((Jugador) arg0)
+							.getTiempoRestante()));
+			actualizarRosco();
+		}
 		getPregunta().setText(Pasapalabra.getDefinicionActual().getEnunciado());
 		getLblLetra().setText(
 				Pasapalabra.getDefinicionActual().getLetra().name());
+		actualizarRosco();
 
+	}
+
+	public void actualizarRosco() {
+		Jugador j = Pasapalabra.getSiguienteJugador();
+		for (int i = 0; i < Letra.values().length; i++) {
+			DefinicionRosco def = j.getRosco()
+					.obtenerDefinicionRosco(Letra.values()[i]);
+			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
+				letrasRosco.get(i).setForeground(Color.GREEN);
+			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
+				letrasRosco.get(i).setForeground(Color.RED);
+			} else {
+				letrasRosco.get(i).setForeground(Color.BLUE);
+			}
+		}
 	}
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
@@ -491,5 +590,265 @@ public class Juego extends JFrame implements Observer {
 			panelBotones.add(getBtnPasapalabra());
 		}
 		return panelBotones;
+	}
+
+	public JLabel getLblA() {
+		if (lblA == null) {
+			lblA = new JLabel("A");
+			lblA.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblA.setForeground(Color.BLUE);
+			lblA.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblA;
+	}
+
+	public JLabel getLblB() {
+		if (lblB == null) {
+			lblB = new JLabel("B");
+			lblB.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblB.setForeground(Color.BLUE);
+			lblB.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblB;
+	}
+
+	public JLabel getLblC() {
+		if (lblC == null) {
+			lblC = new JLabel("C");
+			lblC.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblC.setForeground(Color.BLUE);
+			lblC.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblC;
+	}
+
+	public JLabel getLblD() {
+		if (lblD == null) {
+			lblD = new JLabel("D");
+			lblD.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblD.setForeground(Color.BLUE);
+			lblD.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblD;
+	}
+
+	public JLabel getLblE() {
+		if (lblE == null) {
+			lblE = new JLabel("E");
+			lblE.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblE.setForeground(Color.BLUE);
+			lblE.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblE;
+	}
+
+	public JLabel getLblF() {
+		if (lblF == null) {
+			lblF = new JLabel("F");
+			lblF.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblF.setForeground(Color.BLUE);
+			lblF.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblF;
+	}
+
+	public JLabel getLblG() {
+		if (lblG == null) {
+			lblG = new JLabel("G");
+			lblG.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblG.setForeground(Color.BLUE);
+			lblG.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblG;
+	}
+
+	public JLabel getLblH() {
+		if (lblH == null) {
+			lblH = new JLabel("H");
+			lblH.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblH.setForeground(Color.BLUE);
+			lblH.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblH;
+	}
+
+	public JLabel getLblI() {
+		if (lblI == null) {
+			lblI = new JLabel("I");
+			lblI.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblI.setForeground(Color.BLUE);
+			lblI.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblI;
+	}
+
+	public JLabel getLblJ() {
+		if (lblJ == null) {
+			lblJ = new JLabel("J");
+			lblJ.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblJ.setForeground(Color.BLUE);
+			lblJ.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblJ;
+	}
+
+	public JLabel getLblK() {
+		if (lblK == null) {
+			lblK = new JLabel("K");
+			lblK.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblK.setForeground(Color.BLUE);
+			lblK.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblK;
+	}
+
+	public JLabel getLblL() {
+		if (lblL == null) {
+			lblL = new JLabel("L");
+			lblL.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblL.setForeground(Color.BLUE);
+			lblL.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblL;
+	}
+
+	public JLabel getLblM() {
+		if (lblM == null) {
+			lblM = new JLabel("M");
+			lblM.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblM.setForeground(Color.BLUE);
+			lblM.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblM;
+	}
+
+	public JLabel getLblN() {
+		if (lblN == null) {
+			lblN = new JLabel("N");
+			lblN.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblN.setForeground(Color.BLUE);
+			lblN.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblN;
+	}
+
+	public JLabel getLblO() {
+		if (lblO == null) {
+			lblO = new JLabel("O");
+			lblO.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblO.setForeground(Color.BLUE);
+			lblO.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblO;
+	}
+
+	public JLabel getLblP() {
+		if (lblP == null) {
+			lblP = new JLabel("P");
+			lblP.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblP.setForeground(Color.BLUE);
+			lblP.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblP;
+	}
+
+	public JLabel getLblQ() {
+		if (lblQ == null) {
+			lblQ = new JLabel("Q");
+			lblQ.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblQ.setForeground(Color.BLUE);
+			lblQ.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblQ;
+	}
+
+	public JLabel getLblR() {
+		if (lblR == null) {
+			lblR = new JLabel("R");
+			lblR.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblR.setForeground(Color.BLUE);
+			lblR.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblR;
+	}
+
+	public JLabel getLblS() {
+		if (lblS == null) {
+			lblS = new JLabel("S");
+			lblS.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblS.setForeground(Color.BLUE);
+			lblS.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblS;
+	}
+
+	public JLabel getLblT() {
+		if (lblT == null) {
+			lblT = new JLabel("T");
+			lblT.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblT.setForeground(Color.BLUE);
+			lblT.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblT;
+	}
+
+	public JLabel getLblU() {
+		if (lblU == null) {
+			lblU = new JLabel("U");
+			lblU.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblU.setForeground(Color.BLUE);
+			lblU.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblU;
+	}
+
+	public JLabel getLblV() {
+		if (lblV == null) {
+			lblV = new JLabel("V");
+			lblV.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblV.setForeground(Color.BLUE);
+			lblV.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblV;
+	}
+
+	public JLabel getLblW() {
+		if (lblW == null) {
+			lblW = new JLabel("W");
+			lblW.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblW.setForeground(Color.BLUE);
+			lblW.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblW;
+	}
+
+	public JLabel getLblX() {
+		if (lblX == null) {
+			lblX = new JLabel("X");
+			lblX.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblX.setForeground(Color.BLUE);
+			lblX.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblX;
+	}
+
+	public JLabel getLblY() {
+		if (lblY == null) {
+			lblY = new JLabel("Y");
+			lblY.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblY.setForeground(Color.BLUE);
+			lblY.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblY;
+	}
+
+	public JLabel getLblZ() {
+		if (lblZ == null) {
+			lblZ = new JLabel("Z");
+			lblZ.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblZ.setForeground(Color.BLUE);
+			lblZ.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblZ;
 	}
 }
