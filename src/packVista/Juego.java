@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,8 @@ import java.util.Observer;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +36,9 @@ import packModelo.Estado;
 import packModelo.Jugador;
 import packModelo.Letra;
 import packModelo.Pasapalabra;
+
 import java.awt.FlowLayout;
+
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
@@ -85,6 +90,8 @@ public class Juego extends JFrame implements Observer {
 	private JLabel lblX;
 	private JLabel lblY;
 	private JLabel lblZ;
+	
+	private static final int TAM_ICO = 32;
 
 	/**
 	 * Launch the application.
@@ -140,8 +147,15 @@ public class Juego extends JFrame implements Observer {
 		letrasRosco.add(lblX);
 		letrasRosco.add(lblY);
 		letrasRosco.add(lblZ);
-		for (JLabel lbl : letrasRosco)
+		int i = 0;
+		for (JLabel lbl : letrasRosco) {
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 16));
+			ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"azul.png"));
+			Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+			lbl.setIcon(icono);
+			i++;
+		}
+		
 	}
 
 	private void initialize() {
@@ -540,11 +554,17 @@ public class Juego extends JFrame implements Observer {
 			DefinicionRosco def = j.getRosco()
 					.obtenerDefinicionRosco(Letra.values()[i]);
 			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
-				letrasRosco.get(i).setForeground(Color.GREEN);
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"verde.png"));
+				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+				letrasRosco.get(i).setIcon(icono);
 			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
-				letrasRosco.get(i).setForeground(Color.RED);
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"rojo.png"));
+				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+				letrasRosco.get(i).setIcon(icono);
 			} else {
-				letrasRosco.get(i).setForeground(Color.BLUE);
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"azul.png"));
+				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+				letrasRosco.get(i).setIcon(icono);
 			}
 		}
 	}
@@ -594,7 +614,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblA() {
 		if (lblA == null) {
-			lblA = new JLabel("A");
+			lblA = new JLabel("");
 			lblA.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblA.setForeground(Color.BLUE);
 			lblA.setHorizontalAlignment(SwingConstants.CENTER);
@@ -604,7 +624,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblB() {
 		if (lblB == null) {
-			lblB = new JLabel("B");
+			lblB = new JLabel("");
 			lblB.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblB.setForeground(Color.BLUE);
 			lblB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -614,7 +634,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblC() {
 		if (lblC == null) {
-			lblC = new JLabel("C");
+			lblC = new JLabel("");
 			lblC.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblC.setForeground(Color.BLUE);
 			lblC.setHorizontalAlignment(SwingConstants.CENTER);
@@ -624,7 +644,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblD() {
 		if (lblD == null) {
-			lblD = new JLabel("D");
+			lblD = new JLabel("");
 			lblD.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblD.setForeground(Color.BLUE);
 			lblD.setHorizontalAlignment(SwingConstants.CENTER);
@@ -634,7 +654,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblE() {
 		if (lblE == null) {
-			lblE = new JLabel("E");
+			lblE = new JLabel("");
 			lblE.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblE.setForeground(Color.BLUE);
 			lblE.setHorizontalAlignment(SwingConstants.CENTER);
@@ -644,7 +664,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblF() {
 		if (lblF == null) {
-			lblF = new JLabel("F");
+			lblF = new JLabel("");
 			lblF.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblF.setForeground(Color.BLUE);
 			lblF.setHorizontalAlignment(SwingConstants.CENTER);
@@ -654,7 +674,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblG() {
 		if (lblG == null) {
-			lblG = new JLabel("G");
+			lblG = new JLabel("");
 			lblG.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblG.setForeground(Color.BLUE);
 			lblG.setHorizontalAlignment(SwingConstants.CENTER);
@@ -664,7 +684,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblH() {
 		if (lblH == null) {
-			lblH = new JLabel("H");
+			lblH = new JLabel("");
 			lblH.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblH.setForeground(Color.BLUE);
 			lblH.setHorizontalAlignment(SwingConstants.CENTER);
@@ -674,7 +694,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblI() {
 		if (lblI == null) {
-			lblI = new JLabel("I");
+			lblI = new JLabel("");
 			lblI.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblI.setForeground(Color.BLUE);
 			lblI.setHorizontalAlignment(SwingConstants.CENTER);
@@ -684,7 +704,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblJ() {
 		if (lblJ == null) {
-			lblJ = new JLabel("J");
+			lblJ = new JLabel("");
 			lblJ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblJ.setForeground(Color.BLUE);
 			lblJ.setHorizontalAlignment(SwingConstants.CENTER);
@@ -694,7 +714,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblK() {
 		if (lblK == null) {
-			lblK = new JLabel("K");
+			lblK = new JLabel("");
 			lblK.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblK.setForeground(Color.BLUE);
 			lblK.setHorizontalAlignment(SwingConstants.CENTER);
@@ -704,7 +724,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblL() {
 		if (lblL == null) {
-			lblL = new JLabel("L");
+			lblL = new JLabel("");
 			lblL.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblL.setForeground(Color.BLUE);
 			lblL.setHorizontalAlignment(SwingConstants.CENTER);
@@ -714,7 +734,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblM() {
 		if (lblM == null) {
-			lblM = new JLabel("M");
+			lblM = new JLabel("");
 			lblM.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblM.setForeground(Color.BLUE);
 			lblM.setHorizontalAlignment(SwingConstants.CENTER);
@@ -724,7 +744,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblN() {
 		if (lblN == null) {
-			lblN = new JLabel("N");
+			lblN = new JLabel("");
 			lblN.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblN.setForeground(Color.BLUE);
 			lblN.setHorizontalAlignment(SwingConstants.CENTER);
@@ -734,7 +754,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblO() {
 		if (lblO == null) {
-			lblO = new JLabel("O");
+			lblO = new JLabel("");
 			lblO.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblO.setForeground(Color.BLUE);
 			lblO.setHorizontalAlignment(SwingConstants.CENTER);
@@ -744,7 +764,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblP() {
 		if (lblP == null) {
-			lblP = new JLabel("P");
+			lblP = new JLabel("");
 			lblP.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblP.setForeground(Color.BLUE);
 			lblP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -754,7 +774,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblQ() {
 		if (lblQ == null) {
-			lblQ = new JLabel("Q");
+			lblQ = new JLabel("");
 			lblQ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblQ.setForeground(Color.BLUE);
 			lblQ.setHorizontalAlignment(SwingConstants.CENTER);
@@ -764,7 +784,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblR() {
 		if (lblR == null) {
-			lblR = new JLabel("R");
+			lblR = new JLabel("");
 			lblR.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblR.setForeground(Color.BLUE);
 			lblR.setHorizontalAlignment(SwingConstants.CENTER);
@@ -774,7 +794,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblS() {
 		if (lblS == null) {
-			lblS = new JLabel("S");
+			lblS = new JLabel("");
 			lblS.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblS.setForeground(Color.BLUE);
 			lblS.setHorizontalAlignment(SwingConstants.CENTER);
@@ -784,7 +804,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblT() {
 		if (lblT == null) {
-			lblT = new JLabel("T");
+			lblT = new JLabel("");
 			lblT.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblT.setForeground(Color.BLUE);
 			lblT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -794,7 +814,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblU() {
 		if (lblU == null) {
-			lblU = new JLabel("U");
+			lblU = new JLabel("");
 			lblU.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblU.setForeground(Color.BLUE);
 			lblU.setHorizontalAlignment(SwingConstants.CENTER);
@@ -804,7 +824,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblV() {
 		if (lblV == null) {
-			lblV = new JLabel("V");
+			lblV = new JLabel("");
 			lblV.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblV.setForeground(Color.BLUE);
 			lblV.setHorizontalAlignment(SwingConstants.CENTER);
@@ -814,7 +834,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblW() {
 		if (lblW == null) {
-			lblW = new JLabel("W");
+			lblW = new JLabel("");
 			lblW.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblW.setForeground(Color.BLUE);
 			lblW.setHorizontalAlignment(SwingConstants.CENTER);
@@ -824,7 +844,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblX() {
 		if (lblX == null) {
-			lblX = new JLabel("X");
+			lblX = new JLabel("");
 			lblX.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblX.setForeground(Color.BLUE);
 			lblX.setHorizontalAlignment(SwingConstants.CENTER);
@@ -834,7 +854,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblY() {
 		if (lblY == null) {
-			lblY = new JLabel("Y");
+			lblY = new JLabel("");
 			lblY.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblY.setForeground(Color.BLUE);
 			lblY.setHorizontalAlignment(SwingConstants.CENTER);
@@ -844,7 +864,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblZ() {
 		if (lblZ == null) {
-			lblZ = new JLabel("Z");
+			lblZ = new JLabel("");
 			lblZ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblZ.setForeground(Color.BLUE);
 			lblZ.setHorizontalAlignment(SwingConstants.CENTER);
