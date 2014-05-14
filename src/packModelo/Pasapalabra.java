@@ -23,29 +23,15 @@ public class Pasapalabra extends Observable{
 			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
 
 	private static boolean modo2Jugadores;
+	private static boolean iniciado = false;
 	
 	private static String respuestaRecibida;
 	private static DefinicionRosco definicionActual;
 	
 	// Atributos para gestionar la sincronizacion entre la GIU y la logica
-	public static final Object lock = new Object();
+	public static final Object objASicronizar = new Object();
 	private static boolean sePuedeSeguir = false;
-
-
-	// Hilo que inicia la GUI
-	private static Thread gui = new Thread(){
-		public void run(){
-			Juego.main(null);
-		}
-	};
 	
-	// Hilo que abre la pantalla de game over
-	private static Thread gameOver = new Thread(){
-		public void run(){
-			GameOver.main(null);
-		}
-	};
-
 	/**
 	 * El metodo main gestiona la carga del XML y la carga inicial de las
 	 * puntuaciones
@@ -66,8 +52,7 @@ public class Pasapalabra extends Observable{
 			modo2Jugadores = true;
 			inicializar(args[0], args[1]);
 		}
-
-	}
+}
 
 	/**
 	 * Este metodo se encarga de inicializar la parte del juego que no utiliza
@@ -92,7 +77,8 @@ public class Pasapalabra extends Observable{
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
-		gui.run();
+		
+		// Tras crear los jugadores y los roscos se empieza a jugar
 		inicializarPartida();
 	}
 
@@ -106,6 +92,7 @@ public class Pasapalabra extends Observable{
 	 *            Nombre del segundo jugador obtenido del main
 	 */
 	public static void inicializarPartida() {
+				
 		/*
 		 * FIXME Corregir el bucle principal para que funcione junto a la GUI y
 		 * gestione la respuesta de manera correcta
@@ -116,11 +103,16 @@ public class Pasapalabra extends Observable{
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
 				definicionActual = jugador.realizarPregunta();
+				if(!iniciado){
+					Juego juego = new Juego();
+					juego.setVisible(true);
+					iniciado = true;
+				}
 				//Esperar hasta que la GUI notifique que puede seguir
-				synchronized(lock){
+				synchronized(objASicronizar){
 					while(!sePuedeSeguir)
 						try {
-							lock.wait();
+							objASicronizar.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -132,18 +124,22 @@ public class Pasapalabra extends Observable{
 			// Guardar puntuaciones
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
-			siguienteJugador = -2;
 		} else {
 			while (!listaJugadores[0].haTerminado()) {
 				// Obtener el siguiente jugador
 				Jugador jugador = getSiguienteJugador();
 				// Realizar pregunta
 				definicionActual = jugador.realizarPregunta();
+				if(!iniciado){
+					Juego juego = new Juego();
+					juego.setVisible(true);
+					iniciado = true;
+				}
 				//Esperar hasta que la GUI notifique que puede seguir
-				synchronized(lock){
+				synchronized(objASicronizar){
 					while(!sePuedeSeguir)
 						try {
-							lock.wait();
+							objASicronizar.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -155,15 +151,12 @@ public class Pasapalabra extends Observable{
 			// Guardar puntuaciones
 			for (Jugador jug : listaJugadores)
 				ranking.insertarPuntuacionEnRanking(jug);
-			siguienteJugador = -2;
 		}
-		// Parar la GUI
-		//gui.interrupt();
-		//gui.stop();
 		// Volcar puntuaciones en el archivo
-		ranking.guardarPuntuaciones();
+//		ranking.guardarPuntuaciones();
 		// Abrir la pantalla de Game Over
-		gameOver.run();
+		GameOver gameOver = new GameOver();
+		gameOver.setVisible(true);
 	}
 
 	/**

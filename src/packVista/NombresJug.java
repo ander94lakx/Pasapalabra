@@ -57,6 +57,7 @@ public class NombresJug extends JDialog {
 
 		initialize();
 	}
+
 	private void initialize() {
 		setTitle("Introduce los nombres de los jugadores");
 		setBounds(100, 100, 400, 300);
@@ -65,16 +66,17 @@ public class NombresJug extends JDialog {
 		getContentPane().add(getPanel_1());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
-		if (windowSize.height>screenSize.height) {
-		windowSize.height= screenSize.height;
+		if (windowSize.height > screenSize.height) {
+			windowSize.height = screenSize.height;
 		}
-		if (windowSize.width>screenSize.width){
-		windowSize.width= screenSize.width;
+		if (windowSize.width > screenSize.width) {
+			windowSize.width = screenSize.width;
 		}
-		setLocation((screenSize.width-windowSize.width)/2,
-		(screenSize.height-windowSize.height)/2);
+		setLocation((screenSize.width - windowSize.width) / 2,
+				(screenSize.height - windowSize.height) / 2);
 		getContentPane().add(getPanel_2());
 	}
+
 	public JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -84,6 +86,7 @@ public class NombresJug extends JDialog {
 		}
 		return panel;
 	}
+
 	public JLabel getLblNumJugadores() {
 		if (lblNumJugadores == null) {
 			lblNumJugadores = new JLabel("Jugador 1:");
@@ -92,6 +95,7 @@ public class NombresJug extends JDialog {
 		}
 		return lblNumJugadores;
 	}
+
 	public JPanel getPanel_1() {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
@@ -102,13 +106,15 @@ public class NombresJug extends JDialog {
 		}
 		return panel_1;
 	}
+
 	public JTextField getTextField() {
 		if (textField == null) {
 			textField = new JTextField();
 			textField.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") 
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
+							&& !textField.getText().equals("")
 							&& !textField_1.getText().equals("")) {
 						accionJugar();
 					}
@@ -121,6 +127,7 @@ public class NombresJug extends JDialog {
 		}
 		return textField;
 	}
+
 	public JLabel getLblJugador() {
 		if (lblJugador == null) {
 			lblJugador = new JLabel("Jugador 2:");
@@ -129,13 +136,15 @@ public class NombresJug extends JDialog {
 		}
 		return lblJugador;
 	}
+
 	public JTextField getTextField_1() {
 		if (textField_1 == null) {
 			textField_1 = new JTextField();
 			textField_1.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") 
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
+							&& !textField.getText().equals("")
 							&& !textField_1.getText().equals("")) {
 						accionJugar();
 					}
@@ -147,13 +156,16 @@ public class NombresJug extends JDialog {
 		}
 		return textField_1;
 	}
-	public JButton getBtnOk_1() {
+
+	public JButton getBtnOk_1() {
 		if (btnOk_1 == null) {
 			btnOk_1 = new JButton("OK");
 			btnOk_1.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") && !textField_1.getText().equals(""))
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
+							&& !textField.getText().equals("")
+							&& !textField_1.getText().equals(""))
 						accionJugar();
 				}
 			});
@@ -166,17 +178,12 @@ public class NombresJug extends JDialog {
 		}
 		return btnOk_1;
 	}
-	
-	public void accionJugar(){
-		//Juego.main(null);
-		EventQueue.invokeLater(new Thread(){
-			public void run() {
-				Pasapalabra.main(new String[] 
-						{textField.getText(), textField_1.getText()});	
-			}
-		});
-		setVisible(false);
+
+	public void accionJugar() {
+		Pasapalabra.main(new String[] { textField.getText(), textField_1.getText() });
+		dispose();
 	}
+
 	public JPanel getPanel_2() {
 		if (panel_2 == null) {
 			panel_2 = new JPanel();

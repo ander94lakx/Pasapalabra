@@ -54,6 +54,7 @@ public class NombreJug extends JDialog {
 
 		initialize();
 	}
+
 	private void initialize() {
 		setTitle("Introduce el nombre del jugador");
 		setBounds(100, 100, 400, 200);
@@ -62,14 +63,14 @@ public class NombreJug extends JDialog {
 		// TOCHOCODIGO para centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
-		if (windowSize.height>screenSize.height) {
-			windowSize.height= screenSize.height;
+		if (windowSize.height > screenSize.height) {
+			windowSize.height = screenSize.height;
 		}
-		if (windowSize.width>screenSize.width){
-			windowSize.width= screenSize.width;
+		if (windowSize.width > screenSize.width) {
+			windowSize.width = screenSize.width;
 		}
-		setLocation((screenSize.width-windowSize.width)/2,
-			(screenSize.height-windowSize.height)/2);
+		setLocation((screenSize.width - windowSize.width) / 2,
+				(screenSize.height - windowSize.height) / 2);
 		// FIN TOCHOCODIGO
 		getContentPane().add(getPanel_1());
 	}
@@ -85,6 +86,7 @@ public class NombreJug extends JDialog {
 		}
 		return panel;
 	}
+
 	public JLabel getLblJugador() {
 		if (lblJugador == null) {
 			lblJugador = new JLabel("Jugador:");
@@ -93,13 +95,15 @@ public class NombreJug extends JDialog {
 		}
 		return lblJugador;
 	}
+
 	public JTextField getTextField() {
 		if (textField == null) {
 			textField = new JTextField();
 			textField.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("")) {
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
+							&& !textField.getText().equals("")) {
 						accionJugar();
 					}
 				}
@@ -110,13 +114,15 @@ public class NombreJug extends JDialog {
 		}
 		return textField;
 	}
+
 	public JButton getBtnOk() {
 		if (btnOk == null) {
 			btnOk = new JButton("OK");
 			btnOk.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals(""))
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
+							&& !textField.getText().equals(""))
 						accionJugar();
 				}
 			});
@@ -129,17 +135,12 @@ public class NombreJug extends JDialog {
 		}
 		return btnOk;
 	}
-	
-	public void accionJugar(){
-		//Juego.main(null);
-		EventQueue.invokeLater(new Thread(){
-			public void run() {
-				Pasapalabra.main(new String[] 
-						{textField.getText()});	
-			}
-		});
-		setVisible(false);
+
+	public void accionJugar() {
+		Pasapalabra.main(new String[] { textField.getText() });
+		dispose();
 	}
+
 	public JPanel getPanel_1() {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();

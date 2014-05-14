@@ -54,7 +54,7 @@ public class XMLParser extends DefaultHandler {
 
     @Override
     public void endDocument() throws SAXException {
-        System.out.println("Final");
+       // System.out.println("Final");
     }
 
     @Override
@@ -68,13 +68,13 @@ public class XMLParser extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
-        System.out.println("Inicio");
+       // System.out.println("Inicio");
     }
 
     @Override
     public void startElement(String pUri, String pLocalName, String pName,
             Attributes pAttributes) throws SAXException {
-        System.out.println(pName);
+        //System.out.println(pName);
     }
 
     //Definir el TagOperatorFactory

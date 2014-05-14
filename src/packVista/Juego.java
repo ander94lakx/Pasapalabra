@@ -27,24 +27,25 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.LabelUI;
+import javax.swing.border.EtchedBorder;
 
 import packModelo.DefinicionRosco;
 import packModelo.Estado;
 import packModelo.Jugador;
 import packModelo.Letra;
 import packModelo.Pasapalabra;
-
-import java.awt.FlowLayout;
-
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JScrollPane;
+import java.awt.Insets;
 
 //TODO Hacer que sea reescalable por completo tras añadir el campo de la letra
 public class Juego extends JFrame implements Observer {
+	
+	private static final int TAM_ICO = 40; // Define el tamaño que tendran los iconos
+	private static final boolean conIconos = true; // Indica si utilizan los iconos o no
+
 	private static final long serialVersionUID = -7237743091044603390L;
 
 	private JPanel contentPane;
@@ -90,8 +91,10 @@ public class Juego extends JFrame implements Observer {
 	private JLabel lblX;
 	private JLabel lblY;
 	private JLabel lblZ;
-	
-	private static final int TAM_ICO = 32;
+	private JLabel label_1;
+	private JPanel panelRespuesta;
+	private JPanel panelPregunta;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -113,6 +116,12 @@ public class Juego extends JFrame implements Observer {
 	 * Create the frame.
 	 */
 	public Juego() {
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				//if(arg0.getKeyCode() = KeyEvent.VK_ESCAPE)
+			}
+		});
 		initialize();
 		if (Pasapalabra.modoDosJugadores()) {
 			Pasapalabra.getJugador(0).addObserver(this);
@@ -147,15 +156,27 @@ public class Juego extends JFrame implements Observer {
 		letrasRosco.add(lblX);
 		letrasRosco.add(lblY);
 		letrasRosco.add(lblZ);
-		int i = 0;
-		for (JLabel lbl : letrasRosco) {
-			lbl.setFont(new Font("Tahoma", Font.BOLD, 16));
-			ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"azul.png"));
-			Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
-			lbl.setIcon(icono);
-			i++;
+		if (conIconos) {
+			int i = 0;
+			for (JLabel lbl : letrasRosco) {
+				ImageIcon imgIco = new ImageIcon(
+						Juego.class.getResource("/packRecursos/letra"
+								+ Letra.values()[i] + "azul.png"));
+				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(
+						TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+				lbl.setIcon(icono);
+				i++;
+			}
+		} else {
+			int i = 0;
+			for (JLabel lbl : letrasRosco) {
+				lbl.setIcon(null);
+				lbl.setFont(new Font("Tahoma", Font.BOLD, 16));
+				lbl.setText(Letra.values()[i].name());
+				i++;
+			}
 		}
-		
+
 	}
 
 	private void initialize() {
@@ -166,83 +187,31 @@ public class Juego extends JFrame implements Observer {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane
-				.setHorizontalGroup(gl_contentPane
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_contentPane
-										.createSequentialGroup()
-										.addGroup(
-												gl_contentPane
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																Alignment.TRAILING,
-																gl_contentPane
-																		.createSequentialGroup()
-																		.addComponent(
-																				getPanelRosco(),
-																				GroupLayout.DEFAULT_SIZE,
-																				399,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_contentPane
-																						.createParallelGroup(
-																								Alignment.LEADING,
-																								false)
-																						.addComponent(
-																								getPanelNombreJug(),
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addComponent(
-																								getPanelPuntuacion(),
-																								GroupLayout.DEFAULT_SIZE,
-																								79,
-																								Short.MAX_VALUE)))
-														.addComponent(
-																getPanelInferior(),
-																GroupLayout.PREFERRED_SIZE,
-																484,
-																Short.MAX_VALUE))
-										.addContainerGap()));
-		gl_contentPane
-				.setVerticalGroup(gl_contentPane
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_contentPane
-										.createSequentialGroup()
-										.addGroup(
-												gl_contentPane
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_contentPane
-																		.createSequentialGroup()
-																		.addComponent(
-																				getPanelPuntuacion(),
-																				GroupLayout.DEFAULT_SIZE,
-																				253,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				getPanelNombreJug(),
-																				GroupLayout.DEFAULT_SIZE,
-																				81,
-																				Short.MAX_VALUE))
-														.addComponent(
-																getPanelRosco(),
-																GroupLayout.DEFAULT_SIZE,
-																340,
-																Short.MAX_VALUE))
-										.addPreferredGap(
-												ComponentPlacement.RELATED)
-										.addComponent(getPanelInferior(),
-												GroupLayout.PREFERRED_SIZE,
-												105, GroupLayout.PREFERRED_SIZE)));
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 484, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(getPanelPuntuacion(), Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+								.addComponent(getPanelNombreJug(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(getPanelPuntuacion(), GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(getPanelNombreJug(), GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+						.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
+		);
 		contentPane.setLayout(gl_contentPane);
 		// TOCHOCODIGO para centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -261,89 +230,11 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelInferior() {
 		if (panelInferior == null) {
 			panelInferior = new JPanel();
-			panelInferior.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-			GroupLayout gl_panelInferior = new GroupLayout(panelInferior);
-			gl_panelInferior
-					.setHorizontalGroup(gl_panelInferior
-							.createParallelGroup(Alignment.LEADING)
-							.addGroup(
-									gl_panelInferior
-											.createSequentialGroup()
-											.addContainerGap()
-											.addGroup(
-													gl_panelInferior
-															.createParallelGroup(
-																	Alignment.TRAILING)
-															.addGroup(
-																	gl_panelInferior
-																			.createSequentialGroup()
-																			.addComponent(
-																					getPanelLetra(),
-																					GroupLayout.PREFERRED_SIZE,
-																					44,
-																					GroupLayout.PREFERRED_SIZE)
-																			.addPreferredGap(
-																					ComponentPlacement.RELATED)
-																			.addComponent(
-																					getPregunta(),
-																					GroupLayout.DEFAULT_SIZE,
-																					412,
-																					Short.MAX_VALUE))
-															.addGroup(
-																	gl_panelInferior
-																			.createSequentialGroup()
-																			.addComponent(
-																					getCampoRespuesta(),
-																					GroupLayout.DEFAULT_SIZE,
-																					209,
-																					Short.MAX_VALUE)
-																			.addPreferredGap(
-																					ComponentPlacement.RELATED)
-																			.addComponent(
-																					getPanelBotones(),
-																					GroupLayout.PREFERRED_SIZE,
-																					247,
-																					GroupLayout.PREFERRED_SIZE)))
-											.addGap(10)));
-			gl_panelInferior
-					.setVerticalGroup(gl_panelInferior
-							.createParallelGroup(Alignment.LEADING)
-							.addGroup(
-									gl_panelInferior
-											.createSequentialGroup()
-											.addGap(8)
-											.addGroup(
-													gl_panelInferior
-															.createParallelGroup(
-																	Alignment.LEADING)
-															.addComponent(
-																	getPregunta(),
-																	GroupLayout.DEFAULT_SIZE,
-																	49,
-																	Short.MAX_VALUE)
-															.addComponent(
-																	getPanelLetra(),
-																	GroupLayout.DEFAULT_SIZE,
-																	49,
-																	Short.MAX_VALUE))
-											.addPreferredGap(
-													ComponentPlacement.RELATED)
-											.addGroup(
-													gl_panelInferior
-															.createParallelGroup(
-																	Alignment.LEADING)
-															.addComponent(
-																	getPanelBotones(),
-																	GroupLayout.PREFERRED_SIZE,
-																	29,
-																	Short.MAX_VALUE)
-															.addComponent(
-																	getCampoRespuesta(),
-																	GroupLayout.DEFAULT_SIZE,
-																	29,
-																	Short.MAX_VALUE))
-											.addContainerGap()));
-			panelInferior.setLayout(gl_panelInferior);
+			panelInferior.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
+					null, null));
+			panelInferior.setLayout(new GridLayout(0, 1, 0, 0));
+			panelInferior.add(getPanelPregunta());
+			panelInferior.add(getPanelRespuesta());
 		}
 		return panelInferior;
 	}
@@ -351,8 +242,8 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelRosco() {
 		if (panelRosco == null) {
 			panelRosco = new JPanel();
-			panelRosco.setBackground(Color.LIGHT_GRAY);
-			panelRosco.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			panelRosco.setBackground(Color.GRAY);
+			panelRosco.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			panelRosco.setLayout(new GridLayout(6, 5, 0, 0));
 			panelRosco.add(getLblA());
 			panelRosco.add(getLblB());
@@ -387,6 +278,8 @@ public class Juego extends JFrame implements Observer {
 	public JTextField getCampoRespuesta() {
 		if (campoRespuesta == null) {
 			campoRespuesta = new JTextField();
+			campoRespuesta.setHorizontalAlignment(SwingConstants.CENTER);
+			campoRespuesta.setMinimumSize(new Dimension(6, 30));
 			campoRespuesta.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			campoRespuesta.addKeyListener(new KeyAdapter() {
 				@Override
@@ -430,7 +323,8 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelPuntuacion() {
 		if (panelPuntuacion == null) {
 			panelPuntuacion = new JPanel();
-			panelPuntuacion.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			panelPuntuacion.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
+					null, null));
 			panelPuntuacion.setLayout(new GridLayout(3, 1, 0, 0));
 			panelPuntuacion.add(getAciertos());
 			panelPuntuacion.add(getFallos());
@@ -478,12 +372,15 @@ public class Juego extends JFrame implements Observer {
 	public JTextArea getPregunta() {
 		if (pregunta == null) {
 			pregunta = new JTextArea();
+			pregunta.setMargin(new Insets(2, 5, 2, 5));
+			pregunta.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			pregunta.setWrapStyleWord(true);
 			pregunta.setEditable(false);
-			pregunta.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			pregunta.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			pregunta.setForeground(Color.BLACK);
 			pregunta.setBackground(Color.LIGHT_GRAY);
 			pregunta.setLineWrap(true);
-			pregunta.setText("Campo donde van apareciendo las preguntas");
+			pregunta.setText("sdfgushdfljgk sdkjlf hg\u00F1ls  sdflh g\u00F1lasd fg s dfgkl sdfk djfl g sdk f l  ksdfjg\u00F1lsdfg sdfg  sdfo gs dof gs");
 		}
 		return pregunta;
 	}
@@ -491,7 +388,8 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelNombreJug() {
 		if (panelNombreJug == null) {
 			panelNombreJug = new JPanel();
-			panelNombreJug.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			panelNombreJug.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
+					null, null));
 			panelNombreJug.setLayout(new GridLayout(1, 0, 0, 0));
 			panelNombreJug.add(getLblJugador());
 		}
@@ -522,6 +420,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblLetra() {
 		if (lblLetra == null) {
 			lblLetra = new JLabel("L");
+			lblLetra.setBorder(new EmptyBorder(0, 15, 0, 15));
 			lblLetra.setHorizontalAlignment(SwingConstants.CENTER);
 			lblLetra.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		}
@@ -539,32 +438,59 @@ public class Juego extends JFrame implements Observer {
 			getTiempoRestante().setText(
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
-			actualizarRosco();
+			if(conIconos) 
+				actualizarRosco();
+			else 
+				actualizarRoscoNoGrafico();
 		}
 		getPregunta().setText(Pasapalabra.getDefinicionActual().getEnunciado());
-		getLblLetra().setText(
-				Pasapalabra.getDefinicionActual().getLetra().name());
-		actualizarRosco();
-
+		getLblLetra().setText(Pasapalabra.getDefinicionActual().getLetra().name());
+		if(conIconos) 
+			actualizarRosco();
+		else 
+			actualizarRoscoNoGrafico();
+				
+//		if(arg1 instanceof String)
+//			if(arg0.equals("rosco"))
+//				if(conIconos)
+//					actualizarRosco();
+//				else
+//					actualizarRoscoNoGrafico();
+//		
+			
 	}
 
 	public void actualizarRosco() {
+		Letra[] letras = Letra.values();
 		Jugador j = Pasapalabra.getSiguienteJugador();
-		for (int i = 0; i < Letra.values().length; i++) {
-			DefinicionRosco def = j.getRosco()
-					.obtenerDefinicionRosco(Letra.values()[i]);
+		for (int i = 0; i < letras.length; i++) {
+			DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
 			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"verde.png"));
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "verde.png"));
 				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
 				letrasRosco.get(i).setIcon(icono);
 			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"rojo.png"));
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "rojo.png"));
 				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
 				letrasRosco.get(i).setIcon(icono);
+			} else{
+				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "azul.png"));
+				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+				letrasRosco.get(i).setIcon(icono);
+			}
+		}
+	}
+
+	public void actualizarRoscoNoGrafico() {
+		Jugador j = Pasapalabra.getSiguienteJugador();
+		for (int i = 0; i < Letra.values().length; i++) {
+			DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
+			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
+				letrasRosco.get(i).setForeground(new Color(0, 200, 0)); // Es un verde pero no tan brillante como el otro
+			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
+				letrasRosco.get(i).setForeground(Color.RED);
 			} else {
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+Letra.values()[i]+"azul.png"));
-				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
-				letrasRosco.get(i).setIcon(icono);
+				letrasRosco.get(i).setForeground(Color.BLUE);
 			}
 		}
 	}
@@ -585,9 +511,9 @@ public class Juego extends JFrame implements Observer {
 			output = output.replace(original.charAt(i), ascii.charAt(i));
 		Pasapalabra.setRespuestaRecibida(output);
 		getCampoRespuesta().setText("");
-		synchronized (Pasapalabra.lock) {
+		synchronized (Pasapalabra.objASicronizar) {
 			Pasapalabra.setSePuedeSeguir(true);
-			Pasapalabra.lock.notify();
+			Pasapalabra.objASicronizar.notify();
 		}
 	}
 
@@ -595,9 +521,9 @@ public class Juego extends JFrame implements Observer {
 	public void accionPasapalabra() {
 		Pasapalabra.setRespuestaRecibida("");
 		getCampoRespuesta().setText("");
-		synchronized (Pasapalabra.lock) {
+		synchronized (Pasapalabra.objASicronizar) {
 			Pasapalabra.setSePuedeSeguir(true);
-			Pasapalabra.lock.notify();
+			Pasapalabra.objASicronizar.notify();
 		}
 	}
 
@@ -870,5 +796,54 @@ public class Juego extends JFrame implements Observer {
 			lblZ.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblZ;
+	}
+	public JLabel getLabel_1() {
+		if (label_1 == null) {
+			label_1 = new JLabel("");
+		}
+		return label_1;
+	}
+	public JPanel getPanelRespuesta() {
+		if (panelRespuesta == null) {
+			panelRespuesta = new JPanel();
+			panelRespuesta.setBorder(new EmptyBorder(6, 6, 6, 6));
+			panelRespuesta.setLayout(new BoxLayout(panelRespuesta, BoxLayout.X_AXIS));
+			panelRespuesta.add(getCampoRespuesta());
+			panelRespuesta.add(getPanelBotones());
+		}
+		return panelRespuesta;
+	}
+	public JPanel getPanelPregunta() {
+		if (panelPregunta == null) {
+			panelPregunta = new JPanel();
+			panelPregunta.setBorder(new EmptyBorder(4, 6, 4, 6));
+			GroupLayout gl_panelPregunta = new GroupLayout(panelPregunta);
+			gl_panelPregunta.setHorizontalGroup(
+				gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panelPregunta.createSequentialGroup()
+						.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(getScrollPane(), GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+						.addGap(1))
+			);
+			gl_panelPregunta.setVerticalGroup(
+				gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panelPregunta.createSequentialGroup()
+						.addGroup(gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+							.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+							.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+			);
+			panelPregunta.setLayout(gl_panelPregunta);
+		}
+		return panelPregunta;
+	}
+	public JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			scrollPane.setViewportView(getPregunta());
+		}
+		return scrollPane;
 	}
 }

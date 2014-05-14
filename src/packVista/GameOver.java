@@ -4,12 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JDialog;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
@@ -19,6 +16,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GameOver extends JDialog {
+
+	private static final long serialVersionUID = 5074640977871420489L;
 	private JLabel lblGameOver;
 	private JPanel panel;
 	private JButton btnMenuPrincipal;

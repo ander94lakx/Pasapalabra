@@ -1,12 +1,13 @@
 package packModelo;
 
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Jugador extends Observable {
 
-	private int TIEMPO_INICIAL = 240;
+	private int TIEMPO_INICIAL = 20;
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;
@@ -113,7 +114,7 @@ public class Jugador extends Observable {
 		else
 			posicionRosco = Letra.values()[posicionRosco.ordinal() + 1];
 		setChanged();
-		notifyObservers();
+		notifyObservers("rosco");
 	}
 
 	public Letra getPosicionRosco() {
