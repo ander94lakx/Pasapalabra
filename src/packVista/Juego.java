@@ -57,7 +57,7 @@ public class Juego extends JFrame implements Observer {
 	
 	private static int tamIcono = 35;
 	private static final boolean CON_ICONOS = true;
-	private static final boolean WEBCAM_ACTIVA = false;
+	public static boolean WEBCAM_ACTIVA = false;
 	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
 	
 	// Variables relativas a la GUI
@@ -115,7 +115,7 @@ public class Juego extends JFrame implements Observer {
 
 	private static boolean externo = true; 
 	private WebcamPanel panelWebcam = null;
-	private Webcam webcam = null;
+
 	
 	/**
 	 * Launch the application.
@@ -206,7 +206,7 @@ public class Juego extends JFrame implements Observer {
 		if (arg1 instanceof String && arg1.equals("fin")) {
 			GameOver go = new GameOver();
 			go.setVisible(true);
-			dispose();
+			this.setVisible(false);
 		}
 		if (arg0 instanceof Jugador) {
 			getLblJugador().setText(((Jugador) arg0).getNombre());
@@ -218,12 +218,14 @@ public class Juego extends JFrame implements Observer {
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
 			actualizarRosco();
+			
 		}
 		//if(arg0 instanceof Pasapalabra){
 			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
 			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
-			actualizarRosco();
+			//actualizarRosco();
 		//}
+		actualizarRosco();
 	}
 
 	public void actualizarRosco() {
@@ -275,7 +277,6 @@ public class Juego extends JFrame implements Observer {
 		int puntoMedioX = anchura / 2;
 		int puntoMedioY = altura / 2;
 		int radio = Math.min(altura, anchura) / 2 - desplazamiento;
-		//int radio = 150;
 		System.out.println("Radio: "+radio);
 		for(int i = 0; i < letrasRosco.size(); i++){
 			double grados =(360/25.98)*i; // Ligeramente menor a 26 para compensar los casting a enteros
@@ -287,43 +288,25 @@ public class Juego extends JFrame implements Observer {
 			else
 				letrasRosco.get(i).setBounds((int)x, (int)y, 20, 20);
 		}
-		// Actualizar posicion y tamaño de el JLabel de la camara
-		
 		if(WEBCAM_ACTIVA){
 			lblCamara.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
-			actualizarCamara();
+			iniciarCamara();
 		}
 	}
 
-	public void actualizarCamara(){
-		
-		//------------ Implementacion 1 --------------------
-//			if(panelWebcam != null)
-//				panelWebcam.stop();
-//			webcam = Webcam.getDefault();
-//			webcam.setViewSize(new Dimension(640,480));
-//			panelWebcam = new WebcamPanel(webcam);
-//			//panelWebcam.setLayout(new BorderLayout());
-//			panelWebcam.setFPSDisplayed(true);
-//			getPanelRosco().add(panelWebcam, -1);
-//			panelWebcam.setAlignmentX(WebcamPanel.RIGHT_ALIGNMENT);
-//			panelWebcam.setAlignmentY(WebcamPanel.BOTTOM_ALIGNMENT);
-//			panelWebcam.setBounds((getPanelRosco().getWidth() - 480), (getPanelRosco().getHeight() - 400), 640, 480);
-//			panelWebcam.start();
-		
-		//------------ Implementacion 2 --------------------
-		if(panelWebcam != null)
-			panelWebcam.stop();
-		webcam = Webcam.getDefault();
-		webcam.setViewSize(new Dimension(640,480));
+	public void iniciarCamara(){
+		Webcam webcam = Webcam.getDefault();
 		panelWebcam = new WebcamPanel(webcam);
-		panelWebcam.setLayout(new GridLayout(1, 1));
-		panelWebcam.setFPSDisplayed(true);
-		getPanelRosco().add(panelWebcam, -1);
-		panelWebcam.setAlignmentX(WebcamPanel.CENTER_ALIGNMENT);
-		panelWebcam.setAlignmentY(WebcamPanel.CENTER_ALIGNMENT);
-		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
 		panelWebcam.start();
+		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
+		panelRosco.add(panelWebcam, -1);
+		getPanelRosco().setLayer(panelWebcam, 0);
+		panelWebcam.setFillArea(true);
+	}
+	
+	public void reescalarCamara(){
+		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
+		panelWebcam.setFillArea(true);
 	}
 
 	// Accion que se lleva a cabo al darle a responder o al hacer intro
@@ -479,7 +462,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getAciertos() {
 		if (aciertos == null) {
-			aciertos = new JLabel("A");
+			aciertos = new JLabel("");
 			aciertos.setToolTipText("Aciertos que lleva el jugador que esta jugando en este momento");
 			aciertos.setBackground(Color.WHITE);
 			aciertos.setForeground(Color.GREEN);
@@ -491,7 +474,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getFallos() {
 		if (fallos == null) {
-			fallos = new JLabel("F");
+			fallos = new JLabel("");
 			fallos.setToolTipText("Fallos que lleva el jugador que esta jugando en este momento");
 			fallos.setForeground(Color.RED);
 			fallos.setFont(new Font("Tahoma", Font.PLAIN, 30));
@@ -502,7 +485,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getTiempoRestante() {
 		if (tiempoRestante == null) {
-			tiempoRestante = new JLabel("T");
+			tiempoRestante = new JLabel("");
 			tiempoRestante
 					.setToolTipText("Tiempo restante del jugador que esta jugando en este momento");
 			tiempoRestante.setBackground(new Color(255, 255, 255));
@@ -524,7 +507,6 @@ public class Juego extends JFrame implements Observer {
 			pregunta.setForeground(Color.BLACK);
 			pregunta.setBackground(Color.LIGHT_GRAY);
 			pregunta.setLineWrap(true);
-			pregunta.setText("sdfgushdfljgk sdkjlf hg\u00F1ls  sdflh g\u00F1lasd fg s dfgkl sdfk djfl g sdk f l  ksdfjg\u00F1lsdfg sdfg  sdfo gs dof gs");
 		}
 		return pregunta;
 	}
@@ -541,7 +523,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblJugador() {
 		if (lblJugador == null) {
-			lblJugador = new JLabel("Jugador");
+			lblJugador = new JLabel("");
 			lblJugador
 					.setToolTipText("Nombre del jugador que esta jugando en este momento");
 			lblJugador.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -562,7 +544,7 @@ public class Juego extends JFrame implements Observer {
 
 	public JLabel getLblLetra() {
 		if (lblLetra == null) {
-			lblLetra = new JLabel("L");
+			lblLetra = new JLabel("");
 			lblLetra.setBorder(new EmptyBorder(0, 15, 0, 15));
 			lblLetra.setHorizontalAlignment(SwingConstants.CENTER);
 			lblLetra.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -922,6 +904,8 @@ public class Juego extends JFrame implements Observer {
 				@Override
 				public void componentResized(ComponentEvent arg0) {
 					posicionarRosco();
+					if(WEBCAM_ACTIVA)
+						reescalarCamara();
 				}
 			});
 			panelRosco.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
