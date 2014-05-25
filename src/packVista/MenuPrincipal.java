@@ -30,6 +30,7 @@ public class MenuPrincipal extends JFrame {
 	private JButton btnPuntuaciones;
 	private JLabel lblAutores;
 	private JButton btnInstrucciones;
+	private JButton btnOpciones;
 
 	/**
 	 * Launch the application.
@@ -84,6 +85,7 @@ public class MenuPrincipal extends JFrame {
 			layeredPane.add(getButton_2());
 			layeredPane.add(getLblAutores());
 			layeredPane.add(getBtnInstrucciones());
+			layeredPane.add(getBtnOpciones());
 		}
 		return layeredPane;
 	}
@@ -117,8 +119,8 @@ public class MenuPrincipal extends JFrame {
 				}
 			});
 			getLayeredPane_1().setLayer(btnNewButton, 1);
-			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btnNewButton.setBounds(532, 329, 252, 31);
+			btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
+			btnNewButton.setBounds(565, 306, 219, 54);
 		}
 		return btnNewButton;
 	}
@@ -139,7 +141,7 @@ public class MenuPrincipal extends JFrame {
 			});
 			getLayeredPane_1().setLayer(btnPuntuaciones, 1);
 			btnPuntuaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btnPuntuaciones.setBounds(10, 329, 252, 31);
+			btnPuntuaciones.setBounds(10, 329, 163, 31);
 		}
 		return btnPuntuaciones;
 	}
@@ -170,8 +172,29 @@ public class MenuPrincipal extends JFrame {
 			});
 			btnInstrucciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			getLayeredPane_1().setLayer(btnInstrucciones, 1);
-			btnInstrucciones.setBounds(294, 329, 207, 31);
+			btnInstrucciones.setBounds(183, 329, 163, 31);
 		}
 		return btnInstrucciones;
+	}
+	public JButton getBtnOpciones() {
+		if (btnOpciones == null) {
+			btnOpciones = new JButton("Opciones");
+			btnOpciones.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent arg0) {
+					if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+						Opciones.main(null);
+				}
+			});
+			btnOpciones.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Opciones.main(null);
+				}
+			});
+			btnOpciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			getLayeredPane_1().setLayer(btnOpciones, 1);
+			btnOpciones.setBounds(356, 329, 147, 31);
+		}
+		return btnOpciones;
 	}
 }
