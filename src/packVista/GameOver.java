@@ -6,9 +6,14 @@ import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
 import javax.swing.JPanel;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -51,11 +56,21 @@ public class GameOver extends JDialog {
 		getContentPane().setLayout(new GridLayout(2, 1, 50, 0));
 		getContentPane().add(getLblGameOver());
 		getContentPane().add(getPanel());
+		// TOCHOCODIGO para centrar la ventana
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension windowSize = this.getSize();
+		if (windowSize.height > screenSize.height)
+			windowSize.height = screenSize.height;
+		if (windowSize.width > screenSize.width)
+			windowSize.width = screenSize.width;
+		setLocation((screenSize.width - windowSize.width) / 2,
+				(screenSize.height - windowSize.height) / 2);
+		// FIN TOCHOCODIGO
 	}
 	public JLabel getLblGameOver() {
 		if (lblGameOver == null) {
-			lblGameOver = new JLabel("Game Over");
-			lblGameOver.setFont(new Font("Tahoma", Font.BOLD, 48));
+			lblGameOver = new JLabel("Fin de la partida");
+			lblGameOver.setFont(new Font("Tahoma", Font.BOLD, 32));
 			lblGameOver.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblGameOver;

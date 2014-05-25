@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -29,6 +30,7 @@ public class NombreJug extends JDialog {
 	private JTextField textField;
 	private JButton btnOk;
 	private JPanel panel_1;
+	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
 
 	/**
 	 * Launch the application.
@@ -102,9 +104,13 @@ public class NombreJug extends JDialog {
 			textField.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
-							&& !textField.getText().equals("")) {
-						accionJugar();
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("")) {
+						pasapalabra.inicializar(textField.getText(), null, false);
+						pasapalabra.jugar();
+						Juego juego = new Juego();
+						juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						juego.setVisible(true);
+						dispose();
 					}
 				}
 			});
@@ -121,24 +127,29 @@ public class NombreJug extends JDialog {
 			btnOk.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
-							&& !textField.getText().equals(""))
-						accionJugar();
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("")) {
+						pasapalabra.inicializar(textField.getText(), null, false);
+						pasapalabra.jugar();
+						Juego juego = new Juego();
+						juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						juego.setVisible(true);
+						dispose();
+					}
 				}
 			});
 			btnOk.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnOk.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					accionJugar();
+					pasapalabra.inicializar(textField.getText(), null, false);
+					pasapalabra.jugar();
+					Juego juego = new Juego();
+					juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					juego.setVisible(true);
+					dispose();
 				}
 			});
 		}
 		return btnOk;
-	}
-
-	public void accionJugar() {
-		Pasapalabra.main(new String[] { textField.getText() });
-		dispose();
 	}
 
 	public JPanel getPanel_1() {

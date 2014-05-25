@@ -1,5 +1,6 @@
 package packVista;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -36,21 +37,32 @@ import packModelo.Estado;
 import packModelo.Jugador;
 import packModelo.Letra;
 import packModelo.Pasapalabra;
+
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
+
 import java.awt.Insets;
 
-//TODO Hacer que sea reescalable por completo tras añadir el campo de la letra
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.JLayeredPane;
+
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+import com.github.sarxos.webcam.*;
+
 public class Juego extends JFrame implements Observer {
 	
-	private static final int TAM_ICO = 40; // Define el tamaño que tendran los iconos
-	private static final boolean conIconos = true; // Indica si utilizan los iconos o no
-
 	private static final long serialVersionUID = -7237743091044603390L;
-
+	
+	private static int tamIcono = 35;
+	private static final boolean CON_ICONOS = true;
+	private static final boolean WEBCAM_ACTIVA = false;
+	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
+	
+	// Variables relativas a la GUI
 	private JPanel contentPane;
 	private JPanel panelInferior;
-	private JPanel panelRosco;
 	private JTextField campoRespuesta;
 	private JButton btnPasapalabra;
 	private JButton btnResponder;
@@ -95,7 +107,16 @@ public class Juego extends JFrame implements Observer {
 	private JPanel panelRespuesta;
 	private JPanel panelPregunta;
 	private JScrollPane scrollPane;
+	private JLayeredPane panelRosco;
+	
+	// Variables relativas a la distribucion de las letras
+	private int desplazamiento = 30;
+	private JLabel lblCamara;
 
+	private static boolean externo = true; 
+	private WebcamPanel panelWebcam = null;
+	private Webcam webcam = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -103,31 +124,30 @@ public class Juego extends JFrame implements Observer {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					externo = false;
+					//Pasapalabra.inicializar("Pedro","Juan", true);
 					Juego frame = new Juego();
 					frame.setVisible(true);
+					//Pasapalabra.inicializarPartida();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public Juego() {
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				//if(arg0.getKeyCode() = KeyEvent.VK_ESCAPE)
-			}
-		});
 		initialize();
-		if (Pasapalabra.modoDosJugadores()) {
-			Pasapalabra.getJugador(0).addObserver(this);
-			Pasapalabra.getJugador(1).addObserver(this);
-		} else {
-			Pasapalabra.getJugador(0).addObserver(this);
+		if (externo) {
+			if (pasapalabra.modoDosJugadores()) {
+				pasapalabra.getJugador(0).addObserver(this);
+				pasapalabra.getJugador(1).addObserver(this);
+			} else {
+				pasapalabra.getJugador(0).addObserver(this);
+			}
 		}
 		letrasRosco = new LinkedList<JLabel>();
 		letrasRosco.add(lblA);
@@ -156,27 +176,188 @@ public class Juego extends JFrame implements Observer {
 		letrasRosco.add(lblX);
 		letrasRosco.add(lblY);
 		letrasRosco.add(lblZ);
-		if (conIconos) {
+		if (CON_ICONOS) {
 			int i = 0;
 			for (JLabel lbl : letrasRosco) {
 				ImageIcon imgIco = new ImageIcon(
 						Juego.class.getResource("/packRecursos/letra"
 								+ Letra.values()[i] + "azul.png"));
 				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(
-						TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
+						tamIcono, tamIcono, Image.SCALE_DEFAULT));
 				lbl.setIcon(icono);
+				lbl.setSize(tamIcono, tamIcono);
 				i++;
 			}
 		} else {
 			int i = 0;
 			for (JLabel lbl : letrasRosco) {
 				lbl.setIcon(null);
-				lbl.setFont(new Font("Tahoma", Font.BOLD, 16));
+				lbl.setFont(new Font("Tahoma", Font.BOLD, 20));
 				lbl.setText(Letra.values()[i].name());
 				i++;
 			}
 		}
+		
+		posicionarRosco();
+	}
 
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if (arg1 instanceof String && arg1.equals("fin")) {
+			GameOver go = new GameOver();
+			go.setVisible(true);
+			dispose();
+		}
+		if (arg0 instanceof Jugador) {
+			getLblJugador().setText(((Jugador) arg0).getNombre());
+			getAciertos().setText(
+					(String) Integer.toString(((Jugador) arg0).getAciertos()));
+			getFallos().setText(
+					(String) Integer.toString(((Jugador) arg0).getFallos()));
+			getTiempoRestante().setText(
+					(String) Integer.toString(((Jugador) arg0)
+							.getTiempoRestante()));
+			actualizarRosco();
+		}
+		//if(arg0 instanceof Pasapalabra){
+			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
+			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
+			actualizarRosco();
+		//}
+	}
+
+	public void actualizarRosco() {
+		Letra[] letras = Letra.values();
+		Jugador j = Pasapalabra.getPasapalabra().getSiguienteJugador();
+		if (CON_ICONOS) {
+			for (int i = 0; i < letras.length; i++) {
+				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(
+						Letra.values()[i]);
+				if (def.getEstadoRespuesta() == Estado.CORRECTA) {
+					ImageIcon imgIco = new ImageIcon(
+							Juego.class.getResource("/packRecursos/letra" + letras[i] + "verde.png"));
+					Icon icono = new ImageIcon(imgIco.getImage()
+							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					letrasRosco.get(i).setIcon(icono);
+				} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
+					ImageIcon imgIco = new ImageIcon(
+							Juego.class.getResource("/packRecursos/letra" + letras[i] + "rojo.png"));
+					Icon icono = new ImageIcon(imgIco.getImage()
+							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					letrasRosco.get(i).setIcon(icono);
+				} else {
+					ImageIcon imgIco = new ImageIcon(
+							Juego.class.getResource("/packRecursos/letra" + letras[i] + "azul.png"));
+					Icon icono = new ImageIcon(imgIco.getImage()
+							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					letrasRosco.get(i).setIcon(icono);
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < letras.length; i++) {
+				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
+				if (def.getEstadoRespuesta() == Estado.CORRECTA) {
+					letrasRosco.get(i).setForeground(new Color(0, 200, 0)); // Es un verde pero no tan brillante como el basico
+				} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
+					letrasRosco.get(i).setForeground(Color.RED);
+				} else {
+					letrasRosco.get(i).setForeground(Color.BLUE);
+				}
+			}
+		}
+	}
+
+	public void posicionarRosco(){
+		int anchura = getPanelRosco().getWidth();
+		int altura = getPanelRosco().getHeight();
+		System.out.println("Anchura: "+anchura+" Altura: "+altura);
+		int puntoMedioX = anchura / 2;
+		int puntoMedioY = altura / 2;
+		int radio = Math.min(altura, anchura) / 2 - desplazamiento;
+		//int radio = 150;
+		System.out.println("Radio: "+radio);
+		for(int i = 0; i < letrasRosco.size(); i++){
+			double grados =(360/25.98)*i; // Ligeramente menor a 26 para compensar los casting a enteros
+			double rad = (grados*Math.PI)/180;
+			double x = (puntoMedioX + radio * Math.sin(rad));
+			double y = (puntoMedioY - radio * Math.cos(rad));
+			if(CON_ICONOS)
+				letrasRosco.get(i).setBounds((int)(x - tamIcono/2), (int)(y - tamIcono/2), tamIcono, tamIcono);
+			else
+				letrasRosco.get(i).setBounds((int)x, (int)y, 20, 20);
+		}
+		// Actualizar posicion y tamaño de el JLabel de la camara
+		
+		if(WEBCAM_ACTIVA){
+			lblCamara.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
+			actualizarCamara();
+		}
+	}
+
+	public void actualizarCamara(){
+		
+		//------------ Implementacion 1 --------------------
+//			if(panelWebcam != null)
+//				panelWebcam.stop();
+//			webcam = Webcam.getDefault();
+//			webcam.setViewSize(new Dimension(640,480));
+//			panelWebcam = new WebcamPanel(webcam);
+//			//panelWebcam.setLayout(new BorderLayout());
+//			panelWebcam.setFPSDisplayed(true);
+//			getPanelRosco().add(panelWebcam, -1);
+//			panelWebcam.setAlignmentX(WebcamPanel.RIGHT_ALIGNMENT);
+//			panelWebcam.setAlignmentY(WebcamPanel.BOTTOM_ALIGNMENT);
+//			panelWebcam.setBounds((getPanelRosco().getWidth() - 480), (getPanelRosco().getHeight() - 400), 640, 480);
+//			panelWebcam.start();
+		
+		//------------ Implementacion 2 --------------------
+		if(panelWebcam != null)
+			panelWebcam.stop();
+		webcam = Webcam.getDefault();
+		webcam.setViewSize(new Dimension(640,480));
+		panelWebcam = new WebcamPanel(webcam);
+		panelWebcam.setLayout(new GridLayout(1, 1));
+		panelWebcam.setFPSDisplayed(true);
+		getPanelRosco().add(panelWebcam, -1);
+		panelWebcam.setAlignmentX(WebcamPanel.CENTER_ALIGNMENT);
+		panelWebcam.setAlignmentY(WebcamPanel.CENTER_ALIGNMENT);
+		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
+		panelWebcam.start();
+	}
+
+	// Accion que se lleva a cabo al darle a responder o al hacer intro
+	public void accionResponder() {
+		// Cadena de caracteres original a sustituir.
+		String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+		// Cadena de caracteres ASCII que reemplazarán los originales.
+		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+		String output = getCampoRespuesta().getText();
+		if (output.equals("")) {
+			accionPasapalabra();
+			return;
+		}
+		for (int i = 0; i < original.length(); i++)
+			// Reemplazamos los caracteres especiales.
+			output = output.replace(original.charAt(i), ascii.charAt(i));
+		pasapalabra.setRespuestaRecibida(output);
+		getCampoRespuesta().setText("");
+//		synchronized (Pasapalabra.objASicronizar) {
+//			Pasapalabra.setSePuedeSeguir(true);
+//			Pasapalabra.objASicronizar.notify();
+//		}
+		pasapalabra.gestionarRespuesta(output);
+	}
+
+	// Accion que se lleva a cabo al hacer pasapalabra
+	public void accionPasapalabra() {
+		pasapalabra.setRespuestaRecibida("");
+		getCampoRespuesta().setText("");
+//		synchronized (Pasapalabra.objASicronizar) {
+//			Pasapalabra.setSePuedeSeguir(true);
+//			Pasapalabra.objASicronizar.notify();
+//		}
+		pasapalabra.gestionarRespuesta("");
 	}
 
 	private void initialize() {
@@ -190,25 +371,25 @@ public class Juego extends JFrame implements Observer {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 484, Short.MAX_VALUE)
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(getPanelPuntuacion(), Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-								.addComponent(getPanelNombreJug(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(getPanelNombreJug(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 484, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(getPanelPuntuacion(), GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(getPanelNombreJug(), GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
-						.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
+						.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
 		);
@@ -223,56 +404,20 @@ public class Juego extends JFrame implements Observer {
 		setLocation((screenSize.width - windowSize.width) / 2,
 				(screenSize.height - windowSize.height) / 2);
 		// FIN TOCHOCODIGO
-		this.setMinimumSize(new Dimension(510, 500)); // Estambece tamaño minimo
+		this.setMinimumSize(new Dimension(550, 550)); // Estambece tamaño minimo
 														// para la ventana
+		//pack();
 	}
 
 	public JPanel getPanelInferior() {
 		if (panelInferior == null) {
 			panelInferior = new JPanel();
-			panelInferior.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
-					null, null));
+			panelInferior.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			panelInferior.setLayout(new GridLayout(0, 1, 0, 0));
 			panelInferior.add(getPanelPregunta());
 			panelInferior.add(getPanelRespuesta());
 		}
 		return panelInferior;
-	}
-
-	public JPanel getPanelRosco() {
-		if (panelRosco == null) {
-			panelRosco = new JPanel();
-			panelRosco.setBackground(Color.GRAY);
-			panelRosco.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-			panelRosco.setLayout(new GridLayout(6, 5, 0, 0));
-			panelRosco.add(getLblA());
-			panelRosco.add(getLblB());
-			panelRosco.add(getLblC());
-			panelRosco.add(getLblD());
-			panelRosco.add(getLblE());
-			panelRosco.add(getLblF());
-			panelRosco.add(getLblG());
-			panelRosco.add(getLblH());
-			panelRosco.add(getLblI());
-			panelRosco.add(getLblJ());
-			panelRosco.add(getLblK());
-			panelRosco.add(getLblL());
-			panelRosco.add(getLblM());
-			panelRosco.add(getLblN());
-			panelRosco.add(getLblO());
-			panelRosco.add(getLblP());
-			panelRosco.add(getLblQ());
-			panelRosco.add(getLblR());
-			panelRosco.add(getLblS());
-			panelRosco.add(getLblT());
-			panelRosco.add(getLblU());
-			panelRosco.add(getLblV());
-			panelRosco.add(getLblW());
-			panelRosco.add(getLblX());
-			panelRosco.add(getLblY());
-			panelRosco.add(getLblZ());
-		}
-		return panelRosco;
 	}
 
 	public JTextField getCampoRespuesta() {
@@ -323,8 +468,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelPuntuacion() {
 		if (panelPuntuacion == null) {
 			panelPuntuacion = new JPanel();
-			panelPuntuacion.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
-					null, null));
+			panelPuntuacion.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			panelPuntuacion.setLayout(new GridLayout(3, 1, 0, 0));
 			panelPuntuacion.add(getAciertos());
 			panelPuntuacion.add(getFallos());
@@ -388,8 +532,7 @@ public class Juego extends JFrame implements Observer {
 	public JPanel getPanelNombreJug() {
 		if (panelNombreJug == null) {
 			panelNombreJug = new JPanel();
-			panelNombreJug.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
-					null, null));
+			panelNombreJug.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			panelNombreJug.setLayout(new GridLayout(1, 0, 0, 0));
 			panelNombreJug.add(getLblJugador());
 		}
@@ -427,106 +570,6 @@ public class Juego extends JFrame implements Observer {
 		return lblLetra;
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		if (arg0 instanceof Jugador) {
-			getLblJugador().setText(((Jugador) arg0).getNombre());
-			getAciertos().setText(
-					(String) Integer.toString(((Jugador) arg0).getAciertos()));
-			getFallos().setText(
-					(String) Integer.toString(((Jugador) arg0).getFallos()));
-			getTiempoRestante().setText(
-					(String) Integer.toString(((Jugador) arg0)
-							.getTiempoRestante()));
-			if(conIconos) 
-				actualizarRosco();
-			else 
-				actualizarRoscoNoGrafico();
-		}
-		getPregunta().setText(Pasapalabra.getDefinicionActual().getEnunciado());
-		getLblLetra().setText(Pasapalabra.getDefinicionActual().getLetra().name());
-		if(conIconos) 
-			actualizarRosco();
-		else 
-			actualizarRoscoNoGrafico();
-				
-//		if(arg1 instanceof String)
-//			if(arg0.equals("rosco"))
-//				if(conIconos)
-//					actualizarRosco();
-//				else
-//					actualizarRoscoNoGrafico();
-//		
-			
-	}
-
-	public void actualizarRosco() {
-		Letra[] letras = Letra.values();
-		Jugador j = Pasapalabra.getSiguienteJugador();
-		for (int i = 0; i < letras.length; i++) {
-			DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
-			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "verde.png"));
-				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
-				letrasRosco.get(i).setIcon(icono);
-			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "rojo.png"));
-				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
-				letrasRosco.get(i).setIcon(icono);
-			} else{
-				ImageIcon imgIco = new ImageIcon(Juego.class.getResource("/packRecursos/letra"+ letras[i] + "azul.png"));
-				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(TAM_ICO, TAM_ICO, Image.SCALE_DEFAULT));
-				letrasRosco.get(i).setIcon(icono);
-			}
-		}
-	}
-
-	public void actualizarRoscoNoGrafico() {
-		Jugador j = Pasapalabra.getSiguienteJugador();
-		for (int i = 0; i < Letra.values().length; i++) {
-			DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
-			if (def.getEstadoRespuesta() == Estado.CORRECTA) {
-				letrasRosco.get(i).setForeground(new Color(0, 200, 0)); // Es un verde pero no tan brillante como el otro
-			} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
-				letrasRosco.get(i).setForeground(Color.RED);
-			} else {
-				letrasRosco.get(i).setForeground(Color.BLUE);
-			}
-		}
-	}
-
-	// Accion que se lleva a cabo al darle a responder o al hacer intro
-	public void accionResponder() {
-		// Cadena de caracteres original a sustituir.
-		String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
-		// Cadena de caracteres ASCII que reemplazarán los originales.
-		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
-		String output = getCampoRespuesta().getText();
-		if (output.equals("")) {
-			accionPasapalabra();
-			return;
-		}
-		for (int i = 0; i < original.length(); i++)
-			// Reemplazamos los caracteres especiales.
-			output = output.replace(original.charAt(i), ascii.charAt(i));
-		Pasapalabra.setRespuestaRecibida(output);
-		getCampoRespuesta().setText("");
-		synchronized (Pasapalabra.objASicronizar) {
-			Pasapalabra.setSePuedeSeguir(true);
-			Pasapalabra.objASicronizar.notify();
-		}
-	}
-
-	// Accion que se lleva a cabo al hacer pasapalabra
-	public void accionPasapalabra() {
-		Pasapalabra.setRespuestaRecibida("");
-		getCampoRespuesta().setText("");
-		synchronized (Pasapalabra.objASicronizar) {
-			Pasapalabra.setSePuedeSeguir(true);
-			Pasapalabra.objASicronizar.notify();
-		}
-	}
-
 	public JPanel getPanelBotones() {
 		if (panelBotones == null) {
 			panelBotones = new JPanel();
@@ -541,6 +584,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblA() {
 		if (lblA == null) {
 			lblA = new JLabel("");
+			lblA.setBounds(0, 0, 79, 54);
 			lblA.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblA.setForeground(Color.BLUE);
 			lblA.setHorizontalAlignment(SwingConstants.CENTER);
@@ -551,6 +595,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblB() {
 		if (lblB == null) {
 			lblB = new JLabel("");
+			lblB.setBounds(0, 0, 79, 54);
 			lblB.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblB.setForeground(Color.BLUE);
 			lblB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -561,6 +606,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblC() {
 		if (lblC == null) {
 			lblC = new JLabel("");
+			lblC.setBounds(0, 0, 79, 54);
 			lblC.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblC.setForeground(Color.BLUE);
 			lblC.setHorizontalAlignment(SwingConstants.CENTER);
@@ -571,6 +617,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblD() {
 		if (lblD == null) {
 			lblD = new JLabel("");
+			lblD.setBounds(0, 0, 79, 54);
 			lblD.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblD.setForeground(Color.BLUE);
 			lblD.setHorizontalAlignment(SwingConstants.CENTER);
@@ -581,6 +628,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblE() {
 		if (lblE == null) {
 			lblE = new JLabel("");
+			lblE.setBounds(0, 0, 79, 54);
 			lblE.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblE.setForeground(Color.BLUE);
 			lblE.setHorizontalAlignment(SwingConstants.CENTER);
@@ -591,6 +639,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblF() {
 		if (lblF == null) {
 			lblF = new JLabel("");
+			lblF.setBounds(0, 0, 79, 54);
 			lblF.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblF.setForeground(Color.BLUE);
 			lblF.setHorizontalAlignment(SwingConstants.CENTER);
@@ -601,6 +650,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblG() {
 		if (lblG == null) {
 			lblG = new JLabel("");
+			lblG.setBounds(0, 0, 79, 54);
 			lblG.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblG.setForeground(Color.BLUE);
 			lblG.setHorizontalAlignment(SwingConstants.CENTER);
@@ -611,6 +661,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblH() {
 		if (lblH == null) {
 			lblH = new JLabel("");
+			lblH.setBounds(0, 0, 79, 54);
 			lblH.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblH.setForeground(Color.BLUE);
 			lblH.setHorizontalAlignment(SwingConstants.CENTER);
@@ -621,6 +672,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblI() {
 		if (lblI == null) {
 			lblI = new JLabel("");
+			lblI.setBounds(0, 0, 79, 54);
 			lblI.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblI.setForeground(Color.BLUE);
 			lblI.setHorizontalAlignment(SwingConstants.CENTER);
@@ -631,6 +683,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblJ() {
 		if (lblJ == null) {
 			lblJ = new JLabel("");
+			lblJ.setBounds(0, 0, 79, 54);
 			lblJ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblJ.setForeground(Color.BLUE);
 			lblJ.setHorizontalAlignment(SwingConstants.CENTER);
@@ -641,6 +694,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblK() {
 		if (lblK == null) {
 			lblK = new JLabel("");
+			lblK.setBounds(0, 0, 79, 54);
 			lblK.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblK.setForeground(Color.BLUE);
 			lblK.setHorizontalAlignment(SwingConstants.CENTER);
@@ -651,6 +705,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblL() {
 		if (lblL == null) {
 			lblL = new JLabel("");
+			lblL.setBounds(0, 0, 79, 54);
 			lblL.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblL.setForeground(Color.BLUE);
 			lblL.setHorizontalAlignment(SwingConstants.CENTER);
@@ -661,6 +716,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblM() {
 		if (lblM == null) {
 			lblM = new JLabel("");
+			lblM.setBounds(0, 0, 79, 54);
 			lblM.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblM.setForeground(Color.BLUE);
 			lblM.setHorizontalAlignment(SwingConstants.CENTER);
@@ -671,6 +727,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblN() {
 		if (lblN == null) {
 			lblN = new JLabel("");
+			lblN.setBounds(0, 0, 79, 54);
 			lblN.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblN.setForeground(Color.BLUE);
 			lblN.setHorizontalAlignment(SwingConstants.CENTER);
@@ -681,6 +738,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblO() {
 		if (lblO == null) {
 			lblO = new JLabel("");
+			lblO.setBounds(0, 0, 79, 54);
 			lblO.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblO.setForeground(Color.BLUE);
 			lblO.setHorizontalAlignment(SwingConstants.CENTER);
@@ -691,6 +749,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblP() {
 		if (lblP == null) {
 			lblP = new JLabel("");
+			lblP.setBounds(0, 0, 79, 54);
 			lblP.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblP.setForeground(Color.BLUE);
 			lblP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -701,6 +760,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblQ() {
 		if (lblQ == null) {
 			lblQ = new JLabel("");
+			lblQ.setBounds(0, 0, 79, 54);
 			lblQ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblQ.setForeground(Color.BLUE);
 			lblQ.setHorizontalAlignment(SwingConstants.CENTER);
@@ -711,6 +771,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblR() {
 		if (lblR == null) {
 			lblR = new JLabel("");
+			lblR.setBounds(0, 0, 79, 54);
 			lblR.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblR.setForeground(Color.BLUE);
 			lblR.setHorizontalAlignment(SwingConstants.CENTER);
@@ -721,6 +782,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblS() {
 		if (lblS == null) {
 			lblS = new JLabel("");
+			lblS.setBounds(0, 0, 79, 54);
 			lblS.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblS.setForeground(Color.BLUE);
 			lblS.setHorizontalAlignment(SwingConstants.CENTER);
@@ -731,6 +793,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblT() {
 		if (lblT == null) {
 			lblT = new JLabel("");
+			lblT.setBounds(0, 0, 79, 54);
 			lblT.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblT.setForeground(Color.BLUE);
 			lblT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -741,6 +804,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblU() {
 		if (lblU == null) {
 			lblU = new JLabel("");
+			lblU.setBounds(0, 0, 79, 54);
 			lblU.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblU.setForeground(Color.BLUE);
 			lblU.setHorizontalAlignment(SwingConstants.CENTER);
@@ -751,6 +815,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblV() {
 		if (lblV == null) {
 			lblV = new JLabel("");
+			lblV.setBounds(0, 0, 79, 54);
 			lblV.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblV.setForeground(Color.BLUE);
 			lblV.setHorizontalAlignment(SwingConstants.CENTER);
@@ -761,6 +826,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblW() {
 		if (lblW == null) {
 			lblW = new JLabel("");
+			lblW.setBounds(0, 0, 79, 54);
 			lblW.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblW.setForeground(Color.BLUE);
 			lblW.setHorizontalAlignment(SwingConstants.CENTER);
@@ -771,6 +837,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblX() {
 		if (lblX == null) {
 			lblX = new JLabel("");
+			lblX.setBounds(0, 0, 79, 54);
 			lblX.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblX.setForeground(Color.BLUE);
 			lblX.setHorizontalAlignment(SwingConstants.CENTER);
@@ -781,6 +848,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblY() {
 		if (lblY == null) {
 			lblY = new JLabel("");
+			lblY.setBounds(0, 0, 79, 54);
 			lblY.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblY.setForeground(Color.BLUE);
 			lblY.setHorizontalAlignment(SwingConstants.CENTER);
@@ -791,6 +859,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblZ() {
 		if (lblZ == null) {
 			lblZ = new JLabel("");
+			lblZ.setBounds(0, 0, 79, 54);
 			lblZ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblZ.setForeground(Color.BLUE);
 			lblZ.setHorizontalAlignment(SwingConstants.CENTER);
@@ -845,5 +914,55 @@ public class Juego extends JFrame implements Observer {
 			scrollPane.setViewportView(getPregunta());
 		}
 		return scrollPane;
+	}
+	public JLayeredPane getPanelRosco() {
+		if (panelRosco == null) {
+			panelRosco = new JLayeredPane();
+			panelRosco.addComponentListener(new ComponentAdapter() {
+				@Override
+				public void componentResized(ComponentEvent arg0) {
+					posicionarRosco();
+				}
+			});
+			panelRosco.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			panelRosco.setLayout(null);
+			panelRosco.add(getLblA());
+			panelRosco.add(getLblB());
+			panelRosco.add(getLblC());
+			panelRosco.add(getLblD());
+			panelRosco.add(getLblE());
+			panelRosco.add(getLblF());
+			panelRosco.add(getLblG());
+			panelRosco.add(getLblH());
+			panelRosco.add(getLblI());
+			panelRosco.add(getLblJ());
+			panelRosco.add(getLblK());
+			panelRosco.add(getLblL());
+			panelRosco.add(getLblM());
+			panelRosco.add(getLblN());
+			panelRosco.add(getLblO());
+			panelRosco.add(getLblP());
+			panelRosco.add(getLblQ());
+			panelRosco.add(getLblR());
+			panelRosco.add(getLblS());
+			panelRosco.add(getLblT());
+			panelRosco.add(getLblU());
+			panelRosco.add(getLblV());
+			panelRosco.add(getLblW());
+			panelRosco.add(getLblX());
+			panelRosco.add(getLblY());
+			panelRosco.add(getLblZ());
+			panelRosco.add(getLblCamara());
+		}
+		return panelRosco;
+	}
+	public JLabel getLblCamara() {
+		if (lblCamara == null) {
+			lblCamara = new JLabel("");
+			lblCamara.setHorizontalAlignment(SwingConstants.CENTER);
+			getPanelRosco().setLayer(lblCamara, -1);
+			lblCamara.setBounds(0, 0, 46, 14);
+		}
+		return lblCamara;
 	}
 }

@@ -15,17 +15,11 @@ public class Ranking {
     private static Ranking mRanking = new Ranking();
     private LinkedList<Jugador> lPuntuaciones = new LinkedList<Jugador>();
     private final int NUM_PUNTUACIONES = 10;
-    private Ranking() {
-    }
+    private Ranking() {}
 
     public static Ranking getRanking() {
         return mRanking;
     }
-    /*
-    public void addPuntuacion(Jugador pPuntuacion) {
-        lPuntuaciones.add(pPuntuacion);
-    }
-    */
 
     public Iterator<Jugador> getIterador() {
         return lPuntuaciones.iterator();
@@ -39,22 +33,22 @@ public class Ranking {
 			FileReader entrada = new FileReader(archivo);
 			Scanner sc = new Scanner(entrada);
 			int i = 0;
-			do{
-	            String nombre = sc.next();
-	            int aciertos = sc.nextInt();
-	            int fallos = sc.nextInt();
-	            int tiempoRestante = sc.nextInt();
-	            Jugador jugadorTemp = new Jugador(nombre);
-	            jugadorTemp.setAciertos(aciertos);
-	            jugadorTemp.setFallos(fallos);
-	            jugadorTemp.setTiempoRestante(tiempoRestante);
-	            //Print de prueba
-	            //System.out.println(nombre +" "+ aciertos +" "+ fallos +" "+ tiempoRestante);
-	            lPuntuaciones.add(jugadorTemp);
-	            i++;
-	            if(i >= NUM_PUNTUACIONES)
-	            	break;
-			} while(sc.hasNext());
+			if(sc.hasNext()) {
+				do{
+		            String nombre = sc.next();
+		            int aciertos = sc.nextInt();
+		            int fallos = sc.nextInt();
+		            int tiempoRestante = sc.nextInt();
+		            Jugador jugadorTemp = new Jugador(nombre);
+		            jugadorTemp.setAciertos(aciertos);
+		            jugadorTemp.setFallos(fallos);
+		            jugadorTemp.setTiempoRestante(tiempoRestante);
+		            lPuntuaciones.add(jugadorTemp);
+		            i++;
+		            if(i >= NUM_PUNTUACIONES)
+		            	break;
+				} while(sc.hasNext());
+			}
 			sc.close();
 			entrada.close();
 		} catch (FileNotFoundException e) {
@@ -66,13 +60,12 @@ public class Ranking {
     }
 
     public void guardarPuntuaciones() {
-    	// FIXME Corregir el metodo que comprueba las puntuaciones
 		try {
 			File archivo = new File("puntuaciones.txt");
 			FileWriter fw = new FileWriter(archivo);
 			PrintWriter pw = new PrintWriter(fw);
 			// Va de 1 hasta 10 para almacenar solo las 10 mejores
-	    	for(int i = 0; i < NUM_PUNTUACIONES; i++){ 
+	    	for(int i = 0; i < lPuntuaciones.size() && i < NUM_PUNTUACIONES; i++){ 
 	    		Jugador jug = lPuntuaciones.get(i);
 	    		String nombre = jug.getNombre();
 	    		int aciertos = jug.getAciertos();
@@ -89,22 +82,22 @@ public class Ranking {
     }
 
     public void insertarPuntuacionEnRanking(Jugador pJugador) {
-    	// FIXME Comprobar si funciona bien
-    	for(int i = 0; i < NUM_PUNTUACIONES; i++){
+    	for(int i = 0; i < NUM_PUNTUACIONES && i < lPuntuaciones.size(); i++){
     		Jugador jug = lPuntuaciones.get(i);
-    		if(pJugador.getAciertos() > jug.getAciertos()) {
-    			lPuntuaciones.add(i, pJugador);
-    		}
-    		else if(pJugador.getAciertos() == jug.getAciertos()) {
-    			if(pJugador.getFallos() < jug.getFallos()) {
-    				lPuntuaciones.add(i, pJugador);
-    			}
-    			else if(pJugador.getFallos() == jug.getFallos()) {
-    				if(pJugador.getTiempoRestante() >= jug.getTiempoRestante()) {
-    					lPuntuaciones.add(i, pJugador);
-    				}
-    			}
-    		}
+			if (pJugador.getAciertos() > jug.getAciertos()) {
+				lPuntuaciones.add(i, pJugador);
+				break;
+			} else if (pJugador.getAciertos() == jug.getAciertos()) {
+				if (pJugador.getFallos() < jug.getFallos()) {
+					lPuntuaciones.add(i, pJugador);
+					break;
+				} else if (pJugador.getFallos() == jug.getFallos()) {
+					if (pJugador.getTiempoRestante() >= jug.getTiempoRestante()) {
+						lPuntuaciones.add(i, pJugador);
+						break;
+					}
+				}
+			}
     	}
     } 
 }

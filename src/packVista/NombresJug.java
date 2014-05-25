@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,6 +33,7 @@ public class NombresJug extends JDialog {
 	private JTextField textField_1;
 	private JButton btnOk_1;
 	private JPanel panel_2;
+	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
 
 	/**
 	 * Launch the application.
@@ -113,10 +115,13 @@ public class NombresJug extends JDialog {
 			textField.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
-							&& !textField.getText().equals("")
-							&& !textField_1.getText().equals("")) {
-						accionJugar();
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") && !textField_1.getText().equals("")) {
+						pasapalabra.inicializar(textField.getText(), textField_1.getText(), true);
+						pasapalabra.jugar();
+						Juego juego = new Juego();
+						juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						juego.setVisible(true);
+						dispose();
 					}
 				}
 			});
@@ -143,10 +148,13 @@ public class NombresJug extends JDialog {
 			textField_1.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
-							&& !textField.getText().equals("")
-							&& !textField_1.getText().equals("")) {
-						accionJugar();
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") && !textField_1.getText().equals("")) {
+						pasapalabra.inicializar(textField.getText(), textField_1.getText(), true);
+						pasapalabra.jugar();
+						Juego juego = new Juego();
+						juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						juego.setVisible(true);
+						dispose();
 					}
 				}
 			});
@@ -163,25 +171,29 @@ public class NombresJug extends JDialog {
 			btnOk_1.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER
-							&& !textField.getText().equals("")
-							&& !textField_1.getText().equals(""))
-						accionJugar();
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER && !textField.getText().equals("") && !textField_1.getText().equals("")) {
+						pasapalabra.inicializar(textField.getText(), textField_1.getText(), true);
+						pasapalabra.jugar();
+						Juego juego = new Juego();
+						juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						juego.setVisible(true);
+						dispose();
+					}
 				}
 			});
 			btnOk_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnOk_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					accionJugar();
+					pasapalabra.inicializar(textField.getText(), textField_1.getText(), true);
+					pasapalabra.jugar();
+					Juego juego = new Juego();
+					juego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					juego.setVisible(true);
+					dispose();
 				}
 			});
 		}
 		return btnOk_1;
-	}
-
-	public void accionJugar() {
-		Pasapalabra.main(new String[] { textField.getText(), textField_1.getText() });
-		dispose();
 	}
 
 	public JPanel getPanel_2() {

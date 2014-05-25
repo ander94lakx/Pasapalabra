@@ -2,69 +2,32 @@ package packModelo;
 
 import java.util.Observable;
 
-import packVista.Juego;
-import packVista.GameOver;
-
-public class Pasapalabra extends Observable{
+public class Pasapalabra extends Observable {
 
 	// Singletons donde se almacenan informacion persistente
-	private static Ranking ranking = Ranking.getRanking();
-	private static CatalogoDefiniciones catalogo = CatalogoDefiniciones
-			.getCatalogoDefiniciones();
+	private Ranking ranking = Ranking.getRanking();
+	private CatalogoDefiniciones catalogo = CatalogoDefiniciones.getCatalogoDefiniciones();
 
 	// Gestion de jugadores
-	private static Jugador listaJugadores[] = new Jugador[2];
-	private static int siguienteJugador = -2; 
-			// Indica al jugador al que le tocaria jugar el siguiente turno
-			// Siempre es el que no esta jugando en ese momento
+	private Jugador listaJugadores[] = new Jugador[2];
+	private int siguienteJugador = -2;
+		// Indica al jugador al que le tocaria jugar el siguiente turno
+		// Siempre es el que no esta jugando en ese momento
 			// Modos posibles: 0 -> el Siguiente jugador teorico es el Jug 1
 			// Modos posibles: 1 -> el Siguiente jugador teorico es el Jug 2
 			// Modos posibles: -1 -> el Siguiente jugador teorico es el Jug 2 (Todavia no ha jugado el Jug 2)
 			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
 
-	private static boolean modo2Jugadores;
-	private static boolean iniciado = false;
-	
-	private static String respuestaRecibida;
-	private static DefinicionRosco definicionActual;
-	
-	// Atributos para gestionar la sincronizacion entre la GIU y la logica
-	public static final Object objASicronizar = new Object();
-	private static boolean sePuedeSeguir = false;
-	
-	/**
-	 * El metodo main gestiona la carga del XML y la carga inicial de las
-	 * puntuaciones
-	 * 
-	 * @param args
-	 *            Recibe los nombres de los Jugadores o del jugador
-	 */
-	public static void main(String[] args) {
-		
+	private boolean modo2Jugadores;
+
+	private String respuestaRecibida;
+	private DefinicionRosco definicionActual;
+
+	public void inicializar(String jug1, String jug2, boolean modo2jug) {
 		catalogo.loadData();
-
 		ranking.cargarPuntuaciones();
-
-		if (args.length == 1) {
-			modo2Jugadores = false;
-			inicializar(args[0], null);
-		} else if (args.length == 2) {
-			modo2Jugadores = true;
-			inicializar(args[0], args[1]);
-		}
-}
-
-	/**
-	 * Este metodo se encarga de inicializar la parte del juego que no utiliza
-	 * archivos, diferenciando entre los modos 1J y 2J, y de conectarlos con la
-	 * parte grafica
-	 * 
-	 * @param jug1
-	 *            Nombre del primer jugador obtenido del main
-	 * @param jug2
-	 *            Nombre del segundo jugador obtenido del main
-	 */
-	public static void inicializar(String jug1, String jug2) {
+		modo2Jugadores = modo2jug;
+		
 		if (modo2Jugadores) {
 			listaJugadores[0] = new Jugador(jug1);
 			listaJugadores[1] = new Jugador(jug2);
@@ -77,184 +40,124 @@ public class Pasapalabra extends Observable{
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
-		
-		// Tras crear los jugadores y los roscos se empieza a jugar
-		inicializarPartida();
 	}
-
-	/**
-	 * Este metodo se encarga de gestionar el bucle principal del juego,
-	 * cambiando los jugadores y gestionando tambien el final del juego
-	 * 
-	 * @param jug1
-	 *            Nombre del primer jugador obtenido del main
-	 * @param jug2
-	 *            Nombre del segundo jugador obtenido del main
-	 */
-	public static void inicializarPartida() {
-				
-		/*
-		 * FIXME Corregir el bucle principal para que funcione junto a la GUI y
-		 * gestione la respuesta de manera correcta
-		 */
+	
+	public void jugar() {
 		if (modo2Jugadores) {
-			while (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
-				// Obtener el siguiente jugador
+			if (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
-				// Realizar pregunta
-				definicionActual = jugador.realizarPregunta();
-				if(!iniciado){
-					Juego juego = new Juego();
-					juego.setVisible(true);
-					iniciado = true;
-				}
-				//Esperar hasta que la GUI notifique que puede seguir
-				synchronized(objASicronizar){
-					while(!sePuedeSeguir)
-						try {
-							objASicronizar.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-				}
-				sePuedeSeguir = false;
-				// gestionar respuesta
-				jugador.gestionarRespuesta(respuestaRecibida);
+				setDefinicionActual(jugador.realizarPregunta());
 			}
-			// Guardar puntuaciones
-			for (Jugador jug : listaJugadores)
-				ranking.insertarPuntuacionEnRanking(jug);
+			else {
+				setChanged();
+				notifyObservers("fin");
+				for (Jugador jug : listaJugadores)
+					ranking.insertarPuntuacionEnRanking(jug);
+				ranking.guardarPuntuaciones();
+			}
 		} else {
-			while (!listaJugadores[0].haTerminado()) {
-				// Obtener el siguiente jugador
+			if (!listaJugadores[0].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
-				// Realizar pregunta
-				definicionActual = jugador.realizarPregunta();
-				if(!iniciado){
-					Juego juego = new Juego();
-					juego.setVisible(true);
-					iniciado = true;
-				}
-				//Esperar hasta que la GUI notifique que puede seguir
-				synchronized(objASicronizar){
-					while(!sePuedeSeguir)
-						try {
-							objASicronizar.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-				}
-				sePuedeSeguir = false;
-				// gestionar respuesta
-				jugador.gestionarRespuesta(respuestaRecibida);
+				setDefinicionActual(jugador.realizarPregunta());
 			}
-			// Guardar puntuaciones
-			for (Jugador jug : listaJugadores)
-				ranking.insertarPuntuacionEnRanking(jug);
+			else {
+				setChanged();
+				notifyObservers("fin");
+				for (Jugador jug : listaJugadores)
+					ranking.insertarPuntuacionEnRanking(jug);
+				ranking.guardarPuntuaciones();
+			}
 		}
-		// Volcar puntuaciones en el archivo
-//		ranking.guardarPuntuaciones();
-		// Abrir la pantalla de Game Over
-		GameOver gameOver = new GameOver();
-		gameOver.setVisible(true);
+		
+	}
+	
+	public void gestionarRespuesta(String respuesta){
+		if (modo2Jugadores) {
+			if (siguienteJugador == -1 || siguienteJugador == 1) {
+				listaJugadores[0].gestionarRespuesta(respuesta);
+			} else if (siguienteJugador == -2 || siguienteJugador == 0) {
+				listaJugadores[1].gestionarRespuesta(respuesta);
+			}
+		}
+		else
+			listaJugadores[0].gestionarRespuesta(respuesta);
+		jugar();
 	}
 
 	/**
 	 * Este metodo devuelve el jugador que itene que jugar a continuacion
-	 * teniendo en cuenta las condiciones necesarias, que son:
-	 * 		Si alguno de los jugadores ha terminado
-	 * 		Si el jugador puede seguir jugando ya que ha acertado la pregunta anterior
-	 * 		Si todavia no ha empezado a jugar alguno
+	 * teniendo en cuenta las condiciones necesarias, que son: 
+	 * 		Si alguno de los jugadores ha terminado 
+	 * 		Si el jugador puede seguir jugando ya que ha acertado la pregunta anterior 
+	 * 		Si todavia no ha empezado a jugar alguno 
 	 * 		Si solo juega uno porque esta en modo Un Jugador
 	 * 
 	 * @return Jugador que tiene que jugar
 	 */
-	public static Jugador getSiguienteJugador() {
-		// Extendido y con comentarios para que se entienda mejor
+	public Jugador getSiguienteJugador() {
 		if (modo2Jugadores) 
-		{
-			if (siguienteJugador == 1) // Si el siquente en teoria es el Jug 2
-			{
-				if (listaJugadores[siguienteJugador].haTerminado()) // Si el que esta por jugar (Jug 2) ya ha terminado
-				{
+			if (siguienteJugador == 1)
+				if (listaJugadores[siguienteJugador].haTerminado())
 					return listaJugadores[0];
-				}
-				else if(listaJugadores[siguienteJugador - 1].haAcertadoLaAnterior()) 
-				{
-					return listaJugadores[siguienteJugador - 1]; 
-						// Si el que esta jugando ha acertado la anterior sigue jugando
-				}
+				else if (listaJugadores[siguienteJugador - 1].haAcertadoLaAnterior())
+					return listaJugadores[siguienteJugador - 1];
 				else 
-				{
-					return listaJugadores[siguienteJugador--]; 
-						// Si no juega el siguiente jugador y se pone al otro jugador como siguiente
-				}
-			} 
-			else if (siguienteJugador == 0) // Si el siguiente en teoria es el Jug 1
-			{
-				if (listaJugadores[siguienteJugador].haTerminado()) // Si el que esta por jugar (Jug 1) ya ha terminado
-				{
+					return listaJugadores[siguienteJugador--];
+			else if (siguienteJugador == 0)
+				if (listaJugadores[siguienteJugador].haTerminado())
 					return listaJugadores[1];
-				}
-				else if(listaJugadores[siguienteJugador + 1].haAcertadoLaAnterior()) 
-				{
-					return listaJugadores[siguienteJugador + 1]; 
-						// Si el que esta jugando ha acertado la anterior sigue jugando
-				}
-				else 
-				{
-					return listaJugadores[siguienteJugador++]; 
-						// Si no juega el siguiente jugador y se pone al otro jugador como siguiente
-				}
+				else if (listaJugadores[siguienteJugador + 1].haAcertadoLaAnterior())
+					return listaJugadores[siguienteJugador + 1];
+				else
+					return listaJugadores[siguienteJugador++];
+			else if (siguienteJugador == -1) {
+				siguienteJugador = 0;
+				return listaJugadores[1];
 			} 
-			else if(siguienteJugador == -1) // Si es -1 es que el Jug 2 todavia no ha comenzado a jugar
-			{
-				siguienteJugador = 0; // Se pone al jug 1 como siguiente
-				return listaJugadores[1]; // Y se pone a Jug 2 como actual
+			else {
+				siguienteJugador = -1;
+				return listaJugadores[0];
 			}
-			else // Si no es ni 0 ni 1 ni -1 es que no se ha epezado a jugar (Ninguno de los 2)
-			{
-				siguienteJugador = -1; // Se pone a -1 para que inicie el Jug 2 posteriormete sin comprobar si ha acertado la anterior
-				return listaJugadores[0]; // Y se pone a Jug 1 como actual
-			}
-		} 
-		else 
-			return listaJugadores[0]; // Si solo juega uno el siguiente siempre va a ser el
+		else
+			return listaJugadores[0];
 	}
-	
-	public static boolean modoDosJugadores(){
+
+	public boolean modoDosJugadores() {
 		return modo2Jugadores;
 	}
-	
-	public static Jugador getJugador(int i){
-		if(i == 1 || i == 0)
+
+	public Jugador getJugador(int i) {
+		if (i == 1 || i == 0)
 			return listaJugadores[i];
-		else return null;
+		else
+			return null;
 	}
 
-	public static String getRespuestaRecibida() {
+	public String getRespuestaRecibida() {
 		return respuestaRecibida;
 	}
-	
-	public static void setRespuestaRecibida(String pRespuestaRecibida) {
+
+	public void setRespuestaRecibida(String pRespuestaRecibida) {
 		respuestaRecibida = pRespuestaRecibida;
 	}
-	
-	public static DefinicionRosco getDefinicionActual() {
+
+	public DefinicionRosco getDefinicionActual() {
 		return definicionActual;
 	}
-
-	public void setDefinicionActual(DefinicionRosco pDefinicionActual) {
+	
+	public void setDefinicionActual(DefinicionRosco pDefinicionActual){
 		definicionActual = pDefinicionActual;
 		setChanged();
 		notifyObservers();
 	}
-
-	public static boolean isSePuedeSeguir() {
-		return sePuedeSeguir;
+	
+	//Parte del singleton
+	private static Pasapalabra mPasapalabra;
+	private Pasapalabra(){}
+	public static Pasapalabra getPasapalabra(){
+		if(mPasapalabra == null)
+			mPasapalabra = new Pasapalabra();
+		return mPasapalabra;
 	}
-
-	public static void setSePuedeSeguir(boolean sePuedeSeguir) {
-		Pasapalabra.sePuedeSeguir = sePuedeSeguir;
-	}
+	
 }

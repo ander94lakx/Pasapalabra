@@ -1,6 +1,5 @@
 package packModelo;
 
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,8 +63,6 @@ public class Jugador extends Observable {
 
 	public void setTiempoRestante(int tiempoRestante) {
 		this.tiempoRestante = tiempoRestante;
-		setChanged();
-		notifyObservers();
 	}
 
 	public String getNombre() {
@@ -73,7 +70,6 @@ public class Jugador extends Observable {
 	}
 
 	public DefinicionRosco realizarPregunta() {
-		// TODO Realizar la siguiente pregunta
 		DefinicionRosco def;
 		do {
 			def = rosco.obtenerDefinicionRosco(posicionRosco);
@@ -87,7 +83,6 @@ public class Jugador extends Observable {
 	}
 
 	public void gestionarRespuesta(String respuesta) {
-		// TODO Gestionar la respuesta recibida
 		pausarReloj();
 		getRosco().obtenerDefinicionRosco(posicionRosco).comprobarRespuesta(
 				respuesta);
@@ -134,13 +129,6 @@ public class Jugador extends Observable {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(timerTask, 0, 1000);
 		timerTask.run();
-	}
-
-	public void decrementarTiempo() {
-		if(tiempoRestante > 0)
-		tiempoRestante--;
-		setChanged();
-		notifyObservers();
 	}
 
 	public void pausarReloj() {

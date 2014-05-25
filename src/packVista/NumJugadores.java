@@ -118,15 +118,15 @@ public class NumJugadores extends JDialog {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
 					if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
-						dispose();
 						NombresJug.main(null);
+						dispose();
 					}
 				}
 			});
 			btnDosJug.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					dispose();
 					NombresJug.main(null);
+					dispose();
 				}
 			});
 			btnDosJug.setFont(new Font("Dialog", Font.PLAIN, 24));
