@@ -47,6 +47,8 @@ public class Pasapalabra extends Observable {
 			if (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				setDefinicionActual(jugador.realizarPregunta());
+				setChanged();
+				notifyObservers();
 			}
 			else {
 				setChanged();
@@ -59,6 +61,8 @@ public class Pasapalabra extends Observable {
 			if (!listaJugadores[0].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				setDefinicionActual(jugador.realizarPregunta());
+				setChanged();
+				notifyObservers();
 			}
 			else {
 				setChanged();

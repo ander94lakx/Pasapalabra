@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class Jugador extends Observable {
 
-	private int TIEMPO_INICIAL = 20;
+	public static int TIEMPO_INICIAL = 20;
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;
@@ -122,6 +122,10 @@ public class Jugador extends Observable {
 			public void run() {
 				if(tiempoRestante > 0)
 					tiempoRestante--;
+//				else {
+//					tiempoRestante = 0;
+//					Pasapalabra.getPasapalabra().jugar();
+//				}
 				setChanged();
 				notifyObservers();
 			}
@@ -132,7 +136,9 @@ public class Jugador extends Observable {
 	}
 
 	public void pausarReloj() {
-		timerTask.cancel();
+		if (timerTask != null) {
+			timerTask.cancel();
+		}
 		timerTask = null;
 	}
 
