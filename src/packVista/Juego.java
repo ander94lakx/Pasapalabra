@@ -57,7 +57,7 @@ public class Juego extends JFrame implements Observer {
 	
 	private static int tamIcono = 35;
 	private static final boolean CON_ICONOS = true;
-	public static boolean WEBCAM_ACTIVA = false;
+	public static boolean WEBCAM_ACTIVA = true;
 	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
 	
 	// Variables relativas a la GUI
@@ -148,6 +148,7 @@ public class Juego extends JFrame implements Observer {
 			} else {
 				pasapalabra.getJugador(0).addObserver(this);
 			}
+			pasapalabra.addObserver(this);
 		}
 		letrasRosco = new LinkedList<JLabel>();
 		letrasRosco.add(lblA);
@@ -197,17 +198,11 @@ public class Juego extends JFrame implements Observer {
 				i++;
 			}
 		}
-		
 		posicionarRosco();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if (arg1 instanceof String && arg1.equals("fin")) {
-			GameOver go = new GameOver();
-			go.setVisible(true);
-			this.setVisible(false);
-		}
 		if (arg0 instanceof Jugador) {
 			getLblJugador().setText(((Jugador) arg0).getNombre());
 			getAciertos().setText(
@@ -217,20 +212,30 @@ public class Juego extends JFrame implements Observer {
 			getTiempoRestante().setText(
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
-			actualizarRosco();
+			//actualizarRosco();
 			
 		}
 		//if(arg0 instanceof Pasapalabra){
+			if (pasapalabra.isTerminado()) {
+				GameOver go = new GameOver();
+				go.setVisible(true);
+				this.setVisible(false);
+			}
 			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
 			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
-			//actualizarRosco();
+			actualizarRosco();
 		//}
-		actualizarRosco();
+		//actualizarRosco();
 	}
 
 	public void actualizarRosco() {
 		Letra[] letras = Letra.values();
-		Jugador j = Pasapalabra.getPasapalabra().getSiguienteJugador();
+		Jugador j;
+		if(pasapalabra.getJugador(0).getNombre().equals(getLblJugador().getText()))
+			j = pasapalabra.getJugador(0);
+		else
+			j = pasapalabra.getJugador(1);
+		
 		if (CON_ICONOS) {
 			for (int i = 0; i < letras.length; i++) {
 				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(
@@ -273,11 +278,11 @@ public class Juego extends JFrame implements Observer {
 	public void posicionarRosco(){
 		int anchura = getPanelRosco().getWidth();
 		int altura = getPanelRosco().getHeight();
-		System.out.println("Anchura: "+anchura+" Altura: "+altura);
+		//System.out.println("Anchura: "+anchura+" Altura: "+altura);
 		int puntoMedioX = anchura / 2;
 		int puntoMedioY = altura / 2;
 		int radio = Math.min(altura, anchura) / 2 - desplazamiento;
-		System.out.println("Radio: "+radio);
+		//System.out.println("Radio: "+radio);
 		for(int i = 0; i < letrasRosco.size(); i++){
 			double grados =(360/25.98)*i; // Ligeramente menor a 26 para compensar los casting a enteros
 			double rad = (grados*Math.PI)/180;
@@ -325,10 +330,6 @@ public class Juego extends JFrame implements Observer {
 			output = output.replace(original.charAt(i), ascii.charAt(i));
 		pasapalabra.setRespuestaRecibida(output);
 		getCampoRespuesta().setText("");
-//		synchronized (Pasapalabra.objASicronizar) {
-//			Pasapalabra.setSePuedeSeguir(true);
-//			Pasapalabra.objASicronizar.notify();
-//		}
 		pasapalabra.gestionarRespuesta(output);
 	}
 
@@ -336,10 +337,6 @@ public class Juego extends JFrame implements Observer {
 	public void accionPasapalabra() {
 		pasapalabra.setRespuestaRecibida("");
 		getCampoRespuesta().setText("");
-//		synchronized (Pasapalabra.objASicronizar) {
-//			Pasapalabra.setSePuedeSeguir(true);
-//			Pasapalabra.objASicronizar.notify();
-//		}
 		pasapalabra.gestionarRespuesta("");
 	}
 
