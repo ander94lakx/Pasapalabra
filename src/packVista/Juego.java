@@ -66,7 +66,7 @@ public class Juego extends JFrame implements Observer {
 	private JButton btnPasapalabra;
 	private JButton btnResponder;
 	private JPanel panelPuntuacion;
-	private JLabel aciertos;
+	private JLabel aciertos; 
 	private JLabel fallos;
 	private JLabel tiempoRestante;
 	private JTextArea pregunta;
@@ -296,7 +296,7 @@ public class Juego extends JFrame implements Observer {
 	public void iniciarCamara(){
 		Webcam webcam = Webcam.getDefault();
 		//webcam.setCustomViewSizes(new Dimension[] { new Dimension(320,240), new Dimension(640,480), new Dimension(960,700), new Dimension(1280,960) });
-		//webcam.setViewSize(new Dimension(1280,960));
+		webcam.setViewSize(new Dimension(640,480));
 		panelWebcam = new WebcamPanel(webcam);
 		panelWebcam.start();
 		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
