@@ -15,6 +15,8 @@ public class Jugador extends Observable {
 	private Letra posicionRosco;
 	private Timer timer = null;
 	private TimerTask timerTask = null;
+	private boolean leTocaJugar;
+	private boolean primerTurno;
 
 	public Jugador(String pNombre) {
 		nombre = pNombre;
@@ -23,6 +25,8 @@ public class Jugador extends Observable {
 		tiempoRestante = TIEMPO_INICIAL;
 		rosco = new Rosco();
 		posicionRosco = Letra.A;
+		leTocaJugar = false;
+		primerTurno = true;
 	}
 
 	public int getAciertos() {
@@ -146,5 +150,18 @@ public class Jugador extends Observable {
 		else
 			letraAnterior = letras[posicionRosco.ordinal() - 1];
 		return getRosco().obtenerDefinicionRosco(letraAnterior).getEstadoRespuesta() == Estado.CORRECTA;
+	}
+	
+	public boolean getLeTocaJugar(){
+		return leTocaJugar;
+	}
+	public void setLeTocaJugar(boolean pLeTocaJugar){
+		leTocaJugar = pLeTocaJugar;
+	}
+	public boolean getPrimerTurno(){
+		return primerTurno;
+	}
+	public void haPasadoPrimerTurno(){
+		primerTurno = false;
 	}
 }

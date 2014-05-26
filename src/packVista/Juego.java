@@ -197,8 +197,6 @@ public class Juego extends JFrame implements Observer {
 				i++;
 			}
 		}
-//		getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
-//		getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
 		if(WEBCAM_ACTIVA)
 			iniciarCamara();
 		posicionarRosco();
@@ -216,30 +214,23 @@ public class Juego extends JFrame implements Observer {
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
 			//actualizarRosco((Jugador)arg0);
-			actualizarRosco(null);
+			actualizarRosco();
 			
 		}
-		//if(arg0 instanceof Pasapalabra){
-			if (pasapalabra.isTerminado()) {
-				GameOver go = new GameOver();
-				go.setVisible(true);
-				this.setVisible(false);
-				pasapalabra.setTerminado(false);
-			}
-			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
-			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
-			actualizarRosco(null);
-		//}
-		//actualizarRosco();
+		if (pasapalabra.isTerminado()) {
+			GameOver go = new GameOver();
+			go.setVisible(true);
+			this.setVisible(false);
+			pasapalabra.setTerminado(false);
+		}
+		getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
+		getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
+		actualizarRosco();
 	}
 
-	public void actualizarRosco(Jugador pJugador) {
+	public void actualizarRosco() {
 		Letra[] letras = Letra.values();
-		Jugador j;
-		if(pJugador != null)
-			j = pJugador;
-		else
-			j = pasapalabra.getSiguienteJugador();
+		Jugador j = pasapalabra.getJugadorActual();
 		if (CON_ICONOS) {
 			for (int i = 0; i < letras.length; i++) {
 				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(

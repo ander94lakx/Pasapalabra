@@ -10,15 +10,9 @@ public class Pasapalabra extends Observable {
 
 	// Gestion de jugadores
 	private Jugador listaJugadores[] = new Jugador[2];
-	private int siguienteJugador = -2;
-		// Indica al jugador al que le tocaria jugar el siguiente turno
-		// Siempre es el que no esta jugando en ese momento
-			// Modos posibles: 0 -> el Siguiente jugador teorico es el Jug 1
-			// Modos posibles: 1 -> el Siguiente jugador teorico es el Jug 2
-			// Modos posibles: -1 -> el Siguiente jugador teorico es el Jug 2 (Todavia no ha jugado el Jug 2)
-			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
-
+	private Jugador jugadorActual;
 	private boolean modo2Jugadores;
+	
 	private boolean terminado = false;
 	private String respuestaRecibida;
 	private DefinicionRosco definicionActual;
@@ -40,13 +34,15 @@ public class Pasapalabra extends Observable {
 			Rosco rosco = listaJugadores[0].getRosco();
 			rosco.inicializarRosco();
 		}
+		jugadorActual = listaJugadores[0];
 	}
 	
 	public void jugar() {
 		if (modo2Jugadores) {
 			if (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
-				Jugador jugador = getSiguienteJugador();
+				Jugador jugador = jugadorActual;
 				setDefinicionActual(jugador.realizarPregunta());
+				
 			}
 			else {
 				for (Jugador jug : listaJugadores)
@@ -58,8 +54,9 @@ public class Pasapalabra extends Observable {
 			}
 		} else {
 			if (!listaJugadores[0].haTerminado()) {
-				Jugador jugador = getSiguienteJugador();
+				Jugador jugador = jugadorActual;
 				setDefinicionActual(jugador.realizarPregunta());
+			
 			}
 			else {
 				ranking.insertarPuntuacionEnRanking(listaJugadores[0]);
@@ -74,11 +71,9 @@ public class Pasapalabra extends Observable {
 	
 	public void gestionarRespuesta(String respuesta){
 		if (modo2Jugadores) {
-			if (siguienteJugador == -1 || siguienteJugador == 1) {
-				listaJugadores[0].gestionarRespuesta(respuesta);
-			} else if (siguienteJugador == 0) {
-				listaJugadores[1].gestionarRespuesta(respuesta);
-			}
+			jugadorActual.gestionarRespuesta(respuesta);
+			if(!jugadorActual.haAcertadoLaAnterior())
+				avanzarJugador();
 		}
 		else
 			listaJugadores[0].gestionarRespuesta(respuesta);
@@ -95,32 +90,22 @@ public class Pasapalabra extends Observable {
 	 * 
 	 * @return Jugador que tiene que jugar
 	 */
-	public Jugador getSiguienteJugador() {
-		if (modo2Jugadores) 
-			if (siguienteJugador == 1)
-				if (listaJugadores[siguienteJugador].haTerminado())
-					return listaJugadores[0];
-				else if (listaJugadores[siguienteJugador - 1].haAcertadoLaAnterior())
-					return listaJugadores[siguienteJugador - 1];
-				else 
-					return listaJugadores[siguienteJugador--];
-			else if (siguienteJugador == 0)
-				if (listaJugadores[siguienteJugador].haTerminado())
-					return listaJugadores[1];
-				else if (listaJugadores[siguienteJugador + 1].haAcertadoLaAnterior())
-					return listaJugadores[siguienteJugador + 1];
-				else
-					return listaJugadores[siguienteJugador++];
-			else if (siguienteJugador == -1) {
-				siguienteJugador = 0;
-				return listaJugadores[1];
-			} 
-			else {
-				siguienteJugador = -1;
-				return listaJugadores[0];
+	public Jugador getJugadorActual() {
+		return jugadorActual;	
+	}
+	
+	public void avanzarJugador(){
+		if (modo2Jugadores) {
+			if(jugadorActual.equals(listaJugadores[0])){
+				jugadorActual = listaJugadores[1];
 			}
+			else if(jugadorActual.equals(listaJugadores[1])){
+				jugadorActual = listaJugadores[0];
+			}
+		}
 		else
-			return listaJugadores[0];
+			jugadorActual = listaJugadores[0];
+		
 	}
 	
 	public boolean modoDosJugadores() {
