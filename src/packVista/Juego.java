@@ -198,6 +198,8 @@ public class Juego extends JFrame implements Observer {
 				i++;
 			}
 		}
+		getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
+		getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
 		posicionarRosco();
 	}
 
@@ -212,7 +214,7 @@ public class Juego extends JFrame implements Observer {
 			getTiempoRestante().setText(
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
-			//actualizarRosco();
+			actualizarRosco();
 			
 		}
 		//if(arg0 instanceof Pasapalabra){
@@ -220,6 +222,7 @@ public class Juego extends JFrame implements Observer {
 				GameOver go = new GameOver();
 				go.setVisible(true);
 				this.setVisible(false);
+				pasapalabra.setTerminado(false);
 			}
 			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
 			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
@@ -230,12 +233,7 @@ public class Juego extends JFrame implements Observer {
 
 	public void actualizarRosco() {
 		Letra[] letras = Letra.values();
-		Jugador j;
-		if(pasapalabra.getJugador(0).getNombre().equals(getLblJugador().getText()))
-			j = pasapalabra.getJugador(0);
-		else
-			j = pasapalabra.getJugador(1);
-		
+		Jugador j = pasapalabra.getSiguienteJugador();
 		if (CON_ICONOS) {
 			for (int i = 0; i < letras.length; i++) {
 				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(

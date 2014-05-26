@@ -62,8 +62,7 @@ public class Pasapalabra extends Observable {
 				setDefinicionActual(jugador.realizarPregunta());
 			}
 			else {
-				for (Jugador jug : listaJugadores)
-					ranking.insertarPuntuacionEnRanking(jug);
+				ranking.insertarPuntuacionEnRanking(listaJugadores[0]);
 				ranking.guardarPuntuaciones();
 				terminado = true;
 				setChanged();
@@ -123,7 +122,7 @@ public class Pasapalabra extends Observable {
 		else
 			return listaJugadores[0];
 	}
-
+	
 	public boolean modoDosJugadores() {
 		return modo2Jugadores;
 	}
@@ -154,6 +153,9 @@ public class Pasapalabra extends Observable {
 	}
 	public boolean isTerminado(){
 		return terminado;
+	}
+	public void setTerminado(boolean pTerminado){
+		terminado = pTerminado;
 	}
 	
 	//Parte del singleton
