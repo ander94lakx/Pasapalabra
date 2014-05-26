@@ -54,7 +54,7 @@ public class Juego extends JFrame implements Observer {
 	
 	private static final long serialVersionUID = -7237743091044603390L;
 	
-	private static int tamIcono = 35;
+	private static int tamIcono = 38;
 	private static final boolean CON_ICONOS = true;
 	public static boolean WEBCAM_ACTIVA = true;
 	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
@@ -112,6 +112,10 @@ public class Juego extends JFrame implements Observer {
 	private int desplazamiento = 30;
 
 	private static boolean externo = true; 
+		// Esta variable sirve para que si se ejecuta el main de juego, que
+		// esta creado para hacer pruebas, no se carguen los observables y asi
+		// no de error
+	
 	private WebcamPanel panelWebcam = null;
 
 	
