@@ -16,7 +16,15 @@ public class Pasapalabra extends Observable {
 	private boolean terminado = false;
 	private String respuestaRecibida;
 	private DefinicionRosco definicionActual;
-
+	
+	/**
+	 * Este metodo prepara todo el juego para que este listo para empezar 
+	 * la partida, carga las definiciones, crea los jugadores e inicializa
+	 * sus roscos. 
+	 * @param jug1 Nombre del primer jugador
+	 * @param jug2 Nombre del segundo jugador
+	 * @param modo2jug indica si juega un jugador o dos
+	 */
 	public void inicializar(String jug1, String jug2, boolean modo2jug) {
 		catalogo.loadData();
 		ranking.cargarPuntuaciones();
@@ -37,6 +45,10 @@ public class Pasapalabra extends Observable {
 		jugadorActual = listaJugadores[0];
 	}
 	
+	/**
+	 * Este metodo es el que se encarga de jugar, en caso de que la partida
+	 * todavia no haya terminado. En concreto juega un unico turno
+	 */
 	public void jugar() {
 		if (modo2Jugadores) {
 			if (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
@@ -66,9 +78,14 @@ public class Pasapalabra extends Observable {
 				notifyObservers();
 			}
 		}
-		
 	}
 	
+	/**
+	 * Este metod es el que recibe la respuesta del jugador que esta jugando en
+	 * ese momento y se encarga de getionarla, ademas de pasar el turno al otro
+	 * jugador en caso de que este haya fallado o hecho pasapalabra
+	 * @param respuesta
+	 */
 	public void gestionarRespuesta(String respuesta){
 		if (modo2Jugadores) {
 			jugadorActual.gestionarRespuesta(respuesta);
@@ -80,27 +97,23 @@ public class Pasapalabra extends Observable {
 		jugar();
 	}
 
-	/**
-	 * Este metodo devuelve el jugador que itene que jugar a continuacion
-	 * teniendo en cuenta las condiciones necesarias, que son: 
-	 * 		Si alguno de los jugadores ha terminado 
-	 * 		Si el jugador puede seguir jugando ya que ha acertado la pregunta anterior 
-	 * 		Si todavia no ha empezado a jugar alguno 
-	 * 		Si solo juega uno porque esta en modo Un Jugador
-	 * 
-	 * @return Jugador que tiene que jugar
-	 */
 	public Jugador getJugadorActual() {
 		return jugadorActual;	
 	}
 	
+	/**
+	 * Este metodo cambia el turno de un jugador a otro siempre que el otro no
+	 * haya terminado ya. En caso de jugar uno solo este se mantiene jugando
+	 */
 	public void avanzarJugador(){
 		if (modo2Jugadores) {
 			if(jugadorActual.equals(listaJugadores[0])){
-				jugadorActual = listaJugadores[1];
+				if(!listaJugadores[1].haTerminado())
+					jugadorActual = listaJugadores[1];
 			}
 			else if(jugadorActual.equals(listaJugadores[1])){
-				jugadorActual = listaJugadores[0];
+				if(!listaJugadores[0].haTerminado())
+					jugadorActual = listaJugadores[0];
 			}
 		}
 		else
