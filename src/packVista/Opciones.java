@@ -1,7 +1,9 @@
 package packVista;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -157,6 +159,16 @@ public class Opciones extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension windowSize = this.getSize();
+		if (windowSize.height > screenSize.height) {
+			windowSize.height = screenSize.height;
+		}
+		if (windowSize.width > screenSize.width) {
+			windowSize.width = screenSize.width;
+		}
+		setLocation((screenSize.width - windowSize.width) / 2,
+				(screenSize.height - windowSize.height) / 2);
 	}
 
 }
