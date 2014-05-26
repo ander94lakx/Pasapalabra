@@ -111,7 +111,6 @@ public class Juego extends JFrame implements Observer {
 	
 	// Variables relativas a la distribucion de las letras
 	private int desplazamiento = 30;
-	private JLabel lblCamara;
 
 	private static boolean externo = true; 
 	private WebcamPanel panelWebcam = null;
@@ -198,8 +197,10 @@ public class Juego extends JFrame implements Observer {
 				i++;
 			}
 		}
-		getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
-		getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
+//		getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
+//		getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
+		if(WEBCAM_ACTIVA)
+			iniciarCamara();
 		posicionarRosco();
 	}
 
@@ -214,7 +215,8 @@ public class Juego extends JFrame implements Observer {
 			getTiempoRestante().setText(
 					(String) Integer.toString(((Jugador) arg0)
 							.getTiempoRestante()));
-			actualizarRosco();
+			//actualizarRosco((Jugador)arg0);
+			actualizarRosco(null);
 			
 		}
 		//if(arg0 instanceof Pasapalabra){
@@ -226,14 +228,18 @@ public class Juego extends JFrame implements Observer {
 			}
 			getPregunta().setText(pasapalabra.getDefinicionActual().getEnunciado());
 			getLblLetra().setText(pasapalabra.getDefinicionActual().getLetra().name());
-			actualizarRosco();
+			actualizarRosco(null);
 		//}
 		//actualizarRosco();
 	}
 
-	public void actualizarRosco() {
+	public void actualizarRosco(Jugador pJugador) {
 		Letra[] letras = Letra.values();
-		Jugador j = pasapalabra.getSiguienteJugador();
+		Jugador j;
+		if(pJugador != null)
+			j = pJugador;
+		else
+			j = pasapalabra.getSiguienteJugador();
 		if (CON_ICONOS) {
 			for (int i = 0; i < letras.length; i++) {
 				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(
@@ -291,18 +297,16 @@ public class Juego extends JFrame implements Observer {
 			else
 				letrasRosco.get(i).setBounds((int)x, (int)y, 20, 20);
 		}
-		if(WEBCAM_ACTIVA){
-			lblCamara.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
-			iniciarCamara();
-		}
 	}
 
 	public void iniciarCamara(){
 		Webcam webcam = Webcam.getDefault();
+		//webcam.setCustomViewSizes(new Dimension[] { new Dimension(320,240), new Dimension(640,480), new Dimension(960,700), new Dimension(1280,960) });
+		//webcam.setViewSize(new Dimension(1280,960));
 		panelWebcam = new WebcamPanel(webcam);
 		panelWebcam.start();
 		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
-		panelRosco.add(panelWebcam, -1);
+		panelRosco.add(panelWebcam, 0);
 		getPanelRosco().setLayer(panelWebcam, 0);
 		panelWebcam.setFillArea(true);
 	}
@@ -561,6 +565,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblA() {
 		if (lblA == null) {
 			lblA = new JLabel("");
+			getPanelRosco().setLayer(lblA, 1);
 			lblA.setBounds(0, 0, 79, 54);
 			lblA.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblA.setForeground(Color.BLUE);
@@ -572,6 +577,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblB() {
 		if (lblB == null) {
 			lblB = new JLabel("");
+			getPanelRosco().setLayer(lblB, 1);
 			lblB.setBounds(0, 0, 79, 54);
 			lblB.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblB.setForeground(Color.BLUE);
@@ -583,6 +589,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblC() {
 		if (lblC == null) {
 			lblC = new JLabel("");
+			getPanelRosco().setLayer(lblC, 1);
 			lblC.setBounds(0, 0, 79, 54);
 			lblC.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblC.setForeground(Color.BLUE);
@@ -594,6 +601,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblD() {
 		if (lblD == null) {
 			lblD = new JLabel("");
+			getPanelRosco().setLayer(lblD, 1);
 			lblD.setBounds(0, 0, 79, 54);
 			lblD.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblD.setForeground(Color.BLUE);
@@ -605,6 +613,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblE() {
 		if (lblE == null) {
 			lblE = new JLabel("");
+			getPanelRosco().setLayer(lblE, 1);
 			lblE.setBounds(0, 0, 79, 54);
 			lblE.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblE.setForeground(Color.BLUE);
@@ -616,6 +625,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblF() {
 		if (lblF == null) {
 			lblF = new JLabel("");
+			getPanelRosco().setLayer(lblF, 1);
 			lblF.setBounds(0, 0, 79, 54);
 			lblF.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblF.setForeground(Color.BLUE);
@@ -627,6 +637,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblG() {
 		if (lblG == null) {
 			lblG = new JLabel("");
+			getPanelRosco().setLayer(lblG, 1);
 			lblG.setBounds(0, 0, 79, 54);
 			lblG.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblG.setForeground(Color.BLUE);
@@ -638,6 +649,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblH() {
 		if (lblH == null) {
 			lblH = new JLabel("");
+			getPanelRosco().setLayer(lblH, 1);
 			lblH.setBounds(0, 0, 79, 54);
 			lblH.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblH.setForeground(Color.BLUE);
@@ -649,6 +661,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblI() {
 		if (lblI == null) {
 			lblI = new JLabel("");
+			getPanelRosco().setLayer(lblI, 1);
 			lblI.setBounds(0, 0, 79, 54);
 			lblI.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblI.setForeground(Color.BLUE);
@@ -660,6 +673,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblJ() {
 		if (lblJ == null) {
 			lblJ = new JLabel("");
+			getPanelRosco().setLayer(lblJ, 1);
 			lblJ.setBounds(0, 0, 79, 54);
 			lblJ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblJ.setForeground(Color.BLUE);
@@ -671,6 +685,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblK() {
 		if (lblK == null) {
 			lblK = new JLabel("");
+			getPanelRosco().setLayer(lblK, 1);
 			lblK.setBounds(0, 0, 79, 54);
 			lblK.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblK.setForeground(Color.BLUE);
@@ -682,6 +697,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblL() {
 		if (lblL == null) {
 			lblL = new JLabel("");
+			getPanelRosco().setLayer(lblL, 1);
 			lblL.setBounds(0, 0, 79, 54);
 			lblL.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblL.setForeground(Color.BLUE);
@@ -704,6 +720,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblN() {
 		if (lblN == null) {
 			lblN = new JLabel("");
+			getPanelRosco().setLayer(lblN, 1);
 			lblN.setBounds(0, 0, 79, 54);
 			lblN.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblN.setForeground(Color.BLUE);
@@ -715,6 +732,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblO() {
 		if (lblO == null) {
 			lblO = new JLabel("");
+			getPanelRosco().setLayer(lblO, 1);
 			lblO.setBounds(0, 0, 79, 54);
 			lblO.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblO.setForeground(Color.BLUE);
@@ -726,6 +744,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblP() {
 		if (lblP == null) {
 			lblP = new JLabel("");
+			getPanelRosco().setLayer(lblP, 1);
 			lblP.setBounds(0, 0, 79, 54);
 			lblP.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblP.setForeground(Color.BLUE);
@@ -737,6 +756,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblQ() {
 		if (lblQ == null) {
 			lblQ = new JLabel("");
+			getPanelRosco().setLayer(lblQ, 1);
 			lblQ.setBounds(0, 0, 79, 54);
 			lblQ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblQ.setForeground(Color.BLUE);
@@ -748,6 +768,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblR() {
 		if (lblR == null) {
 			lblR = new JLabel("");
+			getPanelRosco().setLayer(lblR, 1);
 			lblR.setBounds(0, 0, 79, 54);
 			lblR.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblR.setForeground(Color.BLUE);
@@ -759,6 +780,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblS() {
 		if (lblS == null) {
 			lblS = new JLabel("");
+			getPanelRosco().setLayer(lblS, 1);
 			lblS.setBounds(0, 0, 79, 54);
 			lblS.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblS.setForeground(Color.BLUE);
@@ -770,6 +792,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblT() {
 		if (lblT == null) {
 			lblT = new JLabel("");
+			getPanelRosco().setLayer(lblT, 1);
 			lblT.setBounds(0, 0, 79, 54);
 			lblT.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblT.setForeground(Color.BLUE);
@@ -781,6 +804,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblU() {
 		if (lblU == null) {
 			lblU = new JLabel("");
+			getPanelRosco().setLayer(lblU, 1);
 			lblU.setBounds(0, 0, 79, 54);
 			lblU.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblU.setForeground(Color.BLUE);
@@ -792,6 +816,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblV() {
 		if (lblV == null) {
 			lblV = new JLabel("");
+			getPanelRosco().setLayer(lblV, 1);
 			lblV.setBounds(0, 0, 79, 54);
 			lblV.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblV.setForeground(Color.BLUE);
@@ -803,6 +828,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblW() {
 		if (lblW == null) {
 			lblW = new JLabel("");
+			getPanelRosco().setLayer(lblW, 1);
 			lblW.setBounds(0, 0, 79, 54);
 			lblW.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblW.setForeground(Color.BLUE);
@@ -814,6 +840,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblX() {
 		if (lblX == null) {
 			lblX = new JLabel("");
+			getPanelRosco().setLayer(lblX, 1);
 			lblX.setBounds(0, 0, 79, 54);
 			lblX.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblX.setForeground(Color.BLUE);
@@ -825,6 +852,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblY() {
 		if (lblY == null) {
 			lblY = new JLabel("");
+			getPanelRosco().setLayer(lblY, 1);
 			lblY.setBounds(0, 0, 79, 54);
 			lblY.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblY.setForeground(Color.BLUE);
@@ -836,6 +864,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblZ() {
 		if (lblZ == null) {
 			lblZ = new JLabel("");
+			getPanelRosco().setLayer(lblZ, 1);
 			lblZ.setBounds(0, 0, 79, 54);
 			lblZ.setFont(new Font("Tahoma", Font.BOLD, 16));
 			lblZ.setForeground(Color.BLUE);
@@ -931,17 +960,7 @@ public class Juego extends JFrame implements Observer {
 			panelRosco.add(getLblX());
 			panelRosco.add(getLblY());
 			panelRosco.add(getLblZ());
-			panelRosco.add(getLblCamara());
 		}
 		return panelRosco;
-	}
-	public JLabel getLblCamara() {
-		if (lblCamara == null) {
-			lblCamara = new JLabel("");
-			lblCamara.setHorizontalAlignment(SwingConstants.CENTER);
-			getPanelRosco().setLayer(lblCamara, -1);
-			lblCamara.setBounds(0, 0, 46, 14);
-		}
-		return lblCamara;
 	}
 }

@@ -18,8 +18,6 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 
-import com.sun.glass.events.WindowEvent;
-
 import packModelo.Jugador;
 
 import java.awt.event.ActionListener;
@@ -29,6 +27,8 @@ import java.awt.event.KeyEvent;
 
 public class Opciones extends JDialog {
 
+	private static final long serialVersionUID = -3843087081676431850L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	JCheckBox chckbxNewCheckBox;
@@ -117,7 +117,12 @@ public class Opciones extends JDialog {
 				});
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						int tiempo = Integer.parseInt(textField.getText());
+						int tiempo;
+						try {
+							tiempo = Integer.parseInt(textField.getText());
+						} catch (NumberFormatException e) {
+							tiempo = 200;
+						}
 						if(tiempo >= 10 && tiempo <= 1000){
 							Juego.WEBCAM_ACTIVA = chckbxNewCheckBox.isSelected();
 							Jugador.TIEMPO_INICIAL = tiempo;
