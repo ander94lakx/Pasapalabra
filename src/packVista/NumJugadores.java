@@ -104,6 +104,7 @@ public class NumJugadores extends JDialog {
 			});
 			btnUnJug.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					dispose();
 					NombreJug.main(null);
 				}
 			});
