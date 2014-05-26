@@ -89,6 +89,7 @@ public class Opciones extends JDialog {
 			}
 			{
 				chckbxNewCheckBox = new JCheckBox("");
+				chckbxNewCheckBox.setSelected(Juego.WEBCAM_ACTIVA);
 				panel2.add(chckbxNewCheckBox);
 			}
 		}
