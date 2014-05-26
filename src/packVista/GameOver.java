@@ -91,11 +91,13 @@ public class GameOver extends JDialog {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
 					MenuPrincipal.main(null);
+					GameOver.this.setVisible(false);
 				}
 			});
 			btnMenuPrincipal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					MenuPrincipal.main(null);
+					GameOver.this.setVisible(false);
 				}
 			});
 			btnMenuPrincipal.setFont(new Font("Tahoma", Font.PLAIN, 20));

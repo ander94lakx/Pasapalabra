@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class Jugador extends Observable {
 
-	public static int TIEMPO_INICIAL = 20;
+	public static int TIEMPO_INICIAL = 200;
 	private int aciertos;
 	private int fallos;
 	private int tiempoRestante;

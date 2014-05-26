@@ -19,7 +19,7 @@ public class Pasapalabra extends Observable {
 			// Modos posibles: -2 -> el Siguiente jugador teorico es el Jug 1 (Todavia no ha jugado ninguno)
 
 	private boolean modo2Jugadores;
-
+	private boolean terminado = false;
 	private String respuestaRecibida;
 	private DefinicionRosco definicionActual;
 
@@ -47,29 +47,27 @@ public class Pasapalabra extends Observable {
 			if (!listaJugadores[0].haTerminado() || !listaJugadores[1].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				setDefinicionActual(jugador.realizarPregunta());
-				setChanged();
-				notifyObservers();
 			}
 			else {
-				setChanged();
-				notifyObservers("fin");
 				for (Jugador jug : listaJugadores)
 					ranking.insertarPuntuacionEnRanking(jug);
 				ranking.guardarPuntuaciones();
+				terminado = true;
+				setChanged();
+				notifyObservers();
 			}
 		} else {
 			if (!listaJugadores[0].haTerminado()) {
 				Jugador jugador = getSiguienteJugador();
 				setDefinicionActual(jugador.realizarPregunta());
-				setChanged();
-				notifyObservers();
 			}
 			else {
-				setChanged();
-				notifyObservers("fin");
 				for (Jugador jug : listaJugadores)
 					ranking.insertarPuntuacionEnRanking(jug);
 				ranking.guardarPuntuaciones();
+				terminado = true;
+				setChanged();
+				notifyObservers();
 			}
 		}
 		
@@ -79,7 +77,7 @@ public class Pasapalabra extends Observable {
 		if (modo2Jugadores) {
 			if (siguienteJugador == -1 || siguienteJugador == 1) {
 				listaJugadores[0].gestionarRespuesta(respuesta);
-			} else if (siguienteJugador == -2 || siguienteJugador == 0) {
+			} else if (siguienteJugador == 0) {
 				listaJugadores[1].gestionarRespuesta(respuesta);
 			}
 		}
@@ -153,6 +151,9 @@ public class Pasapalabra extends Observable {
 		definicionActual = pDefinicionActual;
 		setChanged();
 		notifyObservers();
+	}
+	public boolean isTerminado(){
+		return terminado;
 	}
 	
 	//Parte del singleton
