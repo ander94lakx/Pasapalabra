@@ -1,5 +1,4 @@
 Pasapalabra
-
 ===========
 
 Este proyecto es la práctica final de la asignatura Ingeniería del Software del Grado en Ingeniería Informatica de Gestión y Sistemas de Información de la EUI/UPV de Vitoria-Gasteiz, creado por Ander Granado Masid y Julen Aristimuño Arana.
