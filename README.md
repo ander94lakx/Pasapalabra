@@ -16,7 +16,9 @@ Para mas información:
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
 
 
+
 -----------
+
 
 
 Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren azken praktika da, Ander Granado Masid eta Julen Aristimuño Arana egindakoa.
