@@ -20,7 +20,7 @@ Para mas información:
 
 
 
-Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren azken praktika da, Ander Granado Masid eta Julen Aristimuño Arana egindakoa.
+Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren ikasgaiaren azken praktika da, Ander Granado Masid eta Julen Aristimuño Arana egindakoa.
 
 Aplikazio hau "Pasapalabra" telebista saioa imitazen duen bideo-joko bat da.
 
