@@ -10,7 +10,7 @@ El juego está programado en Java y utiliza la API de Swing para la GUI. Impleme
 Para mas información:
 
 
-  Ander granado: agranado003@ikasle.ehu.es 
+  Ander Granado: agranado003@ikasle.ehu.es 
   
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
 
@@ -29,6 +29,6 @@ Jokoa Java-n programatuta dago eta Swing APIa erabiltzen du GUIrako. MVC diseinu
 Informazio gehiagorako:
 
 
-  Ander granado: agranado003@ikasle.ehu.es 
+  Ander Granado: agranado003@ikasle.ehu.es 
 
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
