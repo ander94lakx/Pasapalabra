@@ -76,6 +76,7 @@ public class MenuPrincipal extends JFrame {
 		// FIN TOCHOCODIGO
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getLayeredPane_1());
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 	public JLayeredPane getLayeredPane_1() {
 		if (layeredPane == null) {

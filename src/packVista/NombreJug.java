@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -75,6 +76,8 @@ public class NombreJug extends JDialog {
 				(screenSize.height - windowSize.height) / 2);
 		// FIN TOCHOCODIGO
 		getContentPane().add(getPanel_1());
+		
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 
 	public JPanel getPanel() {

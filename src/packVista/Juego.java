@@ -382,6 +382,9 @@ public class Juego extends JFrame implements Observer {
 		// FIN TOCHOCODIGO
 		this.setMinimumSize(new Dimension(550, 550)); // Estambece tamaño minimo
 														// para la ventana
+		
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
+		
 		//pack();
 	}
 

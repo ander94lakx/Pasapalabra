@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -64,6 +65,7 @@ public class NumJugadores extends JDialog {
 		}
 		setLocation((screenSize.width-windowSize.width)/2,
 		(screenSize.height-windowSize.height)/2);
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 	public JPanel getPanel() {
 		if (panel == null) {

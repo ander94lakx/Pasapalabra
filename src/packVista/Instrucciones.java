@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JDialog;
 import javax.swing.JTextPane;
@@ -74,6 +75,7 @@ public class Instrucciones extends JDialog {
 				(screenSize.height - windowSize.height) / 2);
 		// FIN TOCHOCODIGO
 
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 
 	public JTextPane getTextPane() {

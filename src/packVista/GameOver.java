@@ -3,6 +3,7 @@ package packVista;
 import java.awt.EventQueue;
 
 import javax.swing.JDialog;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -66,6 +67,8 @@ public class GameOver extends JDialog {
 		setLocation((screenSize.width - windowSize.width) / 2,
 				(screenSize.height - windowSize.height) / 2);
 		// FIN TOCHOCODIGO
+		
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 	public JLabel getLblGameOver() {
 		if (lblGameOver == null) {

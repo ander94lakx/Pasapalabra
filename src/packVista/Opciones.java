@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -169,6 +170,8 @@ public class Opciones extends JDialog {
 		}
 		setLocation((screenSize.width - windowSize.width) / 2,
 				(screenSize.height - windowSize.height) / 2);
+		
+		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 
 }
