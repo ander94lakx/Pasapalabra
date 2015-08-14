@@ -20,7 +20,7 @@ public class CatalogoDefiniciones {
 
     public void loadData() {
         try {
-            XMLParser.getPDF2XMLParser().parseXmlFile("Galderak.xml");
+            XMLParser.getPDF2XMLParser().parseXmlFile("DB.xml");
         } catch (XmlParsingException e) {
             e.printStackTrace();
         }
