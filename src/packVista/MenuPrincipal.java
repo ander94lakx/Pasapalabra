@@ -81,6 +81,13 @@ public class MenuPrincipal extends JFrame {
 			layeredPane.add(getLblAutores());
 			layeredPane.add(getBtnInstrucciones());
 			layeredPane.add(getBtnOpciones());
+			
+			JLabel lblURL = new JLabel("M\u00E1s info: https://github.com/ander94lakx/Pasapalabra");
+			layeredPane.setLayer(lblURL, 1);
+			lblURL.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblURL.setForeground(Color.WHITE);
+			lblURL.setBounds(384, 11, 400, 14);
+			layeredPane.add(lblURL);
 		}
 		return layeredPane;
 	}
@@ -147,7 +154,7 @@ public class MenuPrincipal extends JFrame {
 	public JLabel getLblAutores() {
 		if (lblAutores == null) {
 			lblAutores = new JLabel("Creado por: Julen Aristimu\u00F1o y Ander Granado");
-			lblAutores.setHorizontalAlignment(SwingConstants.CENTER);
+			lblAutores.setHorizontalAlignment(SwingConstants.LEFT);
 			lblAutores.setForeground(Color.WHITE);
 			getLayeredPane_1().setLayer(lblAutores, 1);
 			lblAutores.setBounds(12, 11, 270, 14);
