@@ -10,18 +10,19 @@ import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JDialog;
 import javax.swing.JTextPane;
+import java.awt.Font;
 
 public class Instrucciones extends JDialog {
 
 	private static final long serialVersionUID = -7107191430116927606L;
-	private String instrucciones = "\nInstrucciones para jugar al pasapalabra:\n\n"
-			+ "\tEn el pane de arriba aparecera un rosco con cada letra del abecedario"
-			+ " en el que varia el color segun este respondida, bien o mal, o no la pregunta\n\n"
-			+ "\tAbajo iran apareciendo la preguntas que toca responder y a un lado el jugador que tiene que responderla. "
+	private String instrucciones = 
+			  "En el panel de arriba aparecerá un rosco con cada letra del abecedario"
+			+ " en el que varia el color según este respondida, bien o mal, o no la pregunta correspondiente a cada letra.\n\n"
+			+ "Abajo iran apareciendo la preguntas que toca responder y a un lado el jugador que tiene que responderla. "
 			+ "Para responderla simbremente escribir en el cuadro de texto la respuesta y pulsar Intro o darle al boton "
-			+ "RESPONDER, o si se desea hacer pasapalabra pulsar el boton PASAPALABRA o pulsar Intro con el campo de texto vacio\n\n"
-			+ "\tEn la parte superior derecha aparceceran en verde los aciertos, fallos yel tiempo que le queda al jugador que se indica "
-			+ "justo debajo de estos indicadores (que es es jugador que esta jugando en ese momento)\n";
+			+ "RESPONDER, o si se desea hacer pasapalabra, pulsar el boton PASAPALABRA o pulsar Intro con el campo de texto vacío.\n\n"
+			+ "En la parte superior derecha aparcecerán en verde los aciertos, fallos y el tiempo que le queda al jugador que se indica "
+			+ "justo debajo de estos indicadores (que es es jugador que esta jugando en ese momento).\n";
 	private JTextPane textPane;
 
 	public static void main(String[] args) {
@@ -45,7 +46,7 @@ public class Instrucciones extends JDialog {
 	private void initialize() {
 		setResizable(false);
 		setTitle("Instrucciones de juego");
-		setBounds(100, 100, 450, 350);
+		setBounds(100, 100, 450, 300);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(getTextPane(),
 				GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE));
@@ -68,6 +69,7 @@ public class Instrucciones extends JDialog {
 	public JTextPane getTextPane() {
 		if (textPane == null) {
 			textPane = new JTextPane();
+			textPane.setFont(new Font("Tahoma", Font.PLAIN, 13));
 			textPane.setEditable(false);
 			textPane.setText(instrucciones);
 			textPane.setFocusable(false);
