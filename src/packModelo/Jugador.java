@@ -88,13 +88,10 @@ public class Jugador extends Observable {
 
 	public void gestionarRespuesta(String respuesta) {
 		pausarReloj();
-		getRosco().obtenerDefinicionRosco(posicionRosco).comprobarRespuesta(
-				respuesta);
-		if (getRosco().obtenerDefinicionRosco(posicionRosco)
-				.getEstadoRespuesta() == Estado.CORRECTA)
+		getRosco().obtenerDefinicionRosco(posicionRosco).comprobarRespuesta(respuesta);
+		if (getRosco().obtenerDefinicionRosco(posicionRosco).getEstadoRespuesta() == Estado.CORRECTA)
 			incrementarAciertos();
-		if (getRosco().obtenerDefinicionRosco(posicionRosco)
-				.getEstadoRespuesta() == Estado.FALLIDA)
+		if (getRosco().obtenerDefinicionRosco(posicionRosco).getEstadoRespuesta() == Estado.FALLIDA)
 			incrementarFallos();
 		pasarSiguienteLetra();
 	}
@@ -108,7 +105,7 @@ public class Jugador extends Observable {
 	}
 
 	private void pasarSiguienteLetra() {
-		if(posicionRosco == Letra.Z)
+		if (posicionRosco == Letra.Z)
 			posicionRosco = Letra.A;
 		else
 			posicionRosco = Letra.values()[posicionRosco.ordinal() + 1];
@@ -124,7 +121,7 @@ public class Jugador extends Observable {
 		timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				if(tiempoRestante > 0)
+				if (tiempoRestante > 0)
 					tiempoRestante--;
 				setChanged();
 				notifyObservers();
@@ -151,17 +148,20 @@ public class Jugador extends Observable {
 			letraAnterior = letras[posicionRosco.ordinal() - 1];
 		return getRosco().obtenerDefinicionRosco(letraAnterior).getEstadoRespuesta() == Estado.CORRECTA;
 	}
-	
-	public boolean getLeTocaJugar(){
+
+	public boolean getLeTocaJugar() {
 		return leTocaJugar;
 	}
-	public void setLeTocaJugar(boolean pLeTocaJugar){
+
+	public void setLeTocaJugar(boolean pLeTocaJugar) {
 		leTocaJugar = pLeTocaJugar;
 	}
-	public boolean getPrimerTurno(){
+
+	public boolean getPrimerTurno() {
 		return primerTurno;
 	}
-	public void haPasadoPrimerTurno(){
+
+	public void haPasadoPrimerTurno() {
 		primerTurno = false;
 	}
 }

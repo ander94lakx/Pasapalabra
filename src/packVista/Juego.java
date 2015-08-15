@@ -51,14 +51,14 @@ import java.awt.event.ComponentEvent;
 import com.github.sarxos.webcam.*;
 
 public class Juego extends JFrame implements Observer {
-	
+
 	private static final long serialVersionUID = -7237743091044603390L;
-	
+
 	private static int tamIcono = 38;
 	private static final boolean CON_ICONOS = true;
 	public static boolean WEBCAM_ACTIVA = true;
 	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
-	
+
 	// Variables relativas a la GUI
 	private JPanel contentPane;
 	private JPanel panelInferior;
@@ -66,7 +66,7 @@ public class Juego extends JFrame implements Observer {
 	private JButton btnPasapalabra;
 	private JButton btnResponder;
 	private JPanel panelPuntuacion;
-	private JLabel aciertos; 
+	private JLabel aciertos;
 	private JLabel fallos;
 	private JLabel tiempoRestante;
 	private JTextArea pregunta;
@@ -107,40 +107,31 @@ public class Juego extends JFrame implements Observer {
 	private JPanel panelPregunta;
 	private JScrollPane scrollPane;
 	private JLayeredPane panelRosco;
-	
+
 	// Variables relativas a la distribucion de las letras
 	private int desplazamiento = 30;
 
-	private static boolean externo = true; 
-		// Esta variable sirve para que si se ejecuta el main de juego, que
-		// esta creado para hacer pruebas, no se carguen los observables y asi
-		// no de error
+	// Esta variable sirve para que si se ejecuta el main de juego, que
+	// esta creado para hacer pruebas, no se carguen los observables y asi
+	// no de error
+	private static boolean externo = true;
 	
 	private WebcamPanel panelWebcam = null;
 
-	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					externo = false;
-					//Pasapalabra.inicializar("Pedro","Juan", true);
 					Juego frame = new Juego();
 					frame.setVisible(true);
-					//Pasapalabra.inicializarPartida();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
-	/**
-	 * Create the frame.
-	 */
+
 	public Juego() {
 		initialize();
 		if (externo) {
@@ -183,10 +174,9 @@ public class Juego extends JFrame implements Observer {
 			int i = 0;
 			for (JLabel lbl : letrasRosco) {
 				ImageIcon imgIco = new ImageIcon(
-						Juego.class.getResource("/packRecursos/letra"
-								+ Letra.values()[i] + "azul.png"));
-				Icon icono = new ImageIcon(imgIco.getImage().getScaledInstance(
-						tamIcono, tamIcono, Image.SCALE_DEFAULT));
+						Juego.class.getResource("/packRecursos/letra" + Letra.values()[i] + "azul.png"));
+				Icon icono = new ImageIcon(
+						imgIco.getImage().getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
 				lbl.setIcon(icono);
 				lbl.setSize(tamIcono, tamIcono);
 				i++;
@@ -200,7 +190,7 @@ public class Juego extends JFrame implements Observer {
 				i++;
 			}
 		}
-		if(WEBCAM_ACTIVA)
+		if (WEBCAM_ACTIVA)
 			iniciarCamara();
 		posicionarRosco();
 	}
@@ -209,16 +199,11 @@ public class Juego extends JFrame implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		if (arg0 instanceof Jugador) {
 			getLblJugador().setText(((Jugador) arg0).getNombre());
-			getAciertos().setText(
-					(String) Integer.toString(((Jugador) arg0).getAciertos()));
-			getFallos().setText(
-					(String) Integer.toString(((Jugador) arg0).getFallos()));
-			getTiempoRestante().setText(
-					(String) Integer.toString(((Jugador) arg0)
-							.getTiempoRestante()));
-			//actualizarRosco((Jugador)arg0);
+			getAciertos().setText((String) Integer.toString(((Jugador) arg0).getAciertos()));
+			getFallos().setText((String) Integer.toString(((Jugador) arg0).getFallos()));
+			getTiempoRestante().setText((String) Integer.toString(((Jugador) arg0).getTiempoRestante()));
 			actualizarRosco();
-			
+
 		}
 		if (pasapalabra.isTerminado()) {
 			GameOver go = new GameOver();
@@ -236,34 +221,32 @@ public class Juego extends JFrame implements Observer {
 		Jugador j = pasapalabra.getJugadorActual();
 		if (CON_ICONOS) {
 			for (int i = 0; i < letras.length; i++) {
-				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(
-						Letra.values()[i]);
+				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
 				if (def.getEstadoRespuesta() == Estado.CORRECTA) {
 					ImageIcon imgIco = new ImageIcon(
 							Juego.class.getResource("/packRecursos/letra" + letras[i] + "verde.png"));
-					Icon icono = new ImageIcon(imgIco.getImage()
-							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					Icon icono = new ImageIcon(
+							imgIco.getImage().getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
 					letrasRosco.get(i).setIcon(icono);
 				} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
 					ImageIcon imgIco = new ImageIcon(
 							Juego.class.getResource("/packRecursos/letra" + letras[i] + "rojo.png"));
-					Icon icono = new ImageIcon(imgIco.getImage()
-							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					Icon icono = new ImageIcon(
+							imgIco.getImage().getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
 					letrasRosco.get(i).setIcon(icono);
 				} else {
 					ImageIcon imgIco = new ImageIcon(
 							Juego.class.getResource("/packRecursos/letra" + letras[i] + "azul.png"));
-					Icon icono = new ImageIcon(imgIco.getImage()
-							.getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
+					Icon icono = new ImageIcon(
+							imgIco.getImage().getScaledInstance(tamIcono, tamIcono, Image.SCALE_DEFAULT));
 					letrasRosco.get(i).setIcon(icono);
 				}
 			}
-		}
-		else {
+		} else {
 			for (int i = 0; i < letras.length; i++) {
 				DefinicionRosco def = j.getRosco().obtenerDefinicionRosco(Letra.values()[i]);
 				if (def.getEstadoRespuesta() == Estado.CORRECTA) {
-					letrasRosco.get(i).setForeground(new Color(0, 200, 0)); // Es un verde pero no tan brillante como el basico
+					letrasRosco.get(i).setForeground(new Color(0, 200, 0)); // Un tipo de verde
 				} else if (def.getEstadoRespuesta() == Estado.FALLIDA) {
 					letrasRosco.get(i).setForeground(Color.RED);
 				} else {
@@ -273,30 +256,27 @@ public class Juego extends JFrame implements Observer {
 		}
 	}
 
-	public void posicionarRosco(){
+	public void posicionarRosco() {
 		int anchura = getPanelRosco().getWidth();
 		int altura = getPanelRosco().getHeight();
-		//System.out.println("Anchura: "+anchura+" Altura: "+altura);
 		int puntoMedioX = anchura / 2;
 		int puntoMedioY = altura / 2;
 		int radio = Math.min(altura, anchura) / 2 - desplazamiento;
-		//System.out.println("Radio: "+radio);
-		for(int i = 0; i < letrasRosco.size(); i++){
-			double grados =(360/25.98)*i; // Ligeramente menor a 26 para compensar los casting a enteros
-			double rad = (grados*Math.PI)/180;
+		for (int i = 0; i < letrasRosco.size(); i++) {
+			double grados = (360 / 25.98) * i; // Ligeramente menor a 26 para compensar los casting a enteros
+			double rad = (grados * Math.PI) / 180;
 			double x = (puntoMedioX + radio * Math.sin(rad));
 			double y = (puntoMedioY - radio * Math.cos(rad));
-			if(CON_ICONOS)
-				letrasRosco.get(i).setBounds((int)(x - tamIcono/2), (int)(y - tamIcono/2), tamIcono, tamIcono);
+			if (CON_ICONOS)
+				letrasRosco.get(i).setBounds((int) (x - tamIcono / 2), (int) (y - tamIcono / 2), tamIcono, tamIcono);
 			else
-				letrasRosco.get(i).setBounds((int)x, (int)y, 20, 20);
+				letrasRosco.get(i).setBounds((int) x, (int) y, 20, 20);
 		}
 	}
 
-	public void iniciarCamara(){
+	public void iniciarCamara() {
 		Webcam webcam = Webcam.getDefault();
-		//webcam.setCustomViewSizes(new Dimension[] { new Dimension(320,240), new Dimension(640,480), new Dimension(960,700), new Dimension(1280,960) });
-		webcam.setViewSize(new Dimension(640,480));
+		webcam.setViewSize(new Dimension(640, 480));
 		panelWebcam = new WebcamPanel(webcam);
 		panelWebcam.start();
 		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
@@ -304,8 +284,8 @@ public class Juego extends JFrame implements Observer {
 		getPanelRosco().setLayer(panelWebcam, 0);
 		panelWebcam.setFillArea(true);
 	}
-	
-	public void reescalarCamara(){
+
+	public void reescalarCamara() {
 		panelWebcam.setBounds(0, 0, getPanelRosco().getWidth(), getPanelRosco().getHeight());
 		panelWebcam.setFillArea(true);
 	}
@@ -344,48 +324,44 @@ public class Juego extends JFrame implements Observer {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(getPanelPuntuacion(), Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-								.addComponent(getPanelNombreJug(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+										.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(getPanelPuntuacion(), Alignment.TRAILING,
+														GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+												.addComponent(getPanelNombreJug(), GroupLayout.PREFERRED_SIZE, 79,
+														GroupLayout.PREFERRED_SIZE)))
 						.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 484, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addContainerGap()));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(getPanelPuntuacion(), GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(getPanelNombreJug(), GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(getPanelPuntuacion(), GroupLayout.DEFAULT_SIZE, 247,
+												Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED).addComponent(getPanelNombreJug(),
+												GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
 						.addComponent(getPanelRosco(), GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
-		);
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(getPanelInferior(), GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)));
 		contentPane.setLayout(gl_contentPane);
-		// TOCHOCODIGO para centrar la ventana
+		
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
 		if (windowSize.height > screenSize.height)
 			windowSize.height = screenSize.height;
 		if (windowSize.width > screenSize.width)
 			windowSize.width = screenSize.width;
-		setLocation((screenSize.width - windowSize.width) / 2,
-				(screenSize.height - windowSize.height) / 2);
-		// FIN TOCHOCODIGO
-		this.setMinimumSize(new Dimension(550, 550)); // Estambece tamaño minimo
-														// para la ventana
-		
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+
+		this.setMinimumSize(new Dimension(550, 550)); // Establece el tamaño minimo para la ventana
+
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
-		
-		//pack();
 	}
 
 	public JPanel getPanelInferior() {
@@ -482,8 +458,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getTiempoRestante() {
 		if (tiempoRestante == null) {
 			tiempoRestante = new JLabel("");
-			tiempoRestante
-					.setToolTipText("Tiempo restante del jugador que esta jugando en este momento");
+			tiempoRestante.setToolTipText("Tiempo restante del jugador que esta jugando en este momento");
 			tiempoRestante.setBackground(new Color(255, 255, 255));
 			tiempoRestante.setForeground(Color.BLUE);
 			tiempoRestante.setHorizontalAlignment(SwingConstants.CENTER);
@@ -520,8 +495,7 @@ public class Juego extends JFrame implements Observer {
 	public JLabel getLblJugador() {
 		if (lblJugador == null) {
 			lblJugador = new JLabel("");
-			lblJugador
-					.setToolTipText("Nombre del jugador que esta jugando en este momento");
+			lblJugador.setToolTipText("Nombre del jugador que esta jugando en este momento");
 			lblJugador.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblJugador.setHorizontalAlignment(SwingConstants.CENTER);
 		}
@@ -869,12 +843,14 @@ public class Juego extends JFrame implements Observer {
 		}
 		return lblZ;
 	}
+
 	public JLabel getLabel_1() {
 		if (label_1 == null) {
 			label_1 = new JLabel("");
 		}
 		return label_1;
 	}
+
 	public JPanel getPanelRespuesta() {
 		if (panelRespuesta == null) {
 			panelRespuesta = new JPanel();
@@ -885,31 +861,32 @@ public class Juego extends JFrame implements Observer {
 		}
 		return panelRespuesta;
 	}
+
 	public JPanel getPanelPregunta() {
 		if (panelPregunta == null) {
 			panelPregunta = new JPanel();
 			panelPregunta.setBorder(new EmptyBorder(4, 6, 4, 6));
 			GroupLayout gl_panelPregunta = new GroupLayout(panelPregunta);
-			gl_panelPregunta.setHorizontalGroup(
-				gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+			gl_panelPregunta
+					.setHorizontalGroup(gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panelPregunta.createSequentialGroup()
+									.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 58,
+											GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(getScrollPane(), GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+									.addGap(1)));
+			gl_panelPregunta.setVerticalGroup(gl_panelPregunta.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panelPregunta.createSequentialGroup()
-						.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(getScrollPane(), GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
-						.addGap(1))
-			);
-			gl_panelPregunta.setVerticalGroup(
-				gl_panelPregunta.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panelPregunta.createSequentialGroup()
-						.addGroup(gl_panelPregunta.createParallelGroup(Alignment.LEADING)
-							.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_panelPregunta.createParallelGroup(Alignment.LEADING)
+									.addComponent(getPanelLetra(), GroupLayout.PREFERRED_SIZE, 48,
+											GroupLayout.PREFERRED_SIZE)
 							.addComponent(getScrollPane(), GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-			);
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 			panelPregunta.setLayout(gl_panelPregunta);
 		}
 		return panelPregunta;
 	}
+
 	public JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
@@ -918,6 +895,7 @@ public class Juego extends JFrame implements Observer {
 		}
 		return scrollPane;
 	}
+
 	public JLayeredPane getPanelRosco() {
 		if (panelRosco == null) {
 			panelRosco = new JLayeredPane();
@@ -925,7 +903,7 @@ public class Juego extends JFrame implements Observer {
 				@Override
 				public void componentResized(ComponentEvent arg0) {
 					posicionarRosco();
-					if(WEBCAM_ACTIVA)
+					if (WEBCAM_ACTIVA)
 						reescalarCamara();
 				}
 			});

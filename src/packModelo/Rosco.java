@@ -13,26 +13,23 @@ public class Rosco {
 	}
 
 	public void inicializarRosco() {
-		CatalogoDefiniciones diccionario = CatalogoDefiniciones
-				.getCatalogoDefiniciones();
+		CatalogoDefiniciones diccionario = CatalogoDefiniciones.getCatalogoDefiniciones();
 		Letra letras[] = Letra.values();
 		for (Letra letra : letras) {
-			ListaDefiniciones defsDeLetra = diccionario
-					.obtenerDefiniciones(letra);
+			ListaDefiniciones defsDeLetra = diccionario.obtenerDefiniciones(letra);
 			Definicion def = defsDeLetra.obtenerDefinicionAlAzar();
-			DefinicionRosco defRosco = new DefinicionRosco(def.getEnunciado(),
-					letra);
+			DefinicionRosco defRosco = new DefinicionRosco(def.getEnunciado(), letra);
 			Iterator<String> it = def.getIteradorRespuestas();
 			while (it.hasNext()) {
 				// Cadena de caracteres original a sustituir.
-			    String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
-			    // Cadena de caracteres ASCII que reemplazarán los originales.
-			    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+				String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+				// Cadena de caracteres ASCII que reemplazarán los originales.
+				String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
 				String respOriginal = it.next();
-				for (int i=0; i<original.length(); i++) {
-			        // Reemplazamos los caracteres especiales.
-			        respOriginal = respOriginal.replace(original.charAt(i), ascii.charAt(i));
-			    }
+				for (int i = 0; i < original.length(); i++) {
+					// Reemplazamos los caracteres especiales.
+					respOriginal = respOriginal.replace(original.charAt(i), ascii.charAt(i));
+				}
 				defRosco.addRespuesta(respOriginal);
 			}
 			listaDefiniciones.add(defRosco);

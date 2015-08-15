@@ -7,22 +7,22 @@ import java.util.Random;
 
 public class ListaDefiniciones {
 
-    private List<Definicion> lDefiniciones;
+	private List<Definicion> lDefiniciones;
 
-    public ListaDefiniciones() {
-        lDefiniciones = new LinkedList<Definicion>();
-    }
+	public ListaDefiniciones() {
+		lDefiniciones = new LinkedList<Definicion>();
+	}
 
-    public void addDefinicion(Definicion pDefinicion) {
-        lDefiniciones.add(pDefinicion);
-    }
+	public void addDefinicion(Definicion pDefinicion) {
+		lDefiniciones.add(pDefinicion);
+	}
 
-    public Iterator<Definicion> getIterador() {
-        return lDefiniciones.iterator();
-    }
-    
-    public Definicion obtenerDefinicionAlAzar(){
-        Random random = new Random();
-        return lDefiniciones.get(random.nextInt(lDefiniciones.size()));
-    }
+	public Iterator<Definicion> getIterador() {
+		return lDefiniciones.iterator();
+	}
+
+	public Definicion obtenerDefinicionAlAzar() {
+		Random random = new Random();
+		return lDefiniciones.get(random.nextInt(lDefiniciones.size()));
+	}
 }

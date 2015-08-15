@@ -23,9 +23,6 @@ public class Puntuaciones extends JDialog {
 	private JTable tblDatos;
 	private TableModel model;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,9 +36,6 @@ public class Puntuaciones extends JDialog {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Puntuaciones() {
 		initialize();
 	}
@@ -49,24 +43,21 @@ public class Puntuaciones extends JDialog {
 	private void initialize() {
 		setTitle("Puntuaciones");
 		setBounds(100, 100, 450, 232);
-		// TOCHOCODIGO para centrar la ventana
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension windowSize = this.getSize();
-		if (windowSize.height>screenSize.height) {
-			windowSize.height= screenSize.height;
-		}
-		if (windowSize.width>screenSize.width){
-			windowSize.width= screenSize.width;
-		}
-		setLocation((screenSize.width-windowSize.width)/2,
-			(screenSize.height-windowSize.height)/2);
-		// FIN TOCHOCODIGO
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		contentPane.add(getPnlCentral(), BorderLayout.CENTER);
-		
+
+		// Centrar la ventana
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension windowSize = this.getSize();
+		if (windowSize.height > screenSize.height)
+			windowSize.height = screenSize.height;
+		if (windowSize.width > screenSize.width)
+			windowSize.width = screenSize.width;
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 

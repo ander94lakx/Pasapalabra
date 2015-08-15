@@ -11,7 +11,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JDialog;
 import javax.swing.JTextPane;
 
-
 public class Instrucciones extends JDialog {
 
 	private static final long serialVersionUID = -7107191430116927606L;
@@ -25,9 +24,6 @@ public class Instrucciones extends JDialog {
 			+ "justo debajo de estos indicadores (que es es jugador que esta jugando en ese momento)\n";
 	private JTextPane textPane;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -42,11 +38,7 @@ public class Instrucciones extends JDialog {
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public Instrucciones() {
-
 		initialize();
 	}
 
@@ -55,25 +47,20 @@ public class Instrucciones extends JDialog {
 		setTitle("Instrucciones de juego");
 		setBounds(100, 100, 450, 350);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(
-				Alignment.LEADING).addComponent(getTextPane(),
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(getTextPane(),
 				GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(
-				Alignment.LEADING).addComponent(getTextPane(),
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(getTextPane(),
 				GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE));
 		getContentPane().setLayout(groupLayout);
-		// TOCHOCODIGO para centrar la ventana
+
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
-		if (windowSize.height > screenSize.height) {
+		if (windowSize.height > screenSize.height)
 			windowSize.height = screenSize.height;
-		}
-		if (windowSize.width > screenSize.width) {
+		if (windowSize.width > screenSize.width)
 			windowSize.width = screenSize.width;
-		}
-		setLocation((screenSize.width - windowSize.width) / 2,
-				(screenSize.height - windowSize.height) / 2);
-		// FIN TOCHOCODIGO
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
 
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
@@ -84,11 +71,8 @@ public class Instrucciones extends JDialog {
 			textPane.setEditable(false);
 			textPane.setText(instrucciones);
 			textPane.setFocusable(false);
-			Insets insets = new Insets(20, 20, 0, 20); // Crea un objeto que
-														// define los bordes de
-														// un elemento
-			textPane.setMargin(insets); // Configura el margen con el objeto
-										// anterior
+			Insets insets = new Insets(20, 20, 0, 20); // Crea un objeto que define los bordes de un elemento
+			textPane.setMargin(insets); // Configura el margen con el objeto anterior
 		}
 		return textPane;
 	}

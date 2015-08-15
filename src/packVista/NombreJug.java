@@ -33,9 +33,6 @@ public class NombreJug extends JDialog {
 	private JPanel panel_1;
 	private static Pasapalabra pasapalabra = Pasapalabra.getPasapalabra();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -50,11 +47,7 @@ public class NombreJug extends JDialog {
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public NombreJug() {
-
 		initialize();
 	}
 
@@ -63,20 +56,17 @@ public class NombreJug extends JDialog {
 		setBounds(100, 100, 400, 200);
 		getContentPane().setLayout(new GridLayout(2, 1, 0, 0));
 		getContentPane().add(getPanel());
-		// TOCHOCODIGO para centrar la ventana
+		getContentPane().add(getPanel_1());
+
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
-		if (windowSize.height > screenSize.height) {
+		if (windowSize.height > screenSize.height)
 			windowSize.height = screenSize.height;
-		}
-		if (windowSize.width > screenSize.width) {
+		if (windowSize.width > screenSize.width)
 			windowSize.width = screenSize.width;
-		}
-		setLocation((screenSize.width - windowSize.width) / 2,
-				(screenSize.height - windowSize.height) / 2);
-		// FIN TOCHOCODIGO
-		getContentPane().add(getPanel_1());
-		
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 

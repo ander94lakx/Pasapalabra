@@ -27,9 +27,6 @@ public class NumJugadores extends JDialog {
 	private JButton btnUnJug;
 	private JButton btnDosJug;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,29 +41,27 @@ public class NumJugadores extends JDialog {
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public NumJugadores() {
-
 		initialize();
 	}
+
 	private void initialize() {
 		setBounds(100, 100, 400, 300);
 		getContentPane().add(getPanel(), BorderLayout.NORTH);
 		getContentPane().add(getPanel_1(), BorderLayout.CENTER);
+
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
-		if (windowSize.height>screenSize.height) {
-		windowSize.height= screenSize.height;
-		}
-		if (windowSize.width>screenSize.width){
-		windowSize.width= screenSize.width;
-		}
-		setLocation((screenSize.width-windowSize.width)/2,
-		(screenSize.height-windowSize.height)/2);
+		if (windowSize.height > screenSize.height)
+			windowSize.height = screenSize.height;
+		if (windowSize.width > screenSize.width)
+			windowSize.width = screenSize.width;
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+		
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
+
 	public JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -75,6 +70,7 @@ public class NumJugadores extends JDialog {
 		}
 		return panel;
 	}
+
 	public JLabel getLblNumJugadores() {
 		if (lblNumJugadores == null) {
 			lblNumJugadores = new JLabel("Numero de jugadores:");
@@ -82,6 +78,7 @@ public class NumJugadores extends JDialog {
 		}
 		return lblNumJugadores;
 	}
+
 	public JPanel getPanel_1() {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
@@ -92,13 +89,14 @@ public class NumJugadores extends JDialog {
 		}
 		return panel_1;
 	}
+
 	public JButton getBtnUnJug() {
 		if (btnUnJug == null) {
 			btnUnJug = new JButton("1");
 			btnUnJug.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 						dispose();
 						NombreJug.main(null);
 					}
@@ -114,13 +112,14 @@ public class NumJugadores extends JDialog {
 		}
 		return btnUnJug;
 	}
+
 	public JButton getBtnDosJug() {
 		if (btnDosJug == null) {
 			btnDosJug = new JButton("2");
 			btnDosJug.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent arg0) {
-					if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 						NombresJug.main(null);
 						dispose();
 					}

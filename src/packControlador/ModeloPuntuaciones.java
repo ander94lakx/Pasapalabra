@@ -7,25 +7,22 @@ import javax.swing.table.AbstractTableModel;
 
 import packModelo.*;
 
-
-public class ModeloPuntuaciones extends AbstractTableModel{
+public class ModeloPuntuaciones extends AbstractTableModel {
 
 	private static final long serialVersionUID = -1650068466977391948L;
-	
+
 	private String[] nombresColumnas = null;
 	private Object[][] datos = null;
-	private int numPuntuaciones; // numero de puntuaciones a mostrar basado en 
-								 // el tamaño de la estructura de datos del ranking
+	private int numPuntuaciones;
 
-	public ModeloPuntuaciones(){
-		
+	public ModeloPuntuaciones() {
 		nombresColumnas = new String[] { "Nombre", "Aciertos", "Fallos", "Tiempo restante" };
-		if(!Ranking.getRanking().getIterador().hasNext())
+		if (!Ranking.getRanking().getIterador().hasNext())
 			Ranking.getRanking().cargarPuntuaciones();
 		LinkedList<Jugador> punt = new LinkedList<Jugador>();
 		Iterator<Jugador> it = Ranking.getRanking().getIterador();
 		numPuntuaciones = 0;
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			Jugador sig = it.next();
 			Jugador temp = new Jugador(sig.getNombre());
 			temp.setAciertos(sig.getAciertos());
@@ -35,11 +32,11 @@ public class ModeloPuntuaciones extends AbstractTableModel{
 			numPuntuaciones++;
 		}
 		datos = new Object[numPuntuaciones][nombresColumnas.length];
-		for(int i = 0; i < numPuntuaciones; i++){
-				datos[i][0] = punt.get(i).getNombre();
-				datos[i][1] = punt.get(i).getAciertos();
-				datos[i][2] = punt.get(i).getFallos();
-				datos[i][3] = punt.get(i).getTiempoRestante();
+		for (int i = 0; i < numPuntuaciones; i++) {
+			datos[i][0] = punt.get(i).getNombre();
+			datos[i][1] = punt.get(i).getAciertos();
+			datos[i][2] = punt.get(i).getFallos();
+			datos[i][3] = punt.get(i).getTiempoRestante();
 		}
 	}
 
@@ -57,7 +54,7 @@ public class ModeloPuntuaciones extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return datos[rowIndex][columnIndex];
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
 		return nombresColumnas[column];

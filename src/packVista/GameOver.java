@@ -28,9 +28,6 @@ public class GameOver extends JDialog {
 	private JPanel panel;
 	private JButton btnMenuPrincipal;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -45,31 +42,28 @@ public class GameOver extends JDialog {
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public GameOver() {
-
 		initialize();
 	}
+
 	private void initialize() {
 		setBounds(100, 100, 450, 250);
 		getContentPane().setLayout(new GridLayout(2, 1, 50, 0));
 		getContentPane().add(getLblGameOver());
 		getContentPane().add(getPanel());
-		// TOCHOCODIGO para centrar la ventana
+		
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
 		if (windowSize.height > screenSize.height)
 			windowSize.height = screenSize.height;
 		if (windowSize.width > screenSize.width)
 			windowSize.width = screenSize.width;
-		setLocation((screenSize.width - windowSize.width) / 2,
-				(screenSize.height - windowSize.height) / 2);
-		// FIN TOCHOCODIGO
-		
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
+
 	public JLabel getLblGameOver() {
 		if (lblGameOver == null) {
 			lblGameOver = new JLabel("Fin de la partida");
@@ -78,6 +72,7 @@ public class GameOver extends JDialog {
 		}
 		return lblGameOver;
 	}
+
 	public JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -87,6 +82,7 @@ public class GameOver extends JDialog {
 		}
 		return panel;
 	}
+
 	public JButton getBtnMenuPrincipal() {
 		if (btnMenuPrincipal == null) {
 			btnMenuPrincipal = new JButton("Menu Principal");

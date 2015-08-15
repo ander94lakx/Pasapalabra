@@ -31,14 +31,11 @@ import java.awt.event.KeyEvent;
 public class Opciones extends JDialog {
 
 	private static final long serialVersionUID = -3843087081676431850L;
-	
+
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	JCheckBox chckbxNewCheckBox;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			Opciones dialog = new Opciones();
@@ -49,12 +46,10 @@ public class Opciones extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public Opciones() {
 		initialize();
 	}
+
 	private void initialize() {
 		setTitle("Opciones");
 		setBounds(100, 100, 450, 300);
@@ -105,15 +100,15 @@ public class Opciones extends JDialog {
 				okButton.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent arg0) {
-						if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+						if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 							int tiempo = Integer.parseInt(textField.getText());
-							if(tiempo >= 10 && tiempo <= 1000){
+							if (tiempo >= 10 && tiempo <= 1000) {
 								Juego.WEBCAM_ACTIVA = chckbxNewCheckBox.isSelected();
 								Jugador.TIEMPO_INICIAL = tiempo;
-							}
-							else {
+							} else {
 								Juego.WEBCAM_ACTIVA = chckbxNewCheckBox.isSelected();
-								Jugador.TIEMPO_INICIAL = 200; // un tiempo por defecto
+								Jugador.TIEMPO_INICIAL = 200; // un tiempo por
+																// defecto
 							}
 							Opciones.this.setVisible(false);
 						}
@@ -127,13 +122,13 @@ public class Opciones extends JDialog {
 						} catch (NumberFormatException e) {
 							tiempo = 200;
 						}
-						if(tiempo >= 10 && tiempo <= 1000){
+						if (tiempo >= 10 && tiempo <= 1000) {
 							Juego.WEBCAM_ACTIVA = chckbxNewCheckBox.isSelected();
 							Jugador.TIEMPO_INICIAL = tiempo;
-						}
-						else {
+						} else {
 							Juego.WEBCAM_ACTIVA = chckbxNewCheckBox.isSelected();
-							Jugador.TIEMPO_INICIAL = 200; // un tiempo por defecto
+							Jugador.TIEMPO_INICIAL = 200; // un tiempo por
+															// defecto
 						}
 						Opciones.this.setVisible(false);
 					}
@@ -147,7 +142,7 @@ public class Opciones extends JDialog {
 				cancelButton.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent arg0) {
-						if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+						if (arg0.getKeyCode() == KeyEvent.VK_ENTER)
 							Opciones.this.setVisible(false);
 					}
 				});
@@ -160,6 +155,8 @@ public class Opciones extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		// Centrar la ventana
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = this.getSize();
 		if (windowSize.height > screenSize.height) {
@@ -168,9 +165,8 @@ public class Opciones extends JDialog {
 		if (windowSize.width > screenSize.width) {
 			windowSize.width = screenSize.width;
 		}
-		setLocation((screenSize.width - windowSize.width) / 2,
-				(screenSize.height - windowSize.height) / 2);
-		
+		setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
+
 		setIconImage(new ImageIcon(MenuPrincipal.class.getResource("/packRecursos/icon.jpg")).getImage());
 	}
 
