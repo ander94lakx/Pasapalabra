@@ -14,6 +14,8 @@ public class Pasapalabra extends Observable {
 	private boolean modo2Jugadores;
 
 	private boolean terminado = false;
+	private boolean pausado = false;
+
 	private String respuestaRecibida;
 	private DefinicionRosco definicionActual;
 
@@ -156,6 +158,14 @@ public class Pasapalabra extends Observable {
 
 	public void setTerminado(boolean pTerminado) {
 		terminado = pTerminado;
+	}
+	
+	public boolean isPausado() {
+		return pausado;
+	}
+
+	public void setPausado(boolean pausado) {
+		this.pausado = pausado;
 	}
 
 	// Parte del singleton

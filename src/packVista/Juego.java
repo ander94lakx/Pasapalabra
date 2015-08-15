@@ -49,6 +49,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import com.github.sarxos.webcam.*;
+import java.awt.BorderLayout;
 
 public class Juego extends JFrame implements Observer {
 
@@ -117,6 +118,7 @@ public class Juego extends JFrame implements Observer {
 	private static boolean externo = true;
 	
 	private WebcamPanel panelWebcam = null;
+	private JPanel panelTiempo;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -427,7 +429,7 @@ public class Juego extends JFrame implements Observer {
 			panelPuntuacion.setLayout(new GridLayout(3, 1, 0, 0));
 			panelPuntuacion.add(getAciertos());
 			panelPuntuacion.add(getFallos());
-			panelPuntuacion.add(getTiempoRestante());
+			panelPuntuacion.add(getPanelTiempo());
 		}
 		return panelPuntuacion;
 	}
@@ -437,7 +439,7 @@ public class Juego extends JFrame implements Observer {
 			aciertos = new JLabel("");
 			aciertos.setToolTipText("Aciertos que lleva el jugador que esta jugando en este momento");
 			aciertos.setBackground(Color.WHITE);
-			aciertos.setForeground(Color.GREEN);
+			aciertos.setForeground(new Color(0, 200, 0));
 			aciertos.setHorizontalAlignment(SwingConstants.CENTER);
 			aciertos.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		}
@@ -462,7 +464,7 @@ public class Juego extends JFrame implements Observer {
 			tiempoRestante.setBackground(new Color(255, 255, 255));
 			tiempoRestante.setForeground(Color.BLUE);
 			tiempoRestante.setHorizontalAlignment(SwingConstants.CENTER);
-			tiempoRestante.setFont(new Font("Tahoma", Font.PLAIN, 30));
+			tiempoRestante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		}
 		return tiempoRestante;
 	}
@@ -937,5 +939,43 @@ public class Juego extends JFrame implements Observer {
 			panelRosco.add(getLblZ());
 		}
 		return panelRosco;
+	}
+	private JPanel getPanelTiempo() {
+		if (panelTiempo == null) {
+			panelTiempo = new JPanel();
+			panelTiempo.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			panelTiempo.setLayout(new BorderLayout(0, 0));
+			panelTiempo.add(getTiempoRestante());
+			
+			JButton btnPausa = new JButton("PAUSA");
+			btnPausa.setMargin(new Insets(2, 5, 2, 5));
+			btnPausa.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if(!pasapalabra.isPausado())
+						pausarJuego();
+					else
+						reanudarJuego();
+				}
+
+				private void reanudarJuego() {
+					pasapalabra.setPausado(false);
+					campoRespuesta.setEnabled(true);
+					btnResponder.setEnabled(true);
+					btnPasapalabra.setEnabled(true);
+					tiempoRestante.setForeground(Color.BLUE);
+				}
+
+				private void pausarJuego() {
+					pasapalabra.setPausado(true);
+					campoRespuesta.setEnabled(false);
+					btnResponder.setEnabled(false);
+					btnPasapalabra.setEnabled(false);
+					tiempoRestante.setForeground(new Color(237, 27, 36));
+				}
+			});
+			panelTiempo.add(btnPausa, BorderLayout.SOUTH);
+		}
+		return panelTiempo;
 	}
 }

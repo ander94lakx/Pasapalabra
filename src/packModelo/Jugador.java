@@ -121,7 +121,7 @@ public class Jugador extends Observable {
 		timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				if (tiempoRestante > 0)
+				if (tiempoRestante > 0 && !Pasapalabra.getPasapalabra().isPausado())
 					tiempoRestante--;
 				setChanged();
 				notifyObservers();
