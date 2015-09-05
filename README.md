@@ -14,7 +14,7 @@ Para descargar el juego listo para ejecutar ir a la sección  [Releases](https:/
 Para mas información:
 
 
-  Ander Granado: agranado003@ikasle.ehu.es, andergranado@outlook.com
+  Ander Granado: agranado003@ikasle.ehu.es, andergranado94@gmail.com
 
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
 
@@ -35,7 +35,7 @@ Bideojokoa jokatzeko prest jeisteko [Releases](https://github.com/ander94lakx/Pa
 Informazio gehiagorako:
 
 
-  Ander Granado: agranado003@ikasle.ehu.es, andergranado@outlook.com
+  Ander Granado: agranado003@ikasle.ehu.es, andergranado94@gmail.com
 
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
 
@@ -58,6 +58,6 @@ To download the game built and ready to play go to [Releases](https://github.com
 For more information:
 
 
-  Ander Granado: agranado003@ikasle.ehu.es, andergranado@outlook.com
+  Ander Granado: agranado003@ikasle.ehu.es, andergranado94@gmail.com
 
   Julen Aristimuño: jaristimuno001@ikasle.ehu.es
