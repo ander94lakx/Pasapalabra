@@ -1,7 +1,7 @@
 Pasapalabra
 ===========
 
-####Español
+#### Español
 
 Este proyecto es la práctica final de la asignatura Ingeniería del Software del Grado en Ingeniería Informática de Gestión y Sistemas de Información de la EUI/UPV de Vitoria-Gasteiz, creado por Ander Granado Masid y Julen Aristimuño Arana.
 
@@ -22,7 +22,7 @@ Para mas información:
 
 -----------
 
-####Euskara
+#### Euskara
 
 Proiektu hau IUE/EHUren Kudeakatearen eta Informazio Sistemen Informatikaren Ingeniaritzako Graduaren Software Ingeniaritzaren ikasgaiaren azken praktika da, Ander Granado Masid eta Julen Aristimuño Arana egindakoa.
 
@@ -43,7 +43,7 @@ Informazio gehiagorako:
 
 -----------
 
-####English
+#### English
 
 This project is the final practise for Software Engineering subject of Computer Engineering degree from University of Basque Country (UPV/EHU), created by Ander Granado Masid and Julen Aristimuño Arana.
 
